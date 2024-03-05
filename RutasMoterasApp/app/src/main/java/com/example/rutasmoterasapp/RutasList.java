@@ -1,11 +1,18 @@
 package com.example.rutasmoterasapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rutasmoterasapi.RutasModel;
 import com.example.rutasmoterasapi.UtilREST;
@@ -17,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PeliculasList extends AppCompatActivity {
+public class RutasList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +51,37 @@ public class PeliculasList extends AppCompatActivity {
                 // Manejar el error
             }
         }, headers);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.mi_menu, menu);
+        return true;
+    }
+
+    // Menú AcercaDe, MasInfo y NuevaPeli
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int id = item.getItemId();
+
+        if(id == R.id.Deportiva){
+
+        }
+
+        if(id == R.id.MasInfo){
+            Intent intent = new Intent(RutasList.this, Informacion.class);
+            if (intent.resolveActivity(getPackageManager()) != null){
+                startActivity(intent);
+            }
+            return true;
+        }
+
+        if(id == R.id.CV){
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

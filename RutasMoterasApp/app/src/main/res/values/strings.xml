@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">RutasMoterasApp</string>
+    <string name="app_name">Rutas Moteras</string>
+
+    <!-- Sobre mí y descripción -->
+    <string name="sobre_mi_title">Sobre mí</string>
+    <string name="sobre_mi_desc">¡Hola a todos! Mi nombre es Ivan Cabrera y soy un estudiante apasionado de segundo año del ciclo superior DAW. Desde siempre, he sentido una gran fascinación por las motos y la increíble sensación de libertad y aventura que nos brindan. Me encanta explorar nuevas rutas en moto y vivir experiencias únicas.</string>
+
+    <string name="parrafo2">RutasMoteras es mucho más que una plataforma, es un espacio creado exclusivamente para aquellos amantes de las motos que buscan descubrir emocionantes rutas y compartir sus experiencias con una comunidad apasionada. Aquí encontrarás un amplio catálogo de rutas, podrás planificar tus propios viajes y experimentar lo mismo que ya han sentido tus compañeros de aventura.</string>
+
+    <string name="parrafo3">No importa si eres un novato en el mundo de las motos o un veterano experimentado, en RutasMoteras todos son bienvenidos. Únete a nosotros y embárcate en una aventura llena de emoción, camaradería y descubrimiento. ¡Prepárate para explorar el mundo sobre dos ruedas!</string>
+
+    <!-- Texto de licencia -->
+    <string name="licencia_desc">This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</string>
+    <string name="licencia_url">http://creativecommons.org/licenses/by-nc-nd/4.0/</string>
+
+
 </resources>
