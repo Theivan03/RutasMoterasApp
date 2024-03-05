@@ -2,7 +2,9 @@ package com.example.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,7 +62,11 @@ public class Login extends AppCompatActivity {
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 Log.d("Login Response", responseData);
-                // Procesar la respuesta del servidor después del inicio de sesión exitoso
+                SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("LoginResponse", responseData);
+                editor.apply();
+
             }
 
             @Override
