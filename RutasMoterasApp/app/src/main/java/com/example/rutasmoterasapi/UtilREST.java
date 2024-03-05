@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 /*
   Esta clase nos permite realizar una petición REST utilizando cualquiera de los 4 modos: GET, POST, PUT o DELETE
@@ -40,6 +41,7 @@ public class UtilREST {
         public String url = null;
         public OnResponseListener callback = null;
         public String data = null;
+        public Map<String, String> headers = null;
     }
 
     // MÉTODOS PARA LANZAR LAS CONSULTAS.
@@ -51,6 +53,15 @@ public class UtilREST {
         request.url = strUrl;
         request.callback = listener;
         request.data = data;
+        new PrvDownloadTask().execute(request);
+    }
+    public static void runQuery(QueryType type, String strUrl, String data, OnResponseListener listener, Map<String, String> headers) {
+        Request request = new Request();
+        request.type = type;
+        request.url = strUrl;
+        request.callback = listener;
+        request.data = data;
+        request.headers = headers; // Almacenar los headers en el objeto Request
         new PrvDownloadTask().execute(request);
     }
     public static void runQuery(QueryType type, String strUrl, OnResponseListener listener) {

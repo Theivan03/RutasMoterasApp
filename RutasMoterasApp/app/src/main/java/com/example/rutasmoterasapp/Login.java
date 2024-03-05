@@ -66,7 +66,8 @@ public class Login extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("LoginResponse", responseData);
                 editor.apply();
-
+                Intent intent = new Intent(Login.this, PeliculasList.class);
+                startActivity(intent);
             }
 
             @Override
