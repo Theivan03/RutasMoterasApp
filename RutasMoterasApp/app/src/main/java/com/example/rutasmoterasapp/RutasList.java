@@ -14,10 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.rutasmoterasapi.RutasModel;
 import com.example.rutasmoterasapi.UtilJSONParser;
 import com.example.rutasmoterasapi.UtilREST;
@@ -32,11 +34,19 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     String token;
     long tokenTime;
     List<RutasModel> rutasList;
+    ImageView imgUsu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas_list);
+
+        imgUsu = findViewById(R.id.userImageView);
+        String imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq"; // URL directa de descarga de la imagen
+
+        Glide.with(this)
+                .load(imageUrl)
+                .into(imgUsu);
 
         List<RutasModel> rutasList = new ArrayList<>();
 
