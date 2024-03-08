@@ -21,7 +21,7 @@
 
     <Button
         android:id="@+id/registrar"
-        style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="#1E88E5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
@@ -33,11 +33,13 @@
 
     <Button
         android:id="@+id/iniciar"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
+        android:layout_marginBottom="242dp"
         android:text="Iniciar"
+        android:backgroundTint="#1E88E5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/registrar"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,5 +58,23 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombre" />
+
+    <TextView
+        android:id="@+id/TextView"
+        android:layout_width="196dp"
+        android:layout_height="147dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sedgwickavedisplay_regular"
+        android:gravity="center"
+        android:text="Rutas Moteras"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
