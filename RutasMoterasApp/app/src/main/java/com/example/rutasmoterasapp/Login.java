@@ -1,5 +1,6 @@
 package com.example.rutasmoterasapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -7,8 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.rutasmoterasapi.API;
 import com.example.rutasmoterasapi.UtilREST;
@@ -20,6 +24,8 @@ public class Login extends AppCompatActivity {
 
     Button registrar;
     Button login;
+    EditText email;
+    EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +34,13 @@ public class Login extends AppCompatActivity {
 
         registrar = findViewById(R.id.registrar);
         login = findViewById(R.id.iniciar);
+        email = findViewById(R.id.nombre);
+        password = findViewById(R.id.apellidos);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser("romera44", "ivanca2003@gmail.com");
+                loginUser(password.getText().toString(), email.getText().toString());
             }
         });
 
@@ -57,18 +65,28 @@ public class Login extends AppCompatActivity {
         }
 
         // Realizar la solicitud de inicio de sesión utilizando la clase API
-        API.postPost(loginData, "http://44.207.234.210/auth/login", new UtilREST.OnResponseListener() {
+        API.postPost(loginData, "http://192.168.1.131:5000/auth/login", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 Log.d("Login Response", responseData);
+
+                // Obtén la hora actual en milisegundos
+                long currentTime = System.currentTimeMillis();
+
                 SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
+
+                // Guarda el token y la hora actual
                 editor.putString("LoginResponse", responseData);
+                editor.putLong("TokenTimestamp", currentTime);
+
                 editor.apply();
+
                 Intent intent = new Intent(Login.this, RutasList.class);
                 startActivity(intent);
             }
+
 
             @Override
             public void onError(UtilREST.Response response) {

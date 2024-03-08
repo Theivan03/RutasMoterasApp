@@ -2,12 +2,14 @@ package com.example.rutasmoterasapi;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 // Proporciona métodos para interactuar con el API RESTful.
 public class API {
-    public static void getPosts(String url, UtilREST.OnResponseListener listener) {
-        UtilREST.runQuery(UtilREST.QueryType.GET, url, listener);
+    public static void getPosts(String url, String token, UtilREST.OnResponseListener listener) {
+        UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, listener);
     }
 
     public static void getPost(int id, String url, UtilREST.OnResponseListener listener) {

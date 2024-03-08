@@ -31,14 +31,14 @@ public class UtilJSONParser {
         try {
             JSONObject jsonObject = new JSONObject(strJson);
             post = new RutasModel(
-                    jsonObject.optInt("Id", -1),
-                    jsonObject.optString("Title", "").trim(),
-                    jsonObject.optString("Date", "").trim(),
-                    jsonObject.optString("Description", "").trim(),
-                    jsonObject.optString("Comunidad", "").trim(),
-                    jsonObject.optString("TipoMoto", "").trim(),
-                    jsonObject.optInt("UserId", -1),
-                    jsonObject.optString("Image", "").trim()
+                    jsonObject.optInt("id", -1),
+                    jsonObject.optString("titulo", "").trim(),
+                    jsonObject.optString("fecha_creacion", "").trim(),
+                    jsonObject.optString("descripcion", "").trim(),
+                    jsonObject.optString("comunidadAutonoma", "").trim(),
+                    jsonObject.optString("tipoMoto", "").trim(),
+                    jsonObject.optInt("userId", -1),
+                    jsonObject.optString("imageURL", "").trim()
             );
         } catch (JSONException e) {
             e.printStackTrace();

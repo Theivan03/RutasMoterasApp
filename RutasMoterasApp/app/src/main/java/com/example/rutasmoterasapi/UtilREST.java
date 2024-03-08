@@ -1,5 +1,7 @@
 package com.example.rutasmoterasapi;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -23,6 +25,8 @@ public class UtilREST {
         void onError(Response r);
     }
 
+    private static String token;
+
     // Enumerador QueryType define los cuatro tipos de consultas posibles: GET, POST, PUT y DELETE.
     public enum QueryType {
         GET, POST, PUT, DELETE
@@ -41,7 +45,7 @@ public class UtilREST {
         public String url = null;
         public OnResponseListener callback = null;
         public String data = null;
-        public Map<String, String> headers = null;
+        public String token = null;
     }
 
     // MÉTODOS PARA LANZAR LAS CONSULTAS.
@@ -53,17 +57,20 @@ public class UtilREST {
         request.url = strUrl;
         request.callback = listener;
         request.data = data;
+        UtilREST.token = " ";
         new PrvDownloadTask().execute(request);
     }
-    public static void runQuery(QueryType type, String strUrl, String data, OnResponseListener listener, Map<String, String> headers) {
+
+    public static void runQueryWithHeaders(QueryType type, String url, String token, OnResponseListener listener) {
         Request request = new Request();
         request.type = type;
-        request.url = strUrl;
+        request.url = url;
+        request.token = token;
+        UtilREST.token = token;
         request.callback = listener;
-        request.data = data;
-        request.headers = headers; // Almacenar los headers en el objeto Request
         new PrvDownloadTask().execute(request);
     }
+
     public static void runQuery(QueryType type, String strUrl, OnResponseListener listener) {
         runQuery(type, strUrl, null, listener);
     }
@@ -87,6 +94,10 @@ public class UtilREST {
                 URL url = new URL(mRequest.url);
                 http = (HttpURLConnection)url.openConnection();
                 http.setRequestProperty("Accept", "application/json");
+
+                http.setRequestProperty("Authorization", "Bearer " + UtilREST.token);
+                Log.d("TOKEN: ", UtilREST.token);
+
 
                 switch (mRequest.type) {
                     case GET:   http.setRequestMethod("GET");   break;

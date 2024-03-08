@@ -32,6 +32,101 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:title="Comunidad Valenciana" />
+                    <item
+                        android:id="@+id/Andalucia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Andalucia" />
+                    <item
+                        android:id="@+id/Aragon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Aragon" />
+                    <item
+                        android:id="@+id/Asturias"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Asturias" />
+                    <item
+                        android:id="@+id/Cantabria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Cantabria" />
+                    <item
+                        android:id="@+id/CastillaLaMancha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Castilla La Mancha" />
+                    <item
+                        android:id="@+id/CastillaLeon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Castilla Leon" />
+                    <item
+                        android:id="@+id/Cataluña"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Cataluña" />
+                    <item
+                        android:id="@+id/Extremadura"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Extremadura" />
+                    <item
+                        android:id="@+id/Galicia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Galicia" />
+                    <item
+                        android:id="@+id/IslasBaleares"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Islas Baleares" />
+                    <item
+                        android:id="@+id/IslasCanarias"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Islas Canarias" />
+                    <item
+                        android:id="@+id/LaRioja"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="La Rioja" />
+                    <item
+                        android:id="@+id/Madrid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Madrid" />
+                    <item
+                        android:id="@+id/Murcia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Murcia" />
+                    <item
+                        android:id="@+id/Navarra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Navarra" />
+                    <item
+                        android:id="@+id/PasiVasco"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Pasi Vasco" />
+                    <item
+                        android:id="@+id/ComunidadValenciana"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Comunidad Valenciana" />
+                    <item
+                        android:id="@+id/Ceuta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Ceuta" />
+                    <item
+                        android:id="@+id/Melilla"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Melilla" />
                 </menu>
             </item>
             <item
@@ -43,10 +138,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <item
+                        android:id="@+id/Scooter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Scooter" />
+                    <item
+                        android:id="@+id/Custom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Custom" />
+                    <item
+                        android:id="@+id/Trail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Trail" />
+                    <item
                         android:id="@+id/Deportiva"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:title="Deportiva" />
+                    <item
+                        android:id="@+id/Naked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Naked" />
+                    <item
+                        android:id="@+id/Motocross"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Motocross" />
+                    <item
+                        android:id="@+id/GranTurismo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:title="Gran Turismo" />
                 </menu>
             </item>
         </menu>
