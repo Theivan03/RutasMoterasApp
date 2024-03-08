@@ -22,7 +22,7 @@
             android:name=".DetalleRuta"
             android:exported="false" />
         <activity
-            android:name=".Slash"
+            android:name=".RutasList"
             android:exported="false" />
         <activity
             android:name=".Login"
@@ -34,7 +34,7 @@
             android:name=".SingIn"
             android:exported="false" />
         <activity
-            android:name=".RutasList"
+            android:name=".Slash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -22,6 +22,7 @@ import com.example.rutasmoterasapi.RutasModel;
 import com.example.rutasmoterasapi.UtilJSONParser;
 import com.example.rutasmoterasapi.UtilREST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RutasList extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -30,11 +31,14 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     ListView miListaRutas;
     String token;
     long tokenTime;
+    List<RutasModel> rutasList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas_list);
+
+        List<RutasModel> rutasList = new ArrayList<>();
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
@@ -63,12 +67,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         LLamarApi("http://192.168.1.131:5000/api/rutas");
 
-        /*if (System.currentTimeMillis() - tokenTime > 3600000) {
-
-        } else {
-            Intent intent = new Intent(RutasList.this, Login.class);
-            startActivity(intent);
-        }*/
     }
 
     @Override
@@ -92,85 +90,117 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             return true;
         }
 
+        if(id == R.id.Nuevos){
+
+            LLamarApi("http://192.168.1.131:5000/api/rutasF");
+
+        }
+
         if(id == R.id.Andalucia){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC/Andalucia");
 
         }if(id == R.id.Aragon){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Asturias){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Cantabria){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.CastillaLaMancha){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.CastillaLeon){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Cataluña){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Extremadura){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Galicia){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.IslasBaleares){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.IslasCanarias){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.LaRioja){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Madrid){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Murcia){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Navarra){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.PasiVasco){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.ComunidadValenciana){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Ceuta){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }if(id == R.id.Melilla){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasC");
 
         }
 
         if(id == R.id.Scooter){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.Custom){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.Trail){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.Deportiva){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.Naked){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.Motocross){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }if(id == R.id.GranTurismo){
 
+            LLamarApi("http://192.168.1.131:5000/api/rutasT");
 
         }
 
@@ -180,30 +210,26 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     public void LLamarApi(String url){
 
-        if (System.currentTimeMillis() - tokenTime > 3600000) {
-            UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
-                @Override
-                public void onSuccess(UtilREST.Response r) {
-                    String jsonContent = r.content;
-                    List<RutasModel> rutasList = UtilJSONParser.parseArrayPosts(jsonContent);
+        List<RutasModel> rutasList = null;
+        UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
+            @Override
+            public void onSuccess(UtilREST.Response r) {
+                String jsonContent = r.content;
+                List<RutasModel> rutasList = UtilJSONParser.parseArrayPosts(jsonContent);
 
-                    mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
-                    miListaRutas.setAdapter(mAdaptadorRutas);
+                mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
+                miListaRutas.setAdapter(mAdaptadorRutas);
 
-                }
+            }
 
-                @Override
-                public void onError(UtilREST.Response r) {
-                    Toast.makeText(RutasList.this,"Ha habido un problema con el servidor,\n sentimos las molestias",Toast.LENGTH_LONG).show();
+            @Override
+            public void onError(UtilREST.Response r) {
+                Toast.makeText(RutasList.this,"Ha habido un problema con el servidor,\n sentimos las molestias",Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(RutasList.this, Login.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            Intent intent = new Intent(RutasList.this, Login.class);
-            startActivity(intent);
-        }
+                Intent intent = new Intent(RutasList.this, Login.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
