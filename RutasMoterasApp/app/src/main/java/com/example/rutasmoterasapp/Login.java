@@ -13,12 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.rutasmoterasapi.API;
+import com.example.rutasmoterasapi.RutasModel;
+import com.example.rutasmoterasapi.UserModel;
+import com.example.rutasmoterasapi.UtilJSONParser;
 import com.example.rutasmoterasapi.UtilREST;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class Login extends AppCompatActivity {
 
@@ -71,17 +78,18 @@ public class Login extends AppCompatActivity {
                 String responseData = response.content;
                 Log.d("Login Response", responseData);
 
-                // Obtén la hora actual en milisegundos
-                long currentTime = System.currentTimeMillis();
+                Calendar calendar = Calendar.getInstance();
+                int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
 
                 SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
-                // Guarda el token y la hora actual
                 editor.putString("LoginResponse", responseData);
-                editor.putLong("TokenTimestamp", currentTime);
+                editor.putInt("TokenDay", currentDay);
 
                 editor.apply();
+
+                ObtenerUsuario("http://192.168.1.131:5000/api/usuario/"+email, responseData);
 
                 Intent intent = new Intent(Login.this, RutasList.class);
                 startActivity(intent);
@@ -97,6 +105,30 @@ public class Login extends AppCompatActivity {
                     Log.e("Login Error", "Error data is null");
                 }
                 // Manejar el error si el inicio de sesión no fue exitoso
+            }
+        });
+    }
+
+    public void ObtenerUsuario(String url, String token){
+
+        UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
+            @Override
+            public void onSuccess(UtilREST.Response r) {
+                String jsonContent = r.content;
+                UserModel user = UtilJSONParser.parseUserPosts(jsonContent);
+
+                SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putLong("Id", user.getId());
+                editor.putString("Name", user.getName());
+                editor.putString("Email", user.getEmail());
+                editor.putString("Foto", user.getImage());
+                editor.apply();
+            }
+
+            @Override
+            public void onError(UtilREST.Response r) {
+
             }
         });
     }

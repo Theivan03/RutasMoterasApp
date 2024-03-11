@@ -57,7 +57,7 @@ public class UtilREST {
         request.url = strUrl;
         request.callback = listener;
         request.data = data;
-        UtilREST.token = " ";
+        UtilREST.token = "";
         new PrvDownloadTask().execute(request);
     }
 

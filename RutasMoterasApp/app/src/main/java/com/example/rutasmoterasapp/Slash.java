@@ -1,15 +1,21 @@
 package com.example.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.example.rutasmoterasapp.Login;
 import com.example.rutasmoterasapp.R;
 import com.mikhaellopez.circularfillableloaders.CircularFillableLoaders;
+
+import java.util.Calendar;
 
 public class Slash extends AppCompatActivity implements Animation.AnimationListener {
 
@@ -29,8 +35,26 @@ public class Slash extends AppCompatActivity implements Animation.AnimationListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Slash.this, Login.class);
-                startActivity(intent);
+                Calendar calendar = Calendar.getInstance();
+                int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
+
+                SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                int tokenDay = sharedPref.getInt("TokenDay", -1);
+
+                if (tokenDay != -1) {
+                    int dayDifference = currentDay - tokenDay;
+
+                    if (dayDifference <= 15) {
+                        Intent intent = new Intent(Slash.this, RutasList.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(Slash.this, PantallaInicial.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    Intent intent = new Intent(Slash.this, PantallaInicial.class);
+                    startActivity(intent);
+                }
                 finish();
             }
         }, SPLASH_DELAY);

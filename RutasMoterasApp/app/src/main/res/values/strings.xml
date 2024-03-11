@@ -13,5 +13,29 @@
     <string name="licencia_desc">This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</string>
     <string name="licencia_url">http://creativecommons.org/licenses/by-nc-nd/4.0/</string>
 
+    <string name="mensaje_inicial">Descubre emocionantes rutas en moto, comparte tus aventuras y únete a una comunidad apasionada de motociclistas.</string>
+    <string name="mensaje_inicial2">¡Empieza a explorar hoy mismo!</string>
+
+    <string name="logout">Cerrar Sesión</string>
+    <string name="etitarUsu">Editar Usuario</string>
+    <string name="email">Email</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="invitado">Invitado</string>
+    <string name="iniSesion">Iniciar Sesión</string>
+    <string name="registrar">Registrar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="crear">Crear</string>
+    <string name="masInfo">Más Información</string>
+    <string name="filtros">Filtros</string>
+    <string name="guiausu">Guía de Usuario</string>
+    <string name="masNuevos">Más Nuevos</string>
+    <string name="comAuto">Comunidad Autónoma</string>
+    <string name="tipoMoto">Tipo de Moto</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="deportiva">Deportiva</string>
+    <string name="gt">Gran Turismo</string>
+
 
 </resources>

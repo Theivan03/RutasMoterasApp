@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,11 +93,26 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         int id = item.getItemId();
 
 
+        if(id == R.id.GuiaUsuario){
+            Intent intent = new Intent(RutasList.this, Informacion.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.Logout){
+            SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("TokenDay", -1);
+            editor.apply();
+
+            Intent intent = new Intent(RutasList.this, PantallaInicial.class);
+            startActivity(intent);
+            return true;
+        }
+
         if(id == R.id.MasInfo){
             Intent intent = new Intent(RutasList.this, Informacion.class);
-            if (intent.resolveActivity(getPackageManager()) != null){
-                startActivity(intent);
-            }
+            startActivity(intent);
             return true;
         }
 
@@ -225,7 +241,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             @Override
             public void onSuccess(UtilREST.Response r) {
                 String jsonContent = r.content;
-                List<RutasModel> rutasList = UtilJSONParser.parseArrayPosts(jsonContent);
+                List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
 
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
