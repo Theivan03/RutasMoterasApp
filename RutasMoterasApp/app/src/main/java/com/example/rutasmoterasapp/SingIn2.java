@@ -34,7 +34,7 @@ public class SingIn2 extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrarUsuario(contraseña.getText().toString(), nombre.toString(), apellidos.toString(), email.getText().toString(), new int[]{1});
+                registrarUsuario(contraseña.getText().toString(), nombre.toString(), apellidos.toString(), email.getText().toString(), "", new int[]{1});
 
                 Intent intent = new Intent(SingIn2.this, Login.class);
                 startActivity(intent);
@@ -50,13 +50,14 @@ public class SingIn2 extends AppCompatActivity {
         });
     }
 
-    private void registrarUsuario(String password, String name, String surname, String email, int[] rolIds) {
+    private void registrarUsuario(String password, String name, String surname, String email, String foto, int[] rolIds) {
         JSONObject usuario = new JSONObject();
         try {
             usuario.put("password", password);
             usuario.put("name", name);
             usuario.put("surname", surname);
             usuario.put("email", email);
+            usuario.put("image", foto);
             JSONArray rolIdsArray = new JSONArray();
             for (int rolId : rolIds) {
                 rolIdsArray.put(rolId);

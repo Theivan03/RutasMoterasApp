@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Login extends AppCompatActivity {
 
@@ -91,8 +93,14 @@ public class Login extends AppCompatActivity {
 
                 ObtenerUsuario("http://192.168.1.131:5000/api/usuario/"+email, responseData);
 
-                Intent intent = new Intent(Login.this, RutasList.class);
-                startActivity(intent);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Login.this, RutasList.class);
+                        startActivity(intent);
+                    }
+                }, 500);
             }
 
 
@@ -119,11 +127,16 @@ public class Login extends AppCompatActivity {
 
                 SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("Log", true);
                 editor.putLong("Id", user.getId());
                 editor.putString("Name", user.getName());
                 editor.putString("Email", user.getEmail());
                 editor.putString("Foto", user.getImage());
                 editor.apply();
+
+                sharedPref = getSharedPreferences("LogPreferences", Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
+                editor.putBoolean("Log", true);
             }
 
             @Override

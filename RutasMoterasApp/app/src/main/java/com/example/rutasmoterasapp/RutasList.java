@@ -33,6 +33,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     RutasAdapter mAdaptadorRutas;
     ListView miListaRutas;
     String token;
+    Boolean log;
     long tokenTime;
     List<RutasModel> rutasList;
     ImageView imgUsu;
@@ -42,12 +43,43 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas_list);
 
+        SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
         imgUsu = findViewById(R.id.userImageView);
-        String imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq"; // URL directa de descarga de la imagen
+        String imageUrl;
+        if(userPrefs.contains("Foto")){
+            if(userPrefs.getString("Foto", "") == "" || userPrefs.getString("Foto", "") == null || userPrefs.getString("Foto", "").isEmpty()){
+                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+            }
+            else{
+                imageUrl = userPrefs.getString("Foto", "");
+            }
+        }
+        else{
+            imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+        }
+
 
         Glide.with(this)
                 .load(imageUrl)
                 .into(imgUsu);
+
+
+
+        if (userPrefs.contains("Id")) {
+            imgUsu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RutasList.this, User.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            // No hay nada en UserPreferences, por lo que no permitimos clics en la imagen
+            imgUsu.setClickable(false);
+        }
+
+
 
         List<RutasModel> rutasList = new ArrayList<>();
 
@@ -95,17 +127,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         if(id == R.id.GuiaUsuario){
             Intent intent = new Intent(RutasList.this, Informacion.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.Logout){
-            SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("TokenDay", -1);
-            editor.apply();
-
-            Intent intent = new Intent(RutasList.this, PantallaInicial.class);
             startActivity(intent);
             return true;
         }
