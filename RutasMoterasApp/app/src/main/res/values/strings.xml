@@ -18,7 +18,6 @@
 
     <string name="logout">Cerrar Sesión</string>
     <string name="etitarUsu">Editar Usuario</string>
-    <string name="email">Email</string>
     <string name="contraseña">Contraseña</string>
     <string name="nombre">Nombre</string>
     <string name="apellidos">Apellidos</string>
@@ -41,6 +40,10 @@
     <string name="ErrorServidor">Ha habido un problema con el servidor, sentimos las molestias</string>
     <string name="visitar">Ver Usuario</string>
     <string name="addRuta">Crear Ruta</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="message">Mensaje</string>
+    <string name="send">Enviar</string>
 
 
 </resources>

@@ -132,7 +132,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         }
 
         if(id == R.id.Contacta){
-            Intent intent = new Intent(User.this, Informacion.class);
+            Intent intent = new Intent(User.this, ContactWithUs.class);
             startActivity(intent);
             return true;
         }

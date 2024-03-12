@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ContactWithUsUsers"
+            android:exported="false" />
+        <activity
+            android:name=".ContactWithUs"
+            android:exported="false" />
+        <activity
             android:name=".DetalleRuta2"
             android:exported="false" />
         <activity
