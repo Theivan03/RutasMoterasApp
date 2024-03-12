@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapi;
+package com.RutasMoteras.rutasmoterasapi;
 
 import android.os.Build;
 
@@ -38,6 +38,7 @@ public class UtilJSONParser {
         }
         return usuario;
     }
+
 
     // Formato: { "id": 1, "userId": 1, "title": "...", "body": "..." }
     // Recibe una cadena JSON (formato anterior) que representa un objeto de post y devuelve un objeto PostModel.
@@ -87,6 +88,7 @@ public class UtilJSONParser {
         }
         return user;
     }
+
 
     // Este método crea y devuelve un objeto JSONObject que representa un post con los valores proporcionados para "id", "userId", "title" y "body".
     // Utiliza el método put() para establecer los valores en el objeto JSON.

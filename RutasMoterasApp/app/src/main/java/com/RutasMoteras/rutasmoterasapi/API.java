@@ -1,9 +1,6 @@
-package com.example.rutasmoterasapi;
+package com.RutasMoteras.rutasmoterasapi;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 // Proporciona métodos para interactuar con el API RESTful.

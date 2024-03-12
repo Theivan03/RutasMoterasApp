@@ -1,6 +1,5 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -8,24 +7,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.rutasmoterasapi.API;
-import com.example.rutasmoterasapi.RutasModel;
-import com.example.rutasmoterasapi.UserModel;
-import com.example.rutasmoterasapi.UtilJSONParser;
-import com.example.rutasmoterasapi.UtilREST;
+import com.RutasMoteras.rutasmoterasapi.UserModel;
+import com.RutasMoteras.rutasmoterasapi.API;
+import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
+import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -144,7 +138,11 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onError(UtilREST.Response r) {
-
+                if (r.content != null) {
+                    Log.e("Login Error", r.content);
+                } else {
+                    Log.e("Login Error", "Error data is null");
+                }
             }
         });
     }

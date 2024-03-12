@@ -1,7 +1,5 @@
-package com.example.rutasmoterasapi;
+package com.RutasMoteras.rutasmoterasapi;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 /*
   Esta clase nos permite realizar una petición REST utilizando cualquiera de los 4 modos: GET, POST, PUT o DELETE

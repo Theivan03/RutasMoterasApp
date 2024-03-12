@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,12 +27,17 @@ public class PantallaInicial extends AppCompatActivity {
             public void onClick(View v) {
                 long currentTime = System.currentTimeMillis();
 
-                SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
+                editor.apply();
+
+                sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
 
                 // Guarda el token y la hora actual
                 editor.putString("LoginResponse", "");
                 editor.putLong("TokenTimestamp", currentTime);
+                editor.apply();
 
                 Intent intent = new Intent(PantallaInicial.this, RutasList.class);
                 startActivity(intent);

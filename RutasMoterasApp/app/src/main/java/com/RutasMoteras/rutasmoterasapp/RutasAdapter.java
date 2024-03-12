@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.bumptech.glide.Glide;
-import com.example.rutasmoterasapi.RutasModel;
 
 import java.util.List;
 

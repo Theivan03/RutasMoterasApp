@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapi;
+package com.RutasMoteras.rutasmoterasapi;
 
 import java.time.LocalDateTime;
 

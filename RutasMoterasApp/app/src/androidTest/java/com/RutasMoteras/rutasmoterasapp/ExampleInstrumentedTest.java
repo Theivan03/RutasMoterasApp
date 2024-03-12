@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import android.content.Context;
 

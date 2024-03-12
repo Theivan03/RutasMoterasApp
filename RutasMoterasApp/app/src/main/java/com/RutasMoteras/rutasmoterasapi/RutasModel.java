@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapi;
+package com.RutasMoteras.rutasmoterasapi;
 
 public class RutasModel {
     private int Id;

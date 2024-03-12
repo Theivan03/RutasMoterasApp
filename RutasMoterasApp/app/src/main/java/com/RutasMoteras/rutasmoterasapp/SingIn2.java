@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.rutasmoterasapi.API;
-import com.example.rutasmoterasapi.UtilREST;
+import com.RutasMoteras.rutasmoterasapi.API;
+import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import org.json.JSONArray;
 import org.json.JSONException;

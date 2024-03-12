@@ -1,8 +1,10 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.RutasMoteras.rutasmoterasapp.R;
 
 public class Informacion extends AppCompatActivity {
 

@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DetalleRuta2"
+            android:exported="false" />
+        <activity
             android:name=".MostrarUser"
             android:exported="false" />
         <activity

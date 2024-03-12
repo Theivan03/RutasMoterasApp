@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.rutasmoterasapp'
+    namespace 'com.RutasMoteras.rutasmoterasapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.rutasmoterasapp"
+        applicationId "com.RutasMoteras.rutasmoterasapp"
         minSdk 24
         targetSdk 33
         versionCode 1

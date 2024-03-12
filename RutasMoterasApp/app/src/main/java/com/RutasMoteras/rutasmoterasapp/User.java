@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.RutasMoteras.rutasmoterasapi.RutasModel;
+import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
+import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
-import com.example.rutasmoterasapi.RutasModel;
-import com.example.rutasmoterasapi.UtilJSONParser;
-import com.example.rutasmoterasapi.UtilREST;
 
 import java.util.List;
 

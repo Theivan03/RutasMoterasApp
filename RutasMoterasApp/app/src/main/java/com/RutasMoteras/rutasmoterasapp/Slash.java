@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
-import com.example.rutasmoterasapp.Login;
-import com.example.rutasmoterasapp.R;
+
 import com.mikhaellopez.circularfillableloaders.CircularFillableLoaders;
 
 import java.util.Calendar;

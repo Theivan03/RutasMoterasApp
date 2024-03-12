@@ -1,4 +1,4 @@
-package com.example.rutasmoterasapp;
+package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +20,9 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.example.rutasmoterasapi.RutasModel;
-import com.example.rutasmoterasapi.UtilJSONParser;
-import com.example.rutasmoterasapi.UtilREST;
+import com.RutasMoteras.rutasmoterasapi.RutasModel;
+import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
+import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -106,9 +105,15 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
-        getMenuInflater().inflate(R.menu.mi_menu, menu);
-        return true;
+        if (userPrefs.contains("Id")) {
+            getMenuInflater().inflate(R.menu.mi_menu_usuario, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.mi_menu, menu);
+            return true;
+        }
     }
 
     // Menú AcercaDe, MasInfo y NuevaPeli
@@ -118,6 +123,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
 
         if(id == R.id.GuiaUsuario){
+            Intent intent = new Intent(RutasList.this, Informacion.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.AddRuta){
             Intent intent = new Intent(RutasList.this, Informacion.class);
             startActivity(intent);
             return true;
@@ -248,25 +259,25 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     public void LLamarApi(String url){
-
-        List<RutasModel> rutasList = null;
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response r) {
                 String jsonContent = r.content;
                 List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
-                Log.d("Rutas:", r.content);
 
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
-
             }
 
             @Override
             public void onError(UtilREST.Response r) {
-                Toast.makeText(RutasList.this,getResources().getString(R.string.ErrorServidor),Toast.LENGTH_LONG).show();
-                Log.d("Rutas:", r.content);
-                Intent intent = new Intent(RutasList.this, Login.class);
+                if (r.content != null) {
+                    Log.d("ERROR!!!!!!!!!", r.content);
+                } else {
+                    Log.d("ERROR!!!!!!!!!", "El contenido de la respuesta es nulo");
+                }
+                Toast.makeText(RutasList.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(RutasList.this, PantallaInicial.class);
                 startActivity(intent);
             }
         });
@@ -293,7 +304,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 + "Descripcion: " + ruta.getDescription() + "\n"
                 + ruta.getImage() + "\n"
                 + ruta.getUserId();
-        Log.d("Id de usuario en ruta: ", String.valueOf(ruta.getUserId()));
 
         // Guardar la cadena en un archivo de texto
         try {
