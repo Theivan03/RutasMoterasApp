@@ -37,6 +37,9 @@
     <string name="deportiva">Deportiva</string>
     <string name="gt">Gran Turismo</string>
     <string name="contacta">Contacta Con Nosotros</string>
+    <string name="SinRutas">Aún no has creado ninguna ruta!!!</string>
+    <string name="ErrorServidor">Ha habido un problema con el servidor, sentimos las molestias</string>
+    <string name="visitar">Ver Usuario</string>
 
 
 </resources>

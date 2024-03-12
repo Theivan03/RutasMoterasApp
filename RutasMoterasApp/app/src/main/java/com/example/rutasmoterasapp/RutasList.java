@@ -25,6 +25,8 @@ import com.example.rutasmoterasapi.RutasModel;
 import com.example.rutasmoterasapi.UtilJSONParser;
 import com.example.rutasmoterasapi.UtilREST;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +35,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     RutasAdapter mAdaptadorRutas;
     ListView miListaRutas;
     String token;
-    Boolean log;
     long tokenTime;
-    List<RutasModel> rutasList;
     ImageView imgUsu;
 
     @Override
@@ -47,6 +47,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
+
         if(userPrefs.contains("Foto")){
             if(userPrefs.getString("Foto", "") == "" || userPrefs.getString("Foto", "") == null || userPrefs.getString("Foto", "").isEmpty()){
                 imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
@@ -100,16 +101,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
 
-        ObtenerRutasApi();
-
-
-
-    }
-
-    public void ObtenerRutasApi(){
-
         LLamarApi("http://192.168.1.131:5000/api/rutas");
-
     }
 
     @Override
@@ -263,6 +255,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             public void onSuccess(UtilREST.Response r) {
                 String jsonContent = r.content;
                 List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
+                Log.d("Rutas:", r.content);
 
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
@@ -271,8 +264,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
             @Override
             public void onError(UtilREST.Response r) {
-                Toast.makeText(RutasList.this,"Ha habido un problema con el servidor,\n sentimos las molestias",Toast.LENGTH_LONG).show();
-
+                Toast.makeText(RutasList.this,getResources().getString(R.string.ErrorServidor),Toast.LENGTH_LONG).show();
+                Log.d("Rutas:", r.content);
                 Intent intent = new Intent(RutasList.this, Login.class);
                 startActivity(intent);
             }
@@ -281,6 +274,34 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
+        // Guardar la ruta en un archivo de texto
+        guardarRutaEnArchivo(rutaSeleccionada);
+
+        // Ir a otra pantalla
+        Intent intent = new Intent(RutasList.this, DetalleRuta.class);
+        startActivity(intent);
+    }
+
+    private void guardarRutaEnArchivo(RutasModel ruta) {
+        // Crear una cadena con la información de la ruta
+        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
+                + ruta.getTitle() + "\n"
+                + "Fecha: " + ruta.getDate() + "\n"
+                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
+                + "Descripcion: " + ruta.getDescription() + "\n"
+                + ruta.getImage() + "\n"
+                + ruta.getUserId();
+        Log.d("Id de usuario en ruta: ", String.valueOf(ruta.getUserId()));
+
+        // Guardar la cadena en un archivo de texto
+        try {
+            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
+            fos.write(rutaInfo.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

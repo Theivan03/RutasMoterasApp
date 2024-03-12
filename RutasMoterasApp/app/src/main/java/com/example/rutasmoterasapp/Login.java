@@ -130,6 +130,9 @@ public class Login extends AppCompatActivity {
                 editor.putBoolean("Log", true);
                 editor.putLong("Id", user.getId());
                 editor.putString("Name", user.getName());
+                editor.putString("Surname", user.getSurname());
+                editor.putString("City", user.getCity());
+                editor.putString("postalCode", user.getPostalCode());
                 editor.putString("Email", user.getEmail());
                 editor.putString("Foto", user.getImage());
                 editor.apply();
