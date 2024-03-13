@@ -44,6 +44,8 @@
     <string name="email">Correo Electrónico</string>
     <string name="message">Mensaje</string>
     <string name="send">Enviar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="editar">Editar</string>
 
 
 </resources>

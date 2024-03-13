@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/eliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_delete"
+        android:title="@string/eliminar" />
+    <item
+        android:id="@+id/editar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/editar" />
+</menu>

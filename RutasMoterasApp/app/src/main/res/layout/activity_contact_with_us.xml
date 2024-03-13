@@ -7,7 +7,7 @@
     tools:context=".ContactWithUs">
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/nameUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,40 +22,29 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
-        android:id="@+id/send"
+        android:id="@+id/sendUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:backgroundTint="#1E88E5"
         android:text="@string/send"
-        app:layout_constraintEnd_toEndOf="@+id/message"
+        app:layout_constraintEnd_toEndOf="@+id/messageUser"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/message"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
+        app:layout_constraintStart_toStartOf="@+id/messageUser"
+        app:layout_constraintTop_toBottomOf="@+id/messageUser" />
+
 
     <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/name"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
-
-    <EditText
-        android:id="@+id/message"
+        android:id="@+id/messageUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:hint="@string/message"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="@+id/nameUser"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintStart_toStartOf="@+id/nameUser"
+        app:layout_constraintTop_toBottomOf="@+id/nameUser" />
 
     <TextView
         android:id="@+id/textView7"

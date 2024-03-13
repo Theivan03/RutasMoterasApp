@@ -134,6 +134,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             return true;
         }
 
+        if(id == R.id.Contacta){
+            Intent intent = new Intent(RutasList.this, ContactWithUs.class);
+            startActivity(intent);
+            return true;
+        }
+
         if(id == R.id.MasInfo){
             Intent intent = new Intent(RutasList.this, Informacion.class);
             startActivity(intent);
@@ -287,16 +293,13 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
-        // Guardar la ruta en un archivo de texto
         guardarRutaEnArchivo(rutaSeleccionada);
 
-        // Ir a otra pantalla
         Intent intent = new Intent(RutasList.this, DetalleRuta.class);
         startActivity(intent);
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-        // Crear una cadena con la información de la ruta
         String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
                 + ruta.getTitle() + "\n"
                 + "Fecha: " + ruta.getDate() + "\n"
@@ -305,7 +308,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 + ruta.getImage() + "\n"
                 + ruta.getUserId();
 
-        // Guardar la cadena en un archivo de texto
         try {
             FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());

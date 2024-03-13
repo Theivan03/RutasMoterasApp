@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
+import com.RutasMoteras.rutasmoterasapi.UserModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
@@ -36,6 +40,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
     RutasAdapter mAdaptadorRutas;
     ListView miListaRutas;
     ImageView imgUsu;
+    List<RutasModel> rutasList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,8 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
+
+        registerForContextMenu(miListaRutas);
 
         LLamarApi("http://192.168.1.131:5000/api/rutasU/" + id);
     }
@@ -150,7 +157,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
             @Override
             public void onSuccess(UtilREST.Response r) {
                 String jsonContent = r.content;
-                List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
+                rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
                 Log.d("Respuesta: ", r.content);
 
                 if (rutasList != null && !rutasList.isEmpty()) {
@@ -174,6 +181,88 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        getMenuInflater().inflate(R.menu.menu_contextual, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        RutasModel r = (RutasModel) miListaRutas.getItemAtPosition(info.position);
+
+        int id = item.getItemId();
+        switch(id){
+            case R.id.eliminar:
+                mostrarDialogo(r);
+
+                mAdaptadorRutas.notifyDataSetChanged();
+                break;
+            case R.id.editar:
+                Intent intent = new Intent(User.this, EditRuta.class);
+                intent.putExtra("FILM_POSITION", info.position);
+                if (intent.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(intent, r.getId());
+                }
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void mostrarDialogo(RutasModel ruta) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Título del Diálogo");
+        builder.setMessage("¿Estás seguro de borrar la película?");
+
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Busca la posición de la ruta en la lista
+                int index = rutasList.indexOf(ruta);
+                if (index != -1) {
+                    // Si se encuentra la ruta, elimínala de la lista y notifica al adaptador
+                    rutasList.remove(index);
+                    mAdaptadorRutas.notifyDataSetChanged();
+
+                    // Llama a la API para eliminar la ruta
+                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://192.168.1.131:5000/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
+                        @Override
+                        public void onSuccess(UtilREST.Response r) {
+                            // Maneja el éxito de la eliminación de la ruta
+                        }
+
+                        @Override
+                        public void onError(UtilREST.Response r) {
+                            // Maneja el error al eliminar la ruta
+                            if (r.content != null) {
+                                Log.e("Delete Error", r.content);
+                            } else {
+                                Log.e("Delete Error", "Error data is null");
+                            }
+                        }
+                    });
+                } else {
+                    Log.e("Delete Error", "Ruta no encontrada en la lista");
+                }
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // No hacer nada
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }
