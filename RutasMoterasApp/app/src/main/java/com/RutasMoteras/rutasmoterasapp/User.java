@@ -3,6 +3,7 @@ package com.RutasMoteras.rutasmoterasapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,6 +29,8 @@ import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class User extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -41,6 +44,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
     ListView miListaRutas;
     ImageView imgUsu;
     List<RutasModel> rutasList;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +87,22 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Omitir el título predeterminado para usar el TextView personalizado
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // Configura el botón de menú para abrir el menú cuando se haga clic
-        ImageButton menuButton = findViewById(R.id.menuButton);
-        menuButton.setOnClickListener(v -> openOptionsMenu());
 
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
 
         registerForContextMenu(miListaRutas);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LLamarApi("http://192.168.1.131:5000/api/rutas");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         LLamarApi("http://192.168.1.131:5000/api/rutasU/" + id);
     }
@@ -181,7 +190,34 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
+        // Guardar la ruta en un archivo de texto
+        guardarRutaEnArchivo(rutaSeleccionada);
+
+        // Ir a otra pantalla
+        Intent intent = new Intent(User.this, DetalleRuta2.class);
+        startActivity(intent);
+    }
+
+    private void guardarRutaEnArchivo(RutasModel ruta) {
+        // Crear una cadena con la información de la ruta
+        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
+                + ruta.getTitle() + "\n"
+                + "Fecha: " + ruta.getDate() + "\n"
+                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
+                + "Descripcion: " + ruta.getDescription() + "\n"
+                + ruta.getImage() + "\n"
+                + ruta.getUserId();
+
+        // Guardar la cadena en un archivo de texto
+        try {
+            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
+            fos.write(rutaInfo.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

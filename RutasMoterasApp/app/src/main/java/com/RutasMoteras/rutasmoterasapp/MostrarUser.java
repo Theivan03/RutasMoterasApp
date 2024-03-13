@@ -1,6 +1,7 @@
 package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
     private ListView miListaRutas;
     private ImageView imagen;
     private TextView nombre;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,17 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
         ObtenerUsuario("http://192.168.1.131:5000/api/usuarioI/" + userId);

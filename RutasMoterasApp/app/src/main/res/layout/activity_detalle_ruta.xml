@@ -84,6 +84,7 @@
         android:layout_width="354dp"
         android:layout_height="205dp"
         android:layout_marginTop="60dp"
+        android:justificationMode="inter_word"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
