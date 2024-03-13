@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sobre_mi_title"
+        android:fontFamily="@font/sedgwickavedisplay_regular"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,42 +20,56 @@
 
     <TextView
         android:id="@+id/sobreMiDescripcion"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
         android:justificationMode="inter_word"
         android:text="@string/sobre_mi_desc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
         app:layout_constraintTop_toBottomOf="@id/sobreMiTitulo" />
 
     <TextView
         android:id="@+id/parrafo2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
         android:justificationMode="inter_word"
         android:text="@string/parrafo2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
         app:layout_constraintTop_toBottomOf="@+id/sobreMiDescripcion" />
 
     <TextView
         android:id="@+id/parrafo3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
         android:justificationMode="inter_word"
         android:text="@string/parrafo3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
         app:layout_constraintTop_toBottomOf="@+id/parrafo2" />
+
+    <TextView
+        android:id="@+id/licenciaDescripcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:justificationMode="inter_word"
+        android:padding="16dp"
+        android:text="@string/licencia_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintTop_toBottomOf="@id/licenciaImagen" />
+
 
     <ImageView
         android:id="@+id/licenciaImagen"
@@ -67,16 +82,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parrafo3" />
 
-    <TextView
-        android:id="@+id/licenciaDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:justificationMode="inter_word"
-        android:padding="16dp"
-        android:text="@string/licencia_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/licenciaImagen" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

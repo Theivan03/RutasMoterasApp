@@ -45,6 +45,7 @@
     <string name="send">Enviar</string>
     <string name="eliminar">Eliminar</string>
     <string name="editar">Editar</string>
+    <string name="borrarFiltro">Eliminar Filtro</string>
 
 
 </resources>

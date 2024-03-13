@@ -19,6 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <item
+                android:id="@+id/BorrarFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/borrarFiltro" />
+            <item
                 android:id="@+id/Nuevos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
