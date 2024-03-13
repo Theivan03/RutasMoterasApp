@@ -3,7 +3,9 @@ package com.RutasMoteras.rutasmoterasapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +38,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     String token;
     long tokenTime;
     ImageView imgUsu;
+    ProgressDialog progressDialog;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +84,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         }
 
 
-
-        List<RutasModel> rutasList = new ArrayList<>();
-
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
         tokenTime = sharedPref.getLong("TokenTimestamp", 0);
@@ -99,6 +100,21 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Aquí haces la llamada a tu API para refrescar los datos
+                LLamarApi("http://192.168.1.131:5000/api/rutas"); // Asegúrate de usar la URL correcta
+
+                // Es importante que desactives el indicador de refresco una vez que los datos se hayan actualizado,
+                // esto debería hacerse en el callback de éxito de tu llamada a la API.
+                // Por ahora, lo desactivaremos aquí directamente para el ejemplo:
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         LLamarApi("http://192.168.1.131:5000/api/rutas");
     }

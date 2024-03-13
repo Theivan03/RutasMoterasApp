@@ -3,11 +3,10 @@
 
     <!-- Sobre mí y descripción -->
     <string name="sobre_mi_title">Sobre mí</string>
-    <string name="sobre_mi_desc">¡Hola a todos! Mi nombre es Ivan Cabrera y soy un estudiante apasionado de segundo año del ciclo superior DAW. Desde siempre, he sentido una gran fascinación por las motos y la increíble sensación de libertad y aventura que nos brindan. Me encanta explorar nuevas rutas en moto y vivir experiencias únicas.</string>
+    <string name="sobre_mi_desc">¡Hola a todos! Soy Ivan Cabrera, un estudiante apasionado en mi segundo año del ciclo superior de Desarrollo de Aplicaciones Multiplataforma (DAM), ya titulado en Desarrollo de Aplicaciones Web (DAW). Desde siempre, he sentido una fascinación por las motos y la increíble sensación de libertad y aventura que nos brindan. Me encanta explorar nuevas rutas en moto y vivir experiencias únicas.</string>
+    <string name="parrafo2">RutasMoteras va más allá de ser una simple plataforma, es un espacio creado exclusivamente para los amantes de las motos que buscan descubrir emocionantes rutas y compartir sus experiencias con una comunidad apasionada. Aquí encontrarás un amplio catálogo de rutas, podrás planificar tus propios viajes y experimentar lo mismo que tus compañeros de aventura han sentido.</string>
 
-    <string name="parrafo2">RutasMoteras es mucho más que una plataforma, es un espacio creado exclusivamente para aquellos amantes de las motos que buscan descubrir emocionantes rutas y compartir sus experiencias con una comunidad apasionada. Aquí encontrarás un amplio catálogo de rutas, podrás planificar tus propios viajes y experimentar lo mismo que ya han sentido tus compañeros de aventura.</string>
-
-    <string name="parrafo3">No importa si eres un novato en el mundo de las motos o un veterano experimentado, en RutasMoteras todos son bienvenidos. Únete a nosotros y embárcate en una aventura llena de emoción, camaradería y descubrimiento. ¡Prepárate para explorar el mundo sobre dos ruedas!</string>
+    <string name="parrafo3">Ya seas un novato en el mundo de las motos o un veterano experimentado, en RutasMoteras todos son bienvenidos. Únete a nosotros y embárcate en una aventura llena de emoción, camaradería y descubrimiento. ¡Prepárate para explorar el mundo sobre dos ruedas!</string>
 
     <!-- Texto de licencia -->
     <string name="licencia_desc">This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</string>

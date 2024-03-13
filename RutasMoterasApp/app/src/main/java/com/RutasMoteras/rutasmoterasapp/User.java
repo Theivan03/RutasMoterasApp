@@ -181,7 +181,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        
+
     }
 
     @Override
