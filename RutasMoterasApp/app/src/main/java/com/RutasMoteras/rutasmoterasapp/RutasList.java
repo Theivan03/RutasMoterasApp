@@ -51,6 +51,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
+
+
         if(userPrefs.contains("Foto")){
             if(userPrefs.getString("Foto", "") == "" || userPrefs.getString("Foto", "") == null || userPrefs.getString("Foto", "").isEmpty()){
                 imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";

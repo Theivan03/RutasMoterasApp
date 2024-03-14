@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".CrearRuta"
+            android:exported="false" />
+        <activity
             android:name=".PruebaUsuario"
             android:exported="false" />
         <activity
