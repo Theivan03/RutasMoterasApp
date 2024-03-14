@@ -107,12 +107,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://192.168.1.131:5000/api/rutas");
+                LLamarApi("http://44.207.234.210/api/rutas");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutas");
+        LLamarApi("http://44.207.234.210/api/rutas");
     }
 
     @Override
@@ -142,7 +142,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         int id = item.getItemId();
 
         if(id == R.id.BorrarFiltro){
-            LLamarApi("http://192.168.1.131:5000/api/rutas");
+            LLamarApi("http://44.207.234.210/api/rutas");
             borrarFiltroItem.setVisible(false);
         }
 
@@ -153,7 +153,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         }
 
         if(id == R.id.AddRuta){
-            Intent intent = new Intent(RutasList.this, Informacion.class);
+            Intent intent = new Intent(RutasList.this, CrearRuta.class);
             startActivity(intent);
             return true;
         }
@@ -172,7 +172,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         if(id == R.id.Nuevos){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasF");
+            LLamarApi("http://44.207.234.210/api/rutasF");
             SetVisibleTrueBorrarFiltro();
 
         }

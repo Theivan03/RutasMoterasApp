@@ -68,7 +68,7 @@ public class SingIn2 extends AppCompatActivity {
         }
 
         // Aquí se utiliza la clase API para realizar la solicitud de registro
-        API.postPost(usuario, "http://192.168.1.131:5000/auth/signup", new UtilREST.OnResponseListener() {
+        API.postPost(usuario, "http://44.207.234.210/auth/signup", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;

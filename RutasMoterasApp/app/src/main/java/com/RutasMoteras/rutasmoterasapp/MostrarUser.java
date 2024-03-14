@@ -51,14 +51,14 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
+                LLamarApi("http://44.207.234.210/api/rutasU/" + userId);
 
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
-        ObtenerUsuario("http://192.168.1.131:5000/api/usuarioI/" + userId);
+        LLamarApi("http://44.207.234.210/api/rutasU/" + userId);
+        ObtenerUsuario("http://44.207.234.210/api/usuarioI/" + userId);
     }
 
     public void LLamarApi(String url){

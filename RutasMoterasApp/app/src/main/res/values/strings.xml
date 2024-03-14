@@ -46,6 +46,40 @@
     <string name="eliminar">Eliminar</string>
     <string name="editar">Editar</string>
     <string name="borrarFiltro">Eliminar Filtro</string>
+    <string name="titulo">Título</string>
+    <string name="descripcion">Descripción</string>
+    <string name="creacion">Creación de Ruta</string>
 
+    <string-array name="tipo_moto_array">
+        <item>Scooter</item>
+        <item>Custom</item>
+        <item>Trail</item>
+        <item>Deportiva</item>
+        <item>Naked</item>
+        <item>Motocross</item>
+        <item>Gran Turismo</item>
+    </string-array>
+
+    <string-array name="comunidad_array">
+        <item>Andalucía</item>
+        <item>Aragón</item>
+        <item>Asturias</item>
+        <item>Islas Baleares</item>
+        <item>Islas Canarias</item>
+        <item>Cantabria</item>
+        <item>Castilla León</item>
+        <item>Castilla La Mancha</item>
+        <item>Cataluña</item>
+        <item>Comunidad Valenciana</item>
+        <item>Extremadura</item>
+        <item>Galicia</item>
+        <item>Madrid</item>
+        <item>Murcia</item>
+        <item>Navarra</item>
+        <item>País Vasco</item>
+        <item>La Rioja</item>
+        <item>Ceuta</item>
+        <item>Melilla</item>
+    </string-array>
 
 </resources>

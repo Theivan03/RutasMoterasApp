@@ -104,7 +104,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutasU/" + id);
+        LLamarApi("http://44.207.234.210/api/rutasU/" + id);
     }
 
     @Override
@@ -268,7 +268,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
                     mAdaptadorRutas.notifyDataSetChanged();
 
                     // Llama a la API para eliminar la ruta
-                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://192.168.1.131:5000/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
+                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://44.207.234.210/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
                         @Override
                         public void onSuccess(UtilREST.Response r) {
                             // Maneja el éxito de la eliminación de la ruta
