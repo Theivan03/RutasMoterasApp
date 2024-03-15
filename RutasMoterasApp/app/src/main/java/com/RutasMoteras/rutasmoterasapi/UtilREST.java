@@ -58,6 +58,17 @@ public class UtilREST {
         new PrvDownloadTask().execute(request);
     }
 
+    public static void runQueryRutas(QueryType type, String strUrl, String token, String data, OnResponseListener listener) {
+        Request request = new Request();
+        request.type = type;
+        request.url = strUrl;
+        request.callback = listener;
+        request.data = data;
+        request.token = token;
+        UtilREST.token = token;
+        new PrvDownloadTask().execute(request);
+    }
+
     public static void runQueryWithHeaders(QueryType type, String url, String token, OnResponseListener listener) {
         Request request = new Request();
         request.type = type;

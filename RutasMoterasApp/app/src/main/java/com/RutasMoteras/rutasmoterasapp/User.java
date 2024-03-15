@@ -17,14 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
-import com.RutasMoteras.rutasmoterasapi.UserModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
@@ -104,7 +102,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
             }
         });
 
-        LLamarApi("http://44.207.234.210/api/rutasU/" + id);
+        LLamarApi("http://192.168.1.131:5000/api/rutasU/" + id);
     }
 
     @Override

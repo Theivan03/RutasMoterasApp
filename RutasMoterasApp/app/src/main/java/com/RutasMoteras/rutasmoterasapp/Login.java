@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
         }
 
         // Realizar la solicitud de inicio de sesión utilizando la clase API
-        API.postPost(loginData, "http://44.207.234.210/auth/login", new UtilREST.OnResponseListener() {
+        API.postPost(loginData, "http://192.168.1.131:5000/auth/login", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
@@ -85,7 +85,7 @@ public class Login extends AppCompatActivity {
 
                 editor.apply();
 
-                ObtenerUsuario("http://44.207.234.210/api/usuario/"+email, responseData);
+                ObtenerUsuario("http://192.168.1.131:5000/api/usuario/"+email, responseData);
 
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {

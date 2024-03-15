@@ -1,22 +1,19 @@
 package com.RutasMoteras.rutasmoterasapp;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,6 +30,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.API;
+import com.RutasMoteras.rutasmoterasapi.RutasModel;
+import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import org.json.JSONArray;
@@ -40,6 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -77,7 +78,7 @@ public class CrearRuta extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearRuta(tit.toString(), des.toString(), selectedComunidad, selectedTipoMoto);
+                CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto);
             }
         });
 
@@ -125,13 +126,13 @@ public class CrearRuta extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Uri selectedImage = result.getData().getData();
-                    FotoString = selectedImage.toString();
                     imageView.setImageURI(uri);
+                    FotoString = uri.toString();
                 } else {
-                    Toast.makeText(CrearRuta.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
                 }
             });
+
 
     private ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -139,6 +140,7 @@ public class CrearRuta extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedImage = result.getData().getData();
                     imageView.setImageURI(selectedImage);
+                    FotoString = selectedImage.toString();
                 } else {
                     Toast.makeText(CrearRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
                 }
@@ -175,27 +177,53 @@ public class CrearRuta extends AppCompatActivity {
         galleryLauncher.launch(intent);
     }
 
+    private String convertirImagenABase64(Uri uriImagen) {
+        try {
+            // Obtener el Bitmap de la imagen a partir del Uri
+            InputStream imageStream = getContentResolver().openInputStream(uriImagen);
+            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+
+            // Convertir el Bitmap a un array de bytes
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+            // Convertir el array de bytes a String en formato Base64
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @SuppressLint("NotConstructor")
     private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo) {
+        SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
         JSONObject ruta = new JSONObject();
         try {
             ruta.put("titulo", titulo);
             ruta.put("fecha_creacion", "");
             ruta.put("descripcion", descripcion);
-            ruta.put("ComunidadAutonoma", comunidad);
-            ruta.put("TipoMoto", tipo);
-            ruta.put("userId", 5);
-            ruta.put("imageURL", "");
+            ruta.put("userId", userPrefs.getLong("Id", 0));
+            ruta.put("imageURL", " ");
+            ruta.put("tipoMoto", tipo);
+            ruta.put("comunidadAutonoma", comunidad);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        API.postPost(ruta, "http://192.168.1.131:5000/api/ruta", new UtilREST.OnResponseListener() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        sharedPref.getString("LoginResponse", "");
+
+        API.postPostRutas(ruta, "http://192.168.1.131:5000/api/ruta", sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
-                Log.d("Response", responseData);
+                RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
+                guardarRutaEnArchivo(ruta);
+                Intent intent = new Intent(CrearRuta.this, EditRuta.class);
+                startActivity(intent);
             }
 
             @Override
@@ -209,5 +237,25 @@ public class CrearRuta extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void guardarRutaEnArchivo(RutasModel ruta) {
+        // Crear una cadena con la información de la ruta
+        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
+                + ruta.getTitle() + "\n"
+                + "Fecha: " + ruta.getDate() + "\n"
+                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
+                + "Descripcion: " + ruta.getDescription() + "\n"
+                + ruta.getImage() + "\n"
+                + ruta.getUserId();
+
+        // Guardar la cadena en un archivo de texto
+        try {
+            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
+            fos.write(rutaInfo.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

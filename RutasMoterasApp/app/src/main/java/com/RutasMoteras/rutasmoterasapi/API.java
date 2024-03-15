@@ -16,6 +16,10 @@ public class API {
         UtilREST.runQuery(UtilREST.QueryType.GET, url + "/" + id, listener);
     }
 
+    public static void postPostRutas(JSONObject post, String url, String token, UtilREST.OnResponseListener listener) {
+        UtilREST.runQueryRutas(UtilREST.QueryType.POST, url, token, post.toString(), listener);
+    }
+
     public static void postPost(JSONObject post, String url, UtilREST.OnResponseListener listener) {
         UtilREST.runQuery(UtilREST.QueryType.POST, url, post.toString(), listener);
     }

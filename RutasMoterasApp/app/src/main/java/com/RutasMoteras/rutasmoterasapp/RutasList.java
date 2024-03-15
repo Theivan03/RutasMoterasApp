@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,6 @@ import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RutasList extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -40,6 +40,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     ImageView imgUsu;
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem borrarFiltroItem;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +108,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://44.207.234.210/api/rutas");
+                LLamarApi("http://192.168.1.131:5000/api/rutas");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://44.207.234.210/api/rutas");
+        LLamarApi("http://192.168.1.131:5000/api/rutas");
     }
 
     @Override
@@ -142,8 +143,13 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         int id = item.getItemId();
 
         if(id == R.id.BorrarFiltro){
-            LLamarApi("http://44.207.234.210/api/rutas");
-            borrarFiltroItem.setVisible(false);
+            LLamarApi("http://192.168.1.131:5000/api/rutas");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    borrarFiltroItem.setVisible(false);
+                }
+            }, 1000);
         }
 
         if(id == R.id.GuiaUsuario){
@@ -172,7 +178,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         if(id == R.id.Nuevos){
 
-            LLamarApi("http://44.207.234.210/api/rutasF");
+            LLamarApi("http://192.168.1.131:5000/api/rutasF");
             SetVisibleTrueBorrarFiltro();
 
         }
@@ -316,7 +322,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     public void SetVisibleTrueBorrarFiltro(){
-        borrarFiltroItem.setVisible(true);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                borrarFiltroItem.setVisible(true);
+            }
+        }, 1000);
     }
 
     public void LLamarApi(String url){

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,8 +19,8 @@ import java.io.InputStreamReader;
 public class DetalleRuta2 extends AppCompatActivity {
 
     TextView tipoMotoTextView, tituloTextView, fechaTextView, comunidadTextView, descripcionTextView;
-    String img;
     ImageView imgView;
+    Button boton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +32,15 @@ public class DetalleRuta2 extends AppCompatActivity {
         comunidadTextView = findViewById(R.id.Comunidad);
         descripcionTextView = findViewById(R.id.Decripcion);
         imgView = findViewById(R.id.imgRuta);
+        boton = findViewById(R.id.button2);
+
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleRuta2.this, EditRuta.class);
+                startActivity(intent);
+            }
+        });
 
 
         String rutaInfo = leerRutaDesdeArchivo();
