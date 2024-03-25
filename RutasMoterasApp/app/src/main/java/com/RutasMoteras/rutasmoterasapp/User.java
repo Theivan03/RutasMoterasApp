@@ -43,11 +43,16 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
     ImageView imgUsu;
     List<RutasModel> rutasList;
     SwipeRefreshLayout swipeRefreshLayout;
+    SharedPreferences sharedURL;
+    String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
         Long id = sharedPref.getLong("Id", -1);
@@ -97,12 +102,14 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://192.168.1.131:5000/api/rutas");
+                LLamarApi(apiUrl + "api/rutas");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutasU/" + id);
+        Log.d("Ruta de la api:", apiUrl + "api/rutasU/" + id);
+
+        LLamarApi(apiUrl + "api/rutasU/" + id);
     }
 
     @Override
@@ -266,7 +273,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
                     mAdaptadorRutas.notifyDataSetChanged();
 
                     // Llama a la API para eliminar la ruta
-                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://44.207.234.210/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
+                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://192.168.1.131:5000/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
                         @Override
                         public void onSuccess(UtilREST.Response r) {
                             // Maneja el éxito de la eliminación de la ruta

@@ -29,11 +29,16 @@ public class Login extends AppCompatActivity {
     Button login;
     EditText email;
     EditText password;
+    SharedPreferences sharedURL;
+    String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         registrar = findViewById(R.id.registrar);
         login = findViewById(R.id.iniciar);
@@ -68,7 +73,7 @@ public class Login extends AppCompatActivity {
         }
 
         // Realizar la solicitud de inicio de sesión utilizando la clase API
-        API.postPost(loginData, "http://192.168.1.131:5000/auth/login", new UtilREST.OnResponseListener() {
+        API.postPost(loginData, apiUrl + "auth/login", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
@@ -85,18 +90,8 @@ public class Login extends AppCompatActivity {
 
                 editor.apply();
 
-                ObtenerUsuario("http://192.168.1.131:5000/api/usuario/"+email, responseData);
-
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Login.this, RutasList.class);
-                        startActivity(intent);
-                    }
-                }, 500);
+                ObtenerUsuario(apiUrl + "api/usuario/"+email, responseData);
             }
-
 
             @Override
             public void onError(UtilREST.Response response) {
@@ -134,6 +129,17 @@ public class Login extends AppCompatActivity {
                 sharedPref = getSharedPreferences("LogPreferences", Context.MODE_PRIVATE);
                 editor = sharedPref.edit();
                 editor.putBoolean("Log", true);
+                editor.apply();
+
+                // Iniciar la actividad RutasList después de un retraso de 500 ms
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Login.this, RutasList.class);
+                        startActivity(intent);
+                    }
+                }, 500);
             }
 
             @Override

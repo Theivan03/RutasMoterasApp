@@ -2,7 +2,9 @@ package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,10 +20,16 @@ import org.json.JSONObject;
 
 public class SingIn2 extends AppCompatActivity {
 
+    SharedPreferences sharedURL;
+    String apiUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_in2);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         Button crear = findViewById(R.id.crear);
         EditText email = findViewById(R.id.email);
@@ -68,7 +76,7 @@ public class SingIn2 extends AppCompatActivity {
         }
 
         // Aquí se utiliza la clase API para realizar la solicitud de registro
-        API.postPost(usuario, "http://192.168.1.131:5000/auth/signup", new UtilREST.OnResponseListener() {
+        API.postPost(usuario, apiUrl + "auth/signup", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;

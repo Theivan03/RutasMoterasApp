@@ -41,11 +41,16 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem borrarFiltroItem;
     private Handler handler = new Handler(Looper.getMainLooper());
+    SharedPreferences sharedURL;
+    String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas_list);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
@@ -108,12 +113,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://192.168.1.131:5000/api/rutas");
+                LLamarApi(apiUrl + "api/rutas");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutas");
+        LLamarApi(apiUrl + "api/rutas");
     }
 
     @Override
@@ -143,13 +148,19 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         int id = item.getItemId();
 
         if(id == R.id.BorrarFiltro){
-            LLamarApi("http://192.168.1.131:5000/api/rutas");
+            LLamarApi(apiUrl + "api/rutas");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     borrarFiltroItem.setVisible(false);
                 }
             }, 1000);
+        }
+
+        if(id == R.id.IniciarSesion){
+            Intent intent = new Intent(RutasList.this, Login.class);
+            startActivity(intent);
+            return true;
         }
 
         if(id == R.id.GuiaUsuario){
@@ -178,141 +189,141 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         if(id == R.id.Nuevos){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasF");
+            LLamarApi(apiUrl + "api/rutasF");
             SetVisibleTrueBorrarFiltro();
 
         }
 
         if(id == R.id.Andalucia){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Andalucia");
+            LLamarApi(apiUrl + "api/rutasC/Andalucia");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Aragon){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Aragon");
+            LLamarApi(apiUrl + "api/rutasC/Aragon");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Asturias){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Asturias");
+            LLamarApi(apiUrl + "api/rutasC/Asturias");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Cantabria){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Cantabria");
+            LLamarApi(apiUrl + "api/rutasC/Cantabria");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.CastillaLaMancha){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/CastillaLaMancha");
+            LLamarApi(apiUrl + "api/rutasC/CastillaLaMancha");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.CastillaLeon){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/CastillaLeon");
+            LLamarApi(apiUrl + "api/rutasC/CastillaLeon");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Cataluña){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Cataluña");
+            LLamarApi(apiUrl + "api/rutasC/Cataluña");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Extremadura){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Extremadura");
+            LLamarApi(apiUrl + "api/rutasC/Extremadura");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Galicia){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Galicia");
+            LLamarApi(apiUrl + "api/rutasC/Galicia");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.IslasBaleares){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/IslasBaleares");
+            LLamarApi(apiUrl + "api/rutasC/IslasBaleares");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.IslasCanarias){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/IslasCanarias");
+            LLamarApi(apiUrl + "api/rutasC/IslasCanarias");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.LaRioja){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/LaRioja");
+            LLamarApi(apiUrl + "api/rutasC/LaRioja");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Madrid){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Madrid");
+            LLamarApi(apiUrl + "api/rutasC/Madrid");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Murcia){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Murcia");
+            LLamarApi(apiUrl + "api/rutasC/Murcia");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Navarra){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Navarra");
+            LLamarApi(apiUrl + "api/rutasC/Navarra");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.PasiVasco){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/PasiVasco");
+            LLamarApi(apiUrl + "api/rutasC/Pais Vasco");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.ComunidadValenciana){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/ComunidadValenciana");
+            LLamarApi(apiUrl + "api/rutasC/Comunidad Valenciana");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Ceuta){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Ceuta");
+            LLamarApi(apiUrl + "api/rutasC/Ceuta");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Melilla){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasC/Melilla");
+            LLamarApi(apiUrl + "api/rutasC/Melilla");
             SetVisibleTrueBorrarFiltro();
 
         }
 
         if(id == R.id.Scooter){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Scooter");
+            LLamarApi(apiUrl + "api/rutasT/Scooter");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Custom){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Custom");
+            LLamarApi(apiUrl + "api/rutasT/Custom");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Trail){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Trail");
+            LLamarApi(apiUrl + "api/rutasT/Trail");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Deportiva){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Deportiva");
+            LLamarApi(apiUrl + "api/rutasT/Deportiva");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Naked){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Naked");
+            LLamarApi(apiUrl + "api/rutasT/Naked");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.Motocross){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/Motocross");
+            LLamarApi(apiUrl + "api/rutasT/Motocross");
             SetVisibleTrueBorrarFiltro();
 
         }if(id == R.id.GranTurismo){
 
-            LLamarApi("http://192.168.1.131:5000/api/rutasT/GranTurismo");
+            LLamarApi(apiUrl + "api/rutasT/GranTurismo");
             SetVisibleTrueBorrarFiltro();
 
         }

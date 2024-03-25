@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/GuiaUsuario"
+        android:id="@+id/AddRuta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/guiausu" />
-    <item
-        android:id="@+id/MasInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="@string/masInfo" />
+        android:title="@string/addRuta" />
+
     <item
         android:id="@+id/Filtros"
         android:layout_width="wrap_content"
@@ -115,7 +112,7 @@
                         android:id="@+id/PasiVasco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:title="Pasi Vasco" />
+                        android:title="País Vasco" />
                     <item
                         android:id="@+id/ComunidadValenciana"
                         android:layout_width="wrap_content"
@@ -180,9 +177,16 @@
             </item>
         </menu>
     </item>
+
     <item
-        android:id="@+id/AddRuta"
+        android:id="@+id/GuiaUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/addRuta" />
+        android:title="@string/guiausu" />
+    <item
+        android:id="@+id/MasInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/masInfo" />
+
 </menu>

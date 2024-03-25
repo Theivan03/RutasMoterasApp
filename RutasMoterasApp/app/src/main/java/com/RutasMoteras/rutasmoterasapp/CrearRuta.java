@@ -61,11 +61,16 @@ public class CrearRuta extends AppCompatActivity {
     private Button crear;
     private EditText tit;
     private EditText des;
+    SharedPreferences sharedURL;
+    String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_ruta);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         imageView = findViewById(R.id.imageView);
         buttonSelectPhoto = findViewById(R.id.buttonSelectPhoto);
@@ -216,7 +221,7 @@ public class CrearRuta extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         sharedPref.getString("LoginResponse", "");
 
-        API.postPostRutas(ruta, "http://192.168.1.131:5000/api/ruta", sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
+        API.postPostRutas(ruta, apiUrl + "api/ruta", sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;

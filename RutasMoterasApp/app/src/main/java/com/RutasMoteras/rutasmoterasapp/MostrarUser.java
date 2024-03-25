@@ -34,11 +34,16 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
     private ImageView imagen;
     private TextView nombre;
     SwipeRefreshLayout swipeRefreshLayout;
+    SharedPreferences sharedURL;
+    String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar_user);
+
+        sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        apiUrl = sharedURL.getString("URL", "");
 
         Intent intent = getIntent();
         String userId = intent.getStringExtra("userId");
@@ -51,14 +56,14 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
+                LLamarApi(apiUrl + "api/rutasU/" + userId);
 
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        LLamarApi("http://192.168.1.131:5000/api/rutasU/" + userId);
-        ObtenerUsuario("http://192.168.1.131:5000/api/usuarioI/" + userId);
+        LLamarApi(apiUrl + "api/rutasU/" + userId);
+        ObtenerUsuario(apiUrl + "api/usuarioI/" + userId);
     }
 
     public void LLamarApi(String url){

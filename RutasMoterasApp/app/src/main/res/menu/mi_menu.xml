@@ -2,20 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/GuiaUsuario"
+        android:id="@+id/IniciarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/guiausu" />
-    <item
-        android:id="@+id/MasInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="@string/masInfo" />
-    <item
-        android:id="@+id/Contacta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="@string/contacta" />
+        android:title="@string/iniSesion" />
+
     <item
         android:id="@+id/Filtros"
         android:layout_width="wrap_content"
@@ -186,4 +177,23 @@
             </item>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/GuiaUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/guiausu" />
+
+    <item
+        android:id="@+id/MasInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/masInfo" />
+
+    <item
+        android:id="@+id/Contacta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/contacta" />
+
 </menu>

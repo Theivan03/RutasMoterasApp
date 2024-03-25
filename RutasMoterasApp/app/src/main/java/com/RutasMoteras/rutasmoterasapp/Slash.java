@@ -24,6 +24,12 @@ public class Slash extends AppCompatActivity implements Animation.AnimationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slash);
 
+        SharedPreferences sharedPref = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString("URL", "http://192.168.1.131:5000/");
+        editor.apply();
+
         CircularFillableLoaders cargando = findViewById(R.id.logo_circular);
         Animation animacion = AnimationUtils.loadAnimation(this, R.anim.splashanimation);
         cargando.startAnimation(animacion);
