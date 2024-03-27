@@ -207,11 +207,11 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
         // Crear una cadena con la información de la ruta
-        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
+        String rutaInfo = ruta.getTipoMoto() + "\n"
                 + ruta.getTitle() + "\n"
                 + "Fecha: " + ruta.getDate() + "\n"
-                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
-                + "Descripcion: " + ruta.getDescription() + "\n"
+                + ruta.getComunidad() + "\n"
+                + ruta.getDescription() + "\n"
                 + ruta.getImage() + "\n"
                 + ruta.getUserId();
 

@@ -40,11 +40,11 @@ public class DetalleRuta extends AppCompatActivity {
 
         String[] datosRuta = rutaInfo.split("\n");
 
-        tipoMotoTextView.setText(datosRuta[0]);
-        tituloTextView.setText(datosRuta[1]);
+        tipoMotoTextView.setText(getResources().getString(R.string.tipoMoto) + ": " + datosRuta[0]);
+        tituloTextView.setText(getResources().getString(R.string.titulo) + ": " + datosRuta[1]);
         fechaTextView.setText(datosRuta[2]);
-        comunidadTextView.setText(datosRuta[3]);
-        descripcionTextView.setText(datosRuta[4]);
+        comunidadTextView.setText(getResources().getString(R.string.comAuto) + ": " + datosRuta[3]);
+        descripcionTextView.setText(getResources().getString(R.string.descripcion) + ": " +datosRuta[4]);
 
         Glide.with(this)
                 .load(datosRuta[5])
