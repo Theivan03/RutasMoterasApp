@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.API;
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
@@ -43,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 public class EditRuta extends AppCompatActivity {
 
@@ -61,19 +63,18 @@ public class EditRuta extends AppCompatActivity {
     private EditText des;
     SharedPreferences sharedURL;
     String apiUrl;
+    int idRuta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ruta);
+
         imageView = findViewById(R.id.imageView2);
         buttonSelectPhoto = findViewById(R.id.buttonSelectPhoto);
 
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
-
-        // Insertar datos en los Spinners
-        insertarDatos();
 
         buttonSelectPhoto.setOnClickListener(v -> mostrarDialogoSeleccion());
 
@@ -83,9 +84,10 @@ public class EditRuta extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto);
+                GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto);
             }
         });
+
 
 
         Spinner spinnerTipoMoto = findViewById(R.id.spinnerTipoMoto);
@@ -125,6 +127,9 @@ public class EditRuta extends AppCompatActivity {
 
             }
         });
+
+        // Insertar datos en los Spinners
+        insertarDatos();
     }
 
     private ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
@@ -180,10 +185,16 @@ public class EditRuta extends AppCompatActivity {
 
         String rutaInfo = leerRutaDesdeArchivo();
         String[] datosRuta = rutaInfo.split("\n");
+        Log.d("Ruta entera", rutaInfo);
+
+        tit.setText(datosRuta[1]);
+        des.setText(datosRuta[4]);
 
         // Obtener el índice de las opciones correspondientes
         int tipoMotoIndex = obtenerIndiceEnArray(datosRuta[0], getResources().getStringArray(R.array.tipo_moto_array));
         int comunidadIndex = obtenerIndiceEnArray(datosRuta[3], getResources().getStringArray(R.array.comunidad_array));
+        idRuta = Integer.parseInt(datosRuta[7]);
+        Log.d("Id de la ruta", String.valueOf(idRuta));
 
         // Establecer las selecciones en los Spinners
         spinnerTipoMoto.setSelection(tipoMotoIndex);
@@ -217,17 +228,46 @@ public class EditRuta extends AppCompatActivity {
         return rutaInfo.toString();
     }
 
-    public void CrearRuta(String tit, String des, String com, String tipo) {
-        JSONObject postData = new JSONObject();
+    public void GuardarRuta(String tit, String des, String com, String tipo) {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+        SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+        JSONObject nuevaRuta = new JSONObject();
         try {
-            postData.put("title", tit);
-            postData.put("description", des);
-            postData.put("comunidad", com);
-            postData.put("tipoMoto", tipo);
-            postData.put("image", FotoString);
+            nuevaRuta.put("titulo", tit);
+            nuevaRuta.put("fecha_creacion", "");
+            nuevaRuta.put("descripcion", des);
+            nuevaRuta.put("userId", userPrefs.getLong("Id", 0));
+            nuevaRuta.put("imageURL", " ");
+            nuevaRuta.put("tipoMoto", tipo);
+            nuevaRuta.put("comunidadAutonoma", com);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        sharedPref.getString("LoginResponse", "");
+
+        API.postPutRutas(nuevaRuta, apiUrl + "api/ruta/" + idRuta, sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
+            @Override
+            public void onSuccess(UtilREST.Response response) {
+                String responseData = response.content;
+                RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
+                Intent intent = new Intent(EditRuta.this, RutasList.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(UtilREST.Response response) {
+                String errorData = response.content;
+                if (errorData != null) {
+                    Log.e("Error", errorData);
+                } else {
+                    Log.e("Error", "Error data is null");
+                }
+            }
+
+        });
     }
 }

@@ -136,8 +136,15 @@ public class Login extends AppCompatActivity {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Login.this, RutasList.class);
-                        startActivity(intent);
+                        if(user.getRoles() != 2){
+                            Log.d("ID usuario", String.valueOf(user.getId()));
+                            Intent intent = new Intent(Login.this, RutasList.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Intent intent = new Intent(Login.this, SuperUser.class);
+                            startActivity(intent);
+                        }
                     }
                 }, 500);
             }

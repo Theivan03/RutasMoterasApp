@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UserModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
@@ -23,6 +24,7 @@ import com.bumptech.glide.Glide;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 public class MostrarUser extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -36,11 +38,21 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
     SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedURL;
     String apiUrl;
+    TextView RutasMoteras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar_user);
+
+        RutasMoteras = findViewById(R.id.toolbarTitle2);
+        RutasMoteras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MostrarUser.this, RutasList.class);
+                startActivity(intent);
+            }
+        });
 
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
@@ -67,6 +79,9 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void LLamarApi(String url){
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
         tokenTime = sharedPref.getLong("TokenTimestamp", 0);
@@ -106,6 +121,9 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void ObtenerUsuario(String url){
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
         tokenTime = sharedPref.getLong("TokenTimestamp", 0);
@@ -144,13 +162,16 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
         // Guardar la ruta en un archivo de texto
         guardarRutaEnArchivo(rutaSeleccionada);
 
         // Ir a otra pantalla
-        Intent intent = new Intent(MostrarUser.this, DetalleRuta2.class);
+        Intent intent = new Intent(MostrarUser.this, DetalleRuta.class);
         startActivity(intent);
     }
 

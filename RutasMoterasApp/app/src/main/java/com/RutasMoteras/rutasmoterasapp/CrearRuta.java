@@ -30,11 +30,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.API;
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,9 +42,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class CrearRuta extends AppCompatActivity {
 
@@ -203,6 +200,9 @@ public class CrearRuta extends AppCompatActivity {
 
     @SuppressLint("NotConstructor")
     private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo) {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
         JSONObject ruta = new JSONObject();
@@ -227,7 +227,7 @@ public class CrearRuta extends AppCompatActivity {
                 String responseData = response.content;
                 RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
                 guardarRutaEnArchivo(ruta);
-                Intent intent = new Intent(CrearRuta.this, EditRuta.class);
+                Intent intent = new Intent(CrearRuta.this, RutasList.class);
                 startActivity(intent);
             }
 
@@ -263,4 +263,5 @@ public class CrearRuta extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

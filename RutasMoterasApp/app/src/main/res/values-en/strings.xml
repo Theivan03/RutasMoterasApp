@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">Rutas Moteras</string>
+
+    <!-- About me and description -->
+    <string name="sobre_mi_title">About Me</string>
+    <string name="sobre_mi_desc">Hello everyone! I\'m Ivan Cabrera, a passionate student in my second year of the Higher Degree in Multiplatform Application Development (DAM), already graduated in Web Application Development (DAW). I have always felt a fascination for motorcycles and the incredible feeling of freedom and adventure they provide. I love exploring new routes on my motorcycle and living unique experiences.</string>
+    <string name="parrafo2">RutasMoteras goes beyond being a simple platform, it is a space created exclusively for motorcycle enthusiasts who seek to discover exciting routes and share their experiences with a passionate community. Here you will find a wide catalog of routes, you can plan your own trips, and experience the same as your adventure companions have felt.</string>
+
+    <string name="parrafo3">Whether you are a novice in the world of motorcycles or an experienced veteran, everyone is welcome at RutasMoteras. Join us and embark on an adventure full of excitement, camaraderie, and discovery. Get ready to explore the world on two wheels!</string>
+
+    <!-- License Text -->
+    <string name="licencia_desc">This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</string>
+    <string name="licencia_url">http://creativecommons.org/licenses/by-nc-nd/4.0/</string>
+
+    <string name="mensaje_inicial">Discover exciting motorcycle routes, share your adventures, and join a passionate community of motorcyclists.</string>
+    <string name="mensaje_inicial2">Start exploring today!</string>
+
+    <string name="logout">Log Out</string>
+    <string name="etitarUsu">Edit User</string>
+    <string name="contraseña">Password</string>
+    <string name="nombre">Name</string>
+    <string name="apellidos">Last Name</string>
+    <string name="invitado">Guest</string>
+    <string name="iniSesion">Log In</string>
+    <string name="registrar">Register</string>
+    <string name="cancelar">Cancel</string>
+    <string name="crear">Create</string>
+    <string name="masInfo">More Information</string>
+    <string name="filtros">Filters</string>
+    <string name="guiausu">User Guide</string>
+    <string name="masNuevos">Most Recent</string>
+    <string name="comAuto">Autonomous Community</string>
+    <string name="tipoMoto">Type of Motorcycle</string>
+    <string name="siguiente">Next</string>
+    <string name="deportiva">Sport</string>
+    <string name="gt">Gran Turismo</string>
+    <string name="contacta">Contact Us</string>
+    <string name="SinRutas">You haven\'t created any routes yet!!!</string>
+    <string name="ErrorServidor">There was a problem with the server, we apologize for the inconvenience</string>
+    <string name="visitar">View User</string>
+    <string name="addRuta">Create Route</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="eliminar">Delete</string>
+    <string name="editar">Edit</string>
+    <string name="borrarFiltro">Delete Filter</string>
+    <string name="titulo">Title</string>
+    <string name="descripcion">Description</string>
+    <string name="creacion">Route Creation</string>
+
+    <string-array name="tipo_moto_array">
+        <item>Scooter</item>
+        <item>Custom</item>
+        <item>Trail</item>
+        <item>Sport</item>
+        <item>Naked</item>
+        <item>Motocross</item>
+        <item>Gran Turismo</item>
+    </string-array>
+
+    <string-array name="comunidad_array">
+        <item>Andalusia</item>
+        <item>Aragon</item>
+        <item>Asturias</item>
+        <item>Balearic Islands</item>
+        <item>Canary Islands</item>
+        <item>Cantabria</item>
+        <item>Castile and León</item>
+        <item>Castile-La Mancha</item>
+        <item>Catalonia</item>
+        <item>Valencian Community</item>
+        <item>Extremadura</item>
+        <item>Galicia</item>
+        <item>Madrid</item>
+        <item>Murcia</item>
+        <item>Navarre</item>
+        <item>Basque Country</item>
+        <item>La Rioja</item>
+        <item>Ceuta</item>
+        <item>Melilla</item>
+    </string-array>
+
+</resources>

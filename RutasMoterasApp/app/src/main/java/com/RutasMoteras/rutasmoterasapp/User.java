@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
@@ -29,6 +30,7 @@ import com.bumptech.glide.Glide;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 public class User extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -45,11 +47,21 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
     SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedURL;
     String apiUrl;
+    TextView RutasMoteras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        RutasMoteras = findViewById(R.id.toolbarTitle2);
+        RutasMoteras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(User.this, RutasList.class);
+                startActivity(intent);
+            }
+        });
 
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
@@ -163,6 +175,8 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     public void LLamarApi(String url){
 
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
         tokenTime = sharedPref.getLong("TokenTimestamp", 0);
@@ -195,6 +209,9 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
         // Guardar la ruta en un archivo de texto
@@ -213,7 +230,8 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
                 + ruta.getComunidad() + "\n"
                 + ruta.getDescription() + "\n"
                 + ruta.getImage() + "\n"
-                + ruta.getUserId();
+                + ruta.getUserId() + "\n"
+                + ruta.getId();
 
         // Guardar la cadena en un archivo de texto
         try {
@@ -305,5 +323,4 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 }

@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.bumptech.glide.Glide;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
@@ -29,6 +30,7 @@ import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 public class RutasList extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -342,6 +344,9 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     public void LLamarApi(String url){
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response r) {
@@ -368,6 +373,9 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
         guardarRutaEnArchivo(rutaSeleccionada);

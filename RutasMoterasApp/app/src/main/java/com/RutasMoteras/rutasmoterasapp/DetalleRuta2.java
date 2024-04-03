@@ -2,19 +2,24 @@ package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.bumptech.glide.Glide;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 public class DetalleRuta2 extends AppCompatActivity {
 
@@ -59,6 +64,9 @@ public class DetalleRuta2 extends AppCompatActivity {
     }
 
     private String leerRutaDesdeArchivo() {
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
         StringBuilder rutaInfo = new StringBuilder();
         try {
             FileInputStream fis = openFileInput("ruta_seleccionada.txt");
@@ -74,4 +82,5 @@ public class DetalleRuta2 extends AppCompatActivity {
         }
         return rutaInfo.toString();
     }
+
 }
