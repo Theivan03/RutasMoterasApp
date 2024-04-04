@@ -1,0 +1,85 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="app_name">Motorradrouten</string>
+
+    <!-- Sobre mí y descripción -->
+    <string name="sobre_mi_title">Über mich</string>
+    <string name="sobre_mi_desc">Hallo allerseits! Ich bin Ivan Cabrera, ein leidenschaftlicher Student im zweiten Jahr des Studiums der Multiplattform-Entwicklung von Anwendungen (DAM), bereits Absolvent im Bereich Webanwendungs­entwicklung (DAW). Schon immer war ich fasziniert von Motorrädern und dem unglaublichen Gefühl von Freiheit und Abenteuer, das sie uns bieten. Ich liebe es, neue Motorradrouten zu erkunden und einzigartige Erfahrungen zu machen.</string>
+    <string name="parrafo2">RutasMoteras ist mehr als nur eine einfache Plattform, es ist ein Raum, der ausschließlich für Motorradliebhaber geschaffen wurde, die aufregende Routen entdecken und ihre Erfahrungen mit einer leidenschaftlichen Community teilen möchten. Hier finden Sie ein breites Angebot an Routen, können Ihre eigenen Reisen planen und das Gleiche erleben, was Ihre Abenteuerkollegen erlebt haben.</string>
+
+    <string name="parrafo3">Ob Sie ein Anfänger in der Motorradwelt oder ein erfahrener Veteran sind, bei RutasMoteras sind alle willkommen. Schließen Sie sich uns an und begeben Sie sich auf ein Abenteuer voller Emotionen, Kameradschaft und Entdeckungen. Bereiten Sie sich darauf vor, die Welt auf zwei Rädern zu erkunden!</string>
+
+    <!-- Texto de licencia -->
+    <string name="licencia_desc">Dieses Werk ist lizenziert unter einer Creative Commons Namensnennung-Nicht kommerziell-Keine Bearbeitungen 4.0 International Lizenz.</string>
+    <string name="licencia_url">http://creativecommons.org/licenses/by-nc-nd/4.0/</string>
+
+    <string name="mensaje_inicial">Entdecken Sie spannende Motorradrouten, teilen Sie Ihre Abenteuer und schließen Sie sich einer leidenschaftlichen Motorradfahrer-Community an.</string>
+    <string name="mensaje_inicial2">Beginnen Sie noch heute mit der Erkundung!</string>
+
+    <string name="logout">Abmelden</string>
+    <string name="etitarUsu">Benutzer bearbeiten</string>
+    <string name="contraseña">Passwort</string>
+    <string name="nombre">Vorname</string>
+    <string name="apellidos">Nachname</string>
+    <string name="invitado">Gast</string>
+    <string name="iniSesion">Anmelden</string>
+    <string name="registrar">Registrieren</string>
+    <string name="cancelar">Abbrechen</string>
+    <string name="crear">Erstellen</string>
+    <string name="masInfo">Weitere Informationen</string>
+    <string name="filtros">Filter</string>
+    <string name="guiausu">Benutzerhandbuch</string>
+    <string name="masNuevos">Neueste</string>
+    <string name="comAuto">Autonome Gemeinschaft</string>
+    <string name="tipoMoto">Motorradtyp</string>
+    <string name="siguiente">Weiter</string>
+    <string name="deportiva">Sport</string>
+    <string name="gt">Grand Tourisme</string>
+    <string name="contacta">Kontaktiere uns</string>
+    <string name="SinRutas">Sie haben noch keine Route erstellt!!!</string>
+    <string name="ErrorServidor">Es gab ein Problem mit dem Server, wir entschuldigen uns für die Unannehmlichkeiten</string>
+    <string name="visitar">Benutzer anzeigen</string>
+    <string name="addRuta">Route erstellen</string>
+    <string name="name">Name</string>
+    <string name="email">E-Mail-Adresse</string>
+    <string name="message">Nachricht</string>
+    <string name="send">Senden</string>
+    <string name="eliminar">Löschen</string>
+    <string name="editar">Bearbeiten</string>
+    <string name="borrarFiltro">Filter löschen</string>
+    <string name="titulo">Titel</string>
+    <string name="descripcion">Beschreibung</string>
+    <string name="creacion">Erstellung der Route</string>
+
+    <string-array name="tipo_moto_array">
+        <item>Scooter</item>
+        <item>Custom</item>
+        <item>Trail</item>
+        <item>Sport</item>
+        <item>Naked</item>
+        <item>Enduro</item>
+        <item>Grand Tourisme</item>
+    </string-array>
+
+    <string-array name="comunidad_array">
+        <item>Andalusien</item>
+        <item>Aragonien</item>
+        <item>Asturien</item>
+        <item>Balearen</item>
+        <item>Kanarische Inseln</item>
+        <item>Kantabrien</item>
+        <item>Kastilien und León</item>
+        <item>Kastilien-La Mancha</item>
+        <item>Katalonien</item>
+        <item>Valencia</item>
+        <item>Extremadura</item>
+        <item>Galicien</item>
+        <item>Madrid</item>
+        <item>Murcia</item>
+        <item>Navarra</item>
+        <item>Baskenland</item>
+        <item>La Rioja</item>
+        <item>Ceuta</item>
+        <item>Melilla</item>
+    </string-array>
+
+</resources>
