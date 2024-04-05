@@ -32,6 +32,8 @@ import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +66,8 @@ public class EditRuta extends AppCompatActivity {
     SharedPreferences sharedURL;
     String apiUrl;
     int idRuta;
+    String token;
+    RutasModel ruta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +77,17 @@ public class EditRuta extends AppCompatActivity {
         imageView = findViewById(R.id.imageView2);
         buttonSelectPhoto = findViewById(R.id.buttonSelectPhoto);
 
+        sharedURL = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        token = sharedURL.getString("LoginResponse", null);
+
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
+
+        String rutaInfo = leerRutaDesdeArchivo();
+
+        Log.d("Url a api:", apiUrl + "api/ruta/" + rutaInfo);
+
+        LLamarApi(apiUrl + "api/ruta/" + rutaInfo);
 
         buttonSelectPhoto.setOnClickListener(v -> mostrarDialogoSeleccion());
 
@@ -84,9 +97,19 @@ public class EditRuta extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto);
+                if(uri != null) {
+                    String fotoBase64 = convertirImagenABase64(uri);
+                    if(fotoBase64 != null) {
+                        GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoBase64);
+                    } else {
+                        Toast.makeText(EditRuta.this, "Error al convertir la imagen a Base64", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditRuta.this, "No se ha seleccionado ninguna imagen", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
 
 
@@ -128,33 +151,7 @@ public class EditRuta extends AppCompatActivity {
             }
         });
 
-        // Insertar datos en los Spinners
-        insertarDatos();
     }
-
-    private ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    imageView.setImageURI(uri);
-                    FotoString = uri.toString();
-                } else {
-                    Toast.makeText(EditRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-    private ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri selectedImage = result.getData().getData();
-                    imageView.setImageURI(selectedImage);
-                    FotoString = selectedImage.toString();
-                } else {
-                    Toast.makeText(EditRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
-                }
-            });
 
     private void mostrarDialogoSeleccion() {
         final CharSequence[] opciones = {"Tomar Foto", "Elegir de Galería", "Cancelar"};
@@ -162,15 +159,9 @@ public class EditRuta extends AppCompatActivity {
         builder.setTitle("Elige una opción");
         builder.setItems(opciones, (dialog, which) -> {
             if (opciones[which].equals("Tomar Foto")) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                ContentValues values = new ContentValues(1);
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
-                uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                cameraLauncher.launch(intent);
+                abrirCamara();
             } else if (opciones[which].equals("Elegir de Galería")) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryLauncher.launch(intent);
+                abrirGaleria();
             } else {
                 dialog.dismiss();
             }
@@ -178,27 +169,95 @@ public class EditRuta extends AppCompatActivity {
         builder.show();
     }
 
-    // Método para insertar datos en los Spinners
-    private void insertarDatos() {
-        Spinner spinnerTipoMoto = findViewById(R.id.spinnerTipoMoto);
-        Spinner spinnerComunidad = findViewById(R.id.spinnerComunidad);
+    private void abrirCamara() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Nuevo Picture");
+        uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        String rutaInfo = leerRutaDesdeArchivo();
-        String[] datosRuta = rutaInfo.split("\n");
-        Log.d("Ruta entera", rutaInfo);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        cameraLauncher.launch(intent);
+    }
 
-        tit.setText(datosRuta[1]);
-        des.setText(datosRuta[4]);
+    private void abrirGaleria() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryLauncher.launch(intent);
+    }
 
-        // Obtener el índice de las opciones correspondientes
-        int tipoMotoIndex = obtenerIndiceEnArray(datosRuta[0], getResources().getStringArray(R.array.tipo_moto_array));
-        int comunidadIndex = obtenerIndiceEnArray(datosRuta[3], getResources().getStringArray(R.array.comunidad_array));
-        idRuta = Integer.parseInt(datosRuta[7]);
-        Log.d("Id de la ruta", String.valueOf(idRuta));
+    private ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    imageView.setImageURI(uri); // uri ya está establecida por abrirCamara()
+                    FotoString = convertirImagenABase64(uri); // Asegúrate de que este método maneje correctamente null
+                } else {
+                    Toast.makeText(EditRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        // Establecer las selecciones en los Spinners
-        spinnerTipoMoto.setSelection(tipoMotoIndex);
-        spinnerComunidad.setSelection(comunidadIndex);
+    private ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri selectedImage = result.getData().getData();
+                    imageView.setImageURI(selectedImage);
+                    uri = selectedImage; // Actualizar la uri con la seleccionada de la galería
+                    FotoString = convertirImagenABase64(selectedImage); // Convertir directamente la nueva URI a Base64
+                } else {
+                    Toast.makeText(EditRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private void cargarImagenBase64(String base64Image) {
+        // Decodifica la imagen desde Base64 a byte[]
+        byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+        // Convierte byte[] a Bitmap
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        // Usa Glide para cargar el Bitmap
+        Glide.with(this)
+                .load(decodedBitmap)
+                .into(imageView);
+    }
+
+    private void actualizarVistasConDatosDeRuta() {
+        if (ruta != null) {
+            Spinner spinnerTipoMoto = findViewById(R.id.spinnerTipoMoto);
+            Spinner spinnerComunidad = findViewById(R.id.spinnerComunidad);
+
+            tit.setText(ruta.getTitle());
+            des.setText(ruta.getDescription());
+
+            int tipoMotoIndex = obtenerIndiceEnArray(ruta.getTipoMoto(), getResources().getStringArray(R.array.tipo_moto_array));
+            int comunidadIndex = obtenerIndiceEnArray(ruta.getComunidad(), getResources().getStringArray(R.array.comunidad_array));
+
+            idRuta = ruta.getId();
+
+            spinnerTipoMoto.setSelection(tipoMotoIndex);
+            spinnerComunidad.setSelection(comunidadIndex);
+
+
+            String base64Image = ruta.getImage();
+            cargarImagenBase64(base64Image);
+
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if(decodedByte != null) {
+                imageView.setImageBitmap(decodedByte);
+            } else {
+                Log.e("DetalleRuta2", "La decodificación de la imagen falló.");
+            }
+
+            // Decodifica y carga la imagen
+            Glide.with(this)
+                    .asBitmap()
+                    .load(decodedString)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.favicon) // Asegúrate de tener este recurso drawable.
+                    .into(imageView);
+        } else {
+            // Maneja el caso en que `ruta` sea null
+        }
     }
 
     // Método auxiliar para obtener el índice de una cadena en un array
@@ -211,6 +270,38 @@ public class EditRuta extends AppCompatActivity {
         return 0; // Valor predeterminado si no se encuentra la opción
     }
 
+    private String convertirImagenABase64(Uri uriImagen) {
+        try {
+            InputStream imageStream = getContentResolver().openInputStream(uriImagen);
+            Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);
+
+            // Puedes ajustar estos valores para reducir aún más el tamaño de la imagen si es necesario
+            int maxWidth = 480;
+            int maxHeight = 480;
+            float scaleWidth = maxWidth / (float) bitmapOriginal.getWidth();
+            float scaleHeight = maxHeight / (float) bitmapOriginal.getHeight();
+            float scale = Math.min(scaleWidth, scaleHeight);
+
+            int width = Math.round(scale * bitmapOriginal.getWidth());
+            int height = Math.round(scale * bitmapOriginal.getHeight());
+
+            Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            // Ajusta el segundo parámetro para cambiar la calidad de la imagen
+            // Un valor más bajo reduce el tamaño del archivo pero también la calidad de la imagen
+            bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     private String leerRutaDesdeArchivo() {
         StringBuilder rutaInfo = new StringBuilder();
         try {
@@ -219,16 +310,44 @@ public class EditRuta extends AppCompatActivity {
             BufferedReader br = new BufferedReader(isr);
             String linea;
             while ((linea = br.readLine()) != null) {
-                rutaInfo.append(linea).append("\n");
+                rutaInfo.append(linea);
             }
             fis.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("Leído del archivo:", rutaInfo.toString());
         return rutaInfo.toString();
     }
 
-    public void GuardarRuta(String tit, String des, String com, String tipo) {
+    public void LLamarApi(String url){
+
+        CheckLogin.checkLastLoginDay(getApplicationContext());
+
+        UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
+            @Override
+            public void onSuccess(UtilREST.Response r) {
+                String jsonContent = r.content;
+                ruta = UtilJSONParser.parsePostRuta(jsonContent);
+
+                actualizarVistasConDatosDeRuta();
+            }
+
+            @Override
+            public void onError(UtilREST.Response r) {
+                if (r.content != null) {
+                    Log.d("ERROR!!!!!!!!!", r.content);
+                } else {
+                    Log.d("ERROR!!!!!!!!!", "El contenido de la respuesta es nulo" + r.content);
+                }
+                Toast.makeText(EditRuta.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(EditRuta.this, PantallaInicial.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void GuardarRuta(String tit, String des, String com, String tipo, String fotoBase64) {
 
         CheckLogin.checkLastLoginDay(getApplicationContext());
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
@@ -236,10 +355,10 @@ public class EditRuta extends AppCompatActivity {
         JSONObject nuevaRuta = new JSONObject();
         try {
             nuevaRuta.put("titulo", tit);
-            nuevaRuta.put("fecha_creacion", "");
+            nuevaRuta.put("fecha_creacion", ruta.getDate());
             nuevaRuta.put("descripcion", des);
             nuevaRuta.put("userId", userPrefs.getLong("Id", 0));
-            nuevaRuta.put("imageURL", " ");
+            nuevaRuta.put("imageURL", fotoBase64);
             nuevaRuta.put("tipoMoto", tipo);
             nuevaRuta.put("comunidadAutonoma", com);
         } catch (JSONException e) {

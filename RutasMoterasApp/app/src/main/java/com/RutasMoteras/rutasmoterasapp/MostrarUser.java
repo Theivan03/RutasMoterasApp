@@ -30,7 +30,6 @@ import java.util.List;
 public class MostrarUser extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private String token;
-    private long tokenTime;
     private RutasAdapter mAdaptadorRutas;
     private ListView miListaRutas;
     private ImageView imagen;
@@ -84,7 +83,6 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
-        tokenTime = sharedPref.getLong("TokenTimestamp", 0);
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
@@ -126,7 +124,6 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
-        tokenTime = sharedPref.getLong("TokenTimestamp", 0);
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override

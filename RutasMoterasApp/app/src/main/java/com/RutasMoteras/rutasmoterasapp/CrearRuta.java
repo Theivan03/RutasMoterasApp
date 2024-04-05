@@ -188,19 +188,22 @@ public class CrearRuta extends AppCompatActivity {
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
             Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);
 
-            // Calcula el factor de escala para mantener la relación de aspecto, o puedes ignorarlo para forzar un 480x480
-            int anchoOriginal = bitmapOriginal.getWidth();
-            int altoOriginal = bitmapOriginal.getHeight();
-            float escala = Math.min((float) 480 / anchoOriginal, (float) 480 / altoOriginal);
+            // Puedes ajustar estos valores para reducir aún más el tamaño de la imagen si es necesario
+            int maxWidth = 480;
+            int maxHeight = 480;
+            float scaleWidth = maxWidth / (float) bitmapOriginal.getWidth();
+            float scaleHeight = maxHeight / (float) bitmapOriginal.getHeight();
+            float scale = Math.min(scaleWidth, scaleHeight);
 
-            int anchoRedimensionado = Math.round(anchoOriginal * escala);
-            int altoRedimensionado = Math.round(altoOriginal * escala);
+            int width = Math.round(scale * bitmapOriginal.getWidth());
+            int height = Math.round(scale * bitmapOriginal.getHeight());
 
-            // Crea un nuevo Bitmap redimensionado
-            Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, anchoRedimensionado, altoRedimensionado, true);
+            Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            // Ajusta el segundo parámetro para cambiar la calidad de la imagen
+            // Un valor más bajo reduce el tamaño del archivo pero también la calidad de la imagen
+            bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 
             return Base64.encodeToString(byteArray, Base64.DEFAULT);
@@ -209,6 +212,7 @@ public class CrearRuta extends AppCompatActivity {
             return null;
         }
     }
+
 
     @SuppressLint("NotConstructor")
     private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo, String fotoBase64) {
@@ -242,7 +246,6 @@ public class CrearRuta extends AppCompatActivity {
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
-                guardarRutaEnArchivo(ruta);
                 Intent intent = new Intent(CrearRuta.this, RutasList.class);
                 startActivity(intent);
             }
@@ -259,25 +262,4 @@ public class CrearRuta extends AppCompatActivity {
 
         });
     }
-
-    private void guardarRutaEnArchivo(RutasModel ruta) {
-        // Crear una cadena con la información de la ruta
-        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
-                + ruta.getTitle() + "\n"
-                + "Fecha: " + ruta.getDate() + "\n"
-                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
-                + "Descripcion: " + ruta.getDescription() + "\n"
-                + ruta.getImage() + "\n"
-                + ruta.getUserId();
-
-        // Guardar la cadena en un archivo de texto
-        try {
-            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
-            fos.write(rutaInfo.getBytes());
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
