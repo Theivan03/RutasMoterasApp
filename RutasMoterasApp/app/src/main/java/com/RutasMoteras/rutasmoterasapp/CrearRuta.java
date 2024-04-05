@@ -42,12 +42,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class CrearRuta extends AppCompatActivity {
-
-    private static final int REQUEST_IMAGE_CAPTURE = 101;
-    private static final int REQUEST_IMAGE_PICK = 102;
-    private static final int PERMISSION_REQUEST_CODE = 100;
 
     private ImageView imageView;
     private Button buttonSelectPhoto;
@@ -77,10 +75,16 @@ public class CrearRuta extends AppCompatActivity {
         crear = findViewById(R.id.button);
         tit = findViewById(R.id.tit);
         des = findViewById(R.id.editTextTitle2);
-        crear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto);
+        crear.setOnClickListener(v -> {
+            if(uri != null) {
+                String fotoBase64 = convertirImagenABase64(uri);
+                if(fotoBase64 != null) {
+                    CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoBase64);
+                } else {
+                    Toast.makeText(CrearRuta.this, "Error al convertir la imagen", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(CrearRuta.this, "No se ha seleccionado ninguna imagen", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -128,13 +132,12 @@ public class CrearRuta extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    imageView.setImageURI(uri);
-                    FotoString = uri.toString();
+                    imageView.setImageURI(uri); // uri ya está establecida por abrirCamara()
+                    FotoString = convertirImagenABase64(uri); // Asegúrate de que este método maneje correctamente null
                 } else {
                     Toast.makeText(CrearRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
                 }
             });
-
 
     private ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -142,7 +145,8 @@ public class CrearRuta extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedImage = result.getData().getData();
                     imageView.setImageURI(selectedImage);
-                    FotoString = selectedImage.toString();
+                    uri = selectedImage; // Actualizar la uri con la seleccionada de la galería
+                    FotoString = convertirImagenABase64(selectedImage); // Convertir directamente la nueva URI a Base64
                 } else {
                     Toast.makeText(CrearRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
                 }
@@ -181,16 +185,24 @@ public class CrearRuta extends AppCompatActivity {
 
     private String convertirImagenABase64(Uri uriImagen) {
         try {
-            // Obtener el Bitmap de la imagen a partir del Uri
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
-            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+            Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);
 
-            // Convertir el Bitmap a un array de bytes
+            // Calcula el factor de escala para mantener la relación de aspecto, o puedes ignorarlo para forzar un 480x480
+            int anchoOriginal = bitmapOriginal.getWidth();
+            int altoOriginal = bitmapOriginal.getHeight();
+            float escala = Math.min((float) 480 / anchoOriginal, (float) 480 / altoOriginal);
+
+            int anchoRedimensionado = Math.round(anchoOriginal * escala);
+            int altoRedimensionado = Math.round(altoOriginal * escala);
+
+            // Crea un nuevo Bitmap redimensionado
+            Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, anchoRedimensionado, altoRedimensionado, true);
+
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-            // Convertir el array de bytes a String en formato Base64
             return Base64.encodeToString(byteArray, Base64.DEFAULT);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -199,19 +211,23 @@ public class CrearRuta extends AppCompatActivity {
     }
 
     @SuppressLint("NotConstructor")
-    private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo) {
+    private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo, String fotoBase64) {
 
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaHoy = dateFormat.format(cal.getTime());
+
         JSONObject ruta = new JSONObject();
         try {
             ruta.put("titulo", titulo);
-            ruta.put("fecha_creacion", "");
+            ruta.put("fecha_creacion", fechaHoy);
             ruta.put("descripcion", descripcion);
             ruta.put("userId", userPrefs.getLong("Id", 0));
-            ruta.put("imageURL", " ");
+            ruta.put("imageURL", fotoBase64);
             ruta.put("tipoMoto", tipo);
             ruta.put("comunidadAutonoma", comunidad);
         } catch (JSONException e) {

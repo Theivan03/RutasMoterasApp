@@ -6,7 +6,7 @@
     <string name="sobre_mi_desc">Ciao a tutti! Sono Ivan Cabrera, uno studente appassionato al secondo anno del corso superiore di Sviluppo di Applicazioni Multi-piattaforma (DAM), già laureato in Sviluppo di Applicazioni Web (DAW). Da sempre provo una forte passione per le moto e la sensazione incredibile di libertà e avventura che ci offrono. Adoro esplorare nuovi percorsi in moto e vivere esperienze uniche.</string>
     <string name="parrafo2">RutasMoteras va oltre ad essere una semplice piattaforma, è uno spazio creato esclusivamente per gli amanti delle moto che cercano di scoprire percorsi emozionanti e condividere le loro esperienze con una comunità appassionata. Qui troverai un ampio catalogo di percorsi, potrai pianificare i tuoi viaggi e vivere le stesse esperienze dei tuoi compagni di avventura.</string>
 
-    <string name="parrafo3">Che tu sia un novizio nel mondo delle moto o un veterano esperto, su RutasMoteras tutti sono i benvenuti. Unisciti a noi e intraprendi un'avventura piena di emozioni, cameratismo e scoperta. Preparati a esplorare il mondo su due ruote!</string>
+    <string name="parrafo3">Che tu sia un novizio nel mondo delle moto o un veterano esperto, su RutasMoteras tutti sono i benvenuti. Unisciti a noi e intraprendi un\'avventura piena di emozioni, cameratismo e scoperta. Preparati a esplorare il mondo su due ruote!</string>
 
     <!-- Texto de licencia -->
     <string name="licencia_desc">Questo lavoro è concesso in licenza con Creative Commons Attribuzione - Non commerciale - Non opere derivate 4.0 Internazionale.</string>
@@ -19,6 +19,7 @@
     <string name="etitarUsu">Modifica Utente</string>
     <string name="contraseña">Password</string>
     <string name="nombre">Nome</string>
+    <string name="fecha">Data</string>
     <string name="apellidos">Cognome</string>
     <string name="invitado">Ospite</string>
     <string name="iniSesion">Accedi</string>
@@ -27,7 +28,7 @@
     <string name="crear">Crea</string>
     <string name="masInfo">Maggiori Informazioni</string>
     <string name="filtros">Filtri</string>
-    <string name="guiausu">Guida dell'Utente</string>
+    <string name="guiausu">Guida dell\'Utente</string>
     <string name="masNuevos">Più Nuovo</string>
     <string name="comAuto">Comunità Autonoma</string>
     <string name="tipoMoto">Tipo di Moto</string>
@@ -36,7 +37,7 @@
     <string name="gt">Gran Turismo</string>
     <string name="contacta">Contattaci</string>
     <string name="SinRutas">Non hai ancora creato nessun percorso!!!</string>
-    <string name="ErrorServidor">Si è verificato un problema con il server, ci scusiamo per l'inconveniente</string>
+    <string name="ErrorServidor">Si è verificato un problema con il server, ci scusiamo per l\'inconveniente</string>
     <string name="visitar">Visualizza Utente</string>
     <string name="addRuta">Crea Percorso</string>
     <string name="name">Nome</string>

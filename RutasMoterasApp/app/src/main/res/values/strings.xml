@@ -20,6 +20,7 @@
     <string name="contraseña">Contraseña</string>
     <string name="nombre">Nombre</string>
     <string name="apellidos">Apellidos</string>
+    <string name="fecha">Fecha</string>
     <string name="invitado">Invitado</string>
     <string name="iniSesion">Iniciar Sesión</string>
     <string name="registrar">Registrar</string>

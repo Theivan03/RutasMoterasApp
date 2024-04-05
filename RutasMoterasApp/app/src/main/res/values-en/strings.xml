@@ -21,6 +21,7 @@
     <string name="nombre">Name</string>
     <string name="apellidos">Last Name</string>
     <string name="invitado">Guest</string>
+    <string name="fecha">Date</string>
     <string name="iniSesion">Log In</string>
     <string name="registrar">Register</string>
     <string name="cancelar">Cancel</string>

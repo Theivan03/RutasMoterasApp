@@ -385,14 +385,11 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-        String rutaInfo = getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto() + "\n"
-                + ruta.getTitle() + "\n"
-                + "Fecha: " + ruta.getDate() + "\n"
-                + getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad() + "\n"
-                + "Descripcion: " + ruta.getDescription() + "\n"
-                + ruta.getImage() + "\n"
-                + ruta.getUserId();
+        // Crear una cadena con la información de la ruta
+        String rutaInfo = String.valueOf(ruta.getId());
+        Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
+        // Guardar la cadena en un archivo de texto
         try {
             FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());

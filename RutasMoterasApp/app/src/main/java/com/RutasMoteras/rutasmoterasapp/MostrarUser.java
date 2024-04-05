@@ -177,13 +177,8 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
         // Crear una cadena con la información de la ruta
-        String rutaInfo = ruta.getTipoMoto() + "\n"
-                + ruta.getTitle() + "\n"
-                + "Fecha: " + ruta.getDate() + "\n"
-                + ruta.getComunidad() + "\n"
-                + ruta.getDescription() + "\n"
-                + ruta.getImage() + "\n"
-                + ruta.getUserId();
+        String rutaInfo = String.valueOf(ruta.getId());
+        Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
         // Guardar la cadena en un archivo de texto
         try {

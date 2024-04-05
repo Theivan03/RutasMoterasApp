@@ -1,6 +1,7 @@
 package com.RutasMoteras.rutasmoterasapp;
 
 import android.content.Context;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,17 @@ public class RutasAdapter extends ArrayAdapter<RutasModel> {
         }
 
         ImageView imageView = mifila.findViewById(R.id.imgRuta);
-        String imageUrl = misRutas.get(position).getImage();
+        String base64Image = misRutas.get(position).getImage();
+
+        if (base64Image != null && base64Image.startsWith("data:image")) {
+            base64Image = base64Image.split(",")[1];
+        }
+
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
 
         Glide.with(context)
-                .load(imageUrl)
+                .asBitmap()
+                .load(decodedString)
                 .into(imageView);
 
         TextView Titulo = mifila.findViewById(R.id.Titulo);

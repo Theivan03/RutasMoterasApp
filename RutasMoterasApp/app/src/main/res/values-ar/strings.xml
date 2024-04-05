@@ -1,0 +1,86 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="app_name">الطرق الدراجة النارية</string>
+
+    <!-- Sobre mí y descripción -->
+    <string name="sobre_mi_title">عن نفسي</string>
+    <string name="sobre_mi_desc">مرحبًا بالجميع! أنا إيفان كابريرا، طالب متحمس في السنة الثانية من دورة تطوير التطبيقات متعددة المنصات (DAM)، حاصل بالفعل على درجة البكالوريوس في تطوير تطبيقات الويب (DAW). منذ الصغر، شعرت بإعجاب شديد بالدراجات النارية والشعور الرائع بالحرية والمغامرة التي تقدمها. أحب استكشاف طرق جديدة بالدراجة النارية وتجربة تجارب فريدة.</string>
+    <string name="parrafo2">تتجاوز RutasMoteras أن تكون مجرد منصة بسيطة، إنها مساحة تم إنشاؤها حصريًا لعشاق الدراجات النارية الذين يسعون لاكتشاف طرق مثيرة ومشاركة تجاربهم مع مجتمع متحمس. ستجد هنا مجموعة واسعة من الطرق، يمكنك التخطيط لرحلاتك الخاصة وتجربة نفس المشاعر التي شعر بها زملاؤك في المغامرة.</string>
+
+    <string name="parrafo3">سواء كنت مبتدئًا في عالم الدراجات النارية أو خبيرًا مخضرمًا، فإن الجميع مرحب به في RutasMoteras. انضم إلينا واستعد لمغامرة مليئة بالإثارة والتآخي والاكتشاف. استعد لاستكشاف العالم على عجلتين!</string>
+
+    <!-- Texto de licencia -->
+    <string name="licencia_desc">هذا العمل مرخص بموجب رخصة المشاع الإبداعي Attribution-NonCommercial-NoDerivatives 4.0 International.</string>
+    <string name="licencia_url">http://creativecommons.org/licenses/by-nc-nd/4.0/</string>
+
+    <string name="mensaje_inicial">اكتشف طرق دراجة نارية مثيرة، وشارك مغامراتك، وانضم إلى مجتمع متحمس من الدراجين.</string>
+    <string name="mensaje_inicial2">ابدأ الاستكشاف اليوم!</string>
+
+    <string name="logout">تسجيل الخروج</string>
+    <string name="etitarUsu">تحرير المستخدم</string>
+    <string name="contraseña">كلمة السر</string>
+    <string name="nombre">الاسم</string>
+    <string name="fecha">تاريخ</string>
+    <string name="apellidos">اللقب</string>
+    <string name="invitado">زائر</string>
+    <string name="iniSesion">تسجيل الدخول</string>
+    <string name="registrar">تسجيل</string>
+    <string name="cancelar">إلغاء</string>
+    <string name="crear">إنشاء</string>
+    <string name="masInfo">مزيد من المعلومات</string>
+    <string name="filtros">فلاتر</string>
+    <string name="guiausu">دليل المستخدم</string>
+    <string name="masNuevos">الأحدث</string>
+    <string name="comAuto">منطقة ذاتية الحكم</string>
+    <string name="tipoMoto">نوع الدراجة النارية</string>
+    <string name="siguiente">التالي</string>
+    <string name="deportiva">رياضية</string>
+    <string name="gt">جران توريزمو</string>
+    <string name="contacta">اتصل بنا</string>
+    <string name="SinRutas">لم تقم بإنشاء أي مسار بعد !!!</string>
+    <string name="ErrorServidor">حدثت مشكلة في الخادم، نعتذر عن الإزعاج</string>
+    <string name="visitar">عرض المستخدم</string>
+    <string name="addRuta">إنشاء مسار</string>
+    <string name="name">الاسم</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="message">الرسالة</string>
+    <string name="send">إرسال</string>
+    <string name="eliminar">حذف</string>
+    <string name="editar">تحرير</string>
+    <string name="borrarFiltro">حذف الفلتر</string>
+    <string name="titulo">العنوان</string>
+    <string name="descripcion">الوصف</string>
+    <string name="creacion">إنشاء المسار</string>
+
+    <string-array name="tipo_moto_array">
+        <item>سكوتر</item>
+        <item>مخصص</item>
+        <item>تريل</item>
+        <item>رياضية</item>
+        <item>ناكد</item>
+        <item>اندورو</item>
+        <item>جران توريزمو</item>
+    </string-array>
+
+    <string-array name="comunidad_array">
+        <item>أندلس</item>
+        <item>أراغون</item>
+        <item>أستورياس</item>
+        <item>جزر البليار</item>
+        <item>جزر الكناري</item>
+        <item>كانتابريا</item>
+        <item>كاستيا وليون</item>
+        <item>كاستيا لا مانتشا</item>
+        <item>كاتالونيا</item>
+        <item>منطقة فالنسيا</item>
+        <item>إستريمادورا</item>
+        <item>غاليسيا</item>
+        <item>مدريد</item>
+        <item>مرسية</item>
+        <item>نافارا</item>
+        <item>الباسك</item>
+        <item>لا ريوخا</item>
+        <item>سبتة</item>
+        <item>مليلية</item>
+    </string-array>
+
+</resources>

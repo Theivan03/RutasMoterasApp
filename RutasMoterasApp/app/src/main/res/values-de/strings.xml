@@ -19,6 +19,7 @@
     <string name="etitarUsu">Benutzer bearbeiten</string>
     <string name="contraseña">Passwort</string>
     <string name="nombre">Vorname</string>
+    <string name="fecha">Datum</string>
     <string name="apellidos">Nachname</string>
     <string name="invitado">Gast</string>
     <string name="iniSesion">Anmelden</string>
