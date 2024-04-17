@@ -164,11 +164,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
             return true;
         }
 
-        if(id == R.id.Contacta){
-            Intent intent = new Intent(User.this, ContactWithUs.class);
-            startActivity(intent);
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

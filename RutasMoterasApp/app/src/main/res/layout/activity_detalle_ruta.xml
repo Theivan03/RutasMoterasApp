@@ -1,94 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetalleRuta">
+    android:fillViewport="true">
 
-    <Button
-        android:id="@+id/visitar"
-        android:layout_width="128dp"
-        android:layout_height="49dp"
-        android:backgroundTint="#1E88E5"
-        android:text="@string/visitar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".DetalleRuta">
 
-    <ImageView
-        android:id="@+id/imgRuta"
-        android:layout_width="352dp"
-        android:layout_height="209dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Titulo"
-        app:layout_constraintVertical_bias="0.063"
-        tools:srcCompat="@tools:sample/avatars" />
+        <Button
+            android:id="@+id/visitar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#1E88E5"
+            android:text="@string/visitar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Decripcion" />
 
-    <TextView
-        android:id="@+id/Titulo"
-        android:layout_width="307dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="Titulo"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imgRuta"
+            android:layout_width="352dp"
+            android:layout_height="209dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Titulo"
+            app:layout_constraintVertical_bias="0.079"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/TipoMoto"
-        android:layout_width="300dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:text="TipoMoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Comunidad" />
+        <TextView
+            android:id="@+id/Titulo"
+            android:layout_width="307dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="Titulo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/visitar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.006" />
 
-    <TextView
-        android:id="@+id/Fecha"
-        android:layout_width="300dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:text="Fecha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgRuta"
-        tools:ignore="UnknownId" />
+        <TextView
+            android:id="@+id/TipoMoto"
+            android:layout_width="300dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="20dp"
+            android:text="TipoMoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.225"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Comunidad" />
 
-    <TextView
-        android:id="@+id/Comunidad"
-        android:layout_width="300dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:text="Comunidad"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Fecha" />
+        <TextView
+            android:id="@+id/Fecha"
+            android:layout_width="300dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="20dp"
+            android:text="Fecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.225"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgRuta"
+            tools:ignore="UnknownId" />
 
-    <TextView
-        android:id="@+id/Decripcion"
-        android:layout_width="354dp"
-        android:layout_height="205dp"
-        android:layout_marginTop="60dp"
-        android:justificationMode="inter_word"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.438"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Comunidad" />
+        <TextView
+            android:id="@+id/Comunidad"
+            android:layout_width="300dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="20dp"
+            android:text="Comunidad"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.225"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Fecha" />
+
+        <TextView
+            android:id="@+id/Decripcion"
+            android:layout_width="300dp"
+            android:layout_height="205dp"
+            android:layout_marginTop="68dp"
+            android:text="Descripción"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.225"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Comunidad" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

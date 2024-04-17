@@ -12,9 +12,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,6 +48,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     private Handler handler = new Handler(Looper.getMainLooper());
     SharedPreferences sharedURL;
     String apiUrl;
+    private Toast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,6 +334,18 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         }
 
+        if(id == R.id.Contacta){
+            Intent intent = new Intent(RutasList.this, ContactWithUs.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.ContactaInvitado){
+            Intent intent = new Intent(RutasList.this, ContactWithUsInvitado.class);
+            startActivity(intent);
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -345,6 +361,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     public void LLamarApi(String url){
 
+        showCustomToast();
+
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
@@ -355,6 +373,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
+
+                hideCustomToast();
             }
 
             @Override
@@ -367,6 +387,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 Toast.makeText(RutasList.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(RutasList.this, PantallaInicial.class);
                 startActivity(intent);
+
+                hideCustomToast();
             }
         });
     }
@@ -396,6 +418,24 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void showCustomToast() {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.custom_toast_container));
+
+        customToast = new Toast(getApplicationContext());
+        customToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        customToast.setDuration(Toast.LENGTH_LONG);
+        customToast.setView(layout);
+        customToast.show();
+    }
+
+    public void hideCustomToast() {
+        if (customToast != null) {
+            customToast.cancel();
         }
     }
 }

@@ -4,6 +4,14 @@ package com.RutasMoteras.rutasmoterasapp;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 
@@ -45,6 +53,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
+
 public class CrearRuta extends AppCompatActivity {
 
     private ImageView imageView;
@@ -63,6 +75,7 @@ public class CrearRuta extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_ruta);
+
 
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
@@ -244,10 +257,18 @@ public class CrearRuta extends AppCompatActivity {
         API.postPostRutas(ruta, apiUrl + "api/ruta", sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
-                String responseData = response.content;
-                RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
-                Intent intent = new Intent(CrearRuta.this, RutasList.class);
-                startActivity(intent);
+                runOnUiThread(() -> {
+                    launchConfetti();
+                    showSuccessDialog();
+                });
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(CrearRuta.this, User.class);
+                        startActivity(intent);
+                    }
+                }, 3000);
             }
 
             @Override
@@ -262,4 +283,29 @@ public class CrearRuta extends AppCompatActivity {
 
         });
     }
+
+    private void launchConfetti() {
+        KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
+        konfettiView.build()
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.BLUE)  // Más colores
+                .setDirection(0.0, 359.0)  // Dirección completa
+                .setSpeed(1f, 5f)  // Rango de velocidad
+                .setFadeOutEnabled(true)  // Efecto de desvanecimiento
+                .setTimeToLive(1500L)  // Tiempo antes de desaparecer
+                .addShapes(Shape.CIRCLE, Shape.RECT)  // Formas disponibles
+                .addSizes(new Size(12, 5), new Size(16, 6))  // Varios tamaños
+                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, konfettiView.getHeight() + 50f)  // Posición de inicio
+                .streamFor(300, 2000L);  // Duración de la animación
+    }
+
+    private void showSuccessDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customLayout = getLayoutInflater().inflate(R.layout.dialog_success, null);
+        builder.setView(customLayout);
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }

@@ -68,6 +68,7 @@ public class EditRuta extends AppCompatActivity {
     int idRuta;
     String token;
     RutasModel ruta;
+    private String initialFotoString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +103,10 @@ public class EditRuta extends AppCompatActivity {
                     if(fotoBase64 != null) {
                         GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoBase64);
                     } else {
-                        Toast.makeText(EditRuta.this, "Error al convertir la imagen a Base64", Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
-                    Toast.makeText(EditRuta.this, "No se ha seleccionado ninguna imagen", Toast.LENGTH_SHORT).show();
+                    GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, initialFotoString);
                 }
             }
         });
@@ -239,6 +240,8 @@ public class EditRuta extends AppCompatActivity {
             String base64Image = ruta.getImage();
             cargarImagenBase64(base64Image);
 
+            initialFotoString = base64Image;
+
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             if(decodedByte != null) {
@@ -253,7 +256,7 @@ public class EditRuta extends AppCompatActivity {
                     .load(decodedString)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .error(R.drawable.favicon) // Asegúrate de tener este recurso drawable.
+                    .error(R.drawable.favicon)
                     .into(imageView);
         } else {
             // Maneja el caso en que `ruta` sea null
@@ -267,7 +270,7 @@ public class EditRuta extends AppCompatActivity {
                 return i;
             }
         }
-        return 0; // Valor predeterminado si no se encuentra la opción
+        return 0;
     }
 
     private String convertirImagenABase64(Uri uriImagen) {
@@ -373,7 +376,7 @@ public class EditRuta extends AppCompatActivity {
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
-                Intent intent = new Intent(EditRuta.this, RutasList.class);
+                Intent intent = new Intent(EditRuta.this, DetalleRuta2.class);
                 startActivity(intent);
             }
 

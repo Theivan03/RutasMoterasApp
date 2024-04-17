@@ -22,6 +22,7 @@
     <string name="apellidos">Last Name</string>
     <string name="invitado">Guest</string>
     <string name="fecha">Date</string>
+    <string name="correo">Your email</string>
     <string name="iniSesion">Log In</string>
     <string name="registrar">Register</string>
     <string name="cancelar">Cancel</string>
@@ -82,5 +83,8 @@
         <item>Ceuta</item>
         <item>Melilla</item>
     </string-array>
+
+    <string name="channel_name">Notificaciones de Creación de Rutas</string>
+    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 
 </resources>

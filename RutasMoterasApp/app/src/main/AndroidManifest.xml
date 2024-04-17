@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -21,6 +23,9 @@
         android:theme="@style/Theme.RutasMoterasApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ContactWithUsInvitado"
+            android:exported="false" />
         <activity
             android:name=".SuperUser"
             android:exported="false" />

@@ -191,7 +191,7 @@
         android:title="@string/masInfo" />
 
     <item
-        android:id="@+id/Contacta"
+        android:id="@+id/ContactaInvitado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/contacta" />

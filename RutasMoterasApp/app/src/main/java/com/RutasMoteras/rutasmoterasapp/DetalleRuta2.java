@@ -21,20 +21,19 @@ import com.RutasMoteras.rutasmoterasapi.RutasModel;
 import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
-import org.jetbrains.annotations.Nullable;
+
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.graphics.Color;
+
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.List;
 
 public class DetalleRuta2 extends AppCompatActivity {
 
@@ -125,11 +124,33 @@ public class DetalleRuta2 extends AppCompatActivity {
 
     private void actualizarVistasConDatosDeRuta() {
         if (ruta != null) {
-            tipoMotoTextView.setText(getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto());
-            tituloTextView.setText(getResources().getString(R.string.titulo) + ": " + ruta.getTitle());
-            fechaTextView.setText(getResources().getString(R.string.fecha) + ": " + ruta.getDate());
-            comunidadTextView.setText(getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad());
-            descripcionTextView.setText(getResources().getString(R.string.descripcion) + ": " + ruta.getDescription());
+            int color = Color.parseColor("#1e88e5");
+
+            tituloTextView.setText(ruta.getTitle());
+
+            String tipoMotoLabel = getResources().getString(R.string.tipoMoto) + ": ";
+            String tipoMoto = ruta.getTipoMoto();
+            SpannableString spannableTipoMoto = new SpannableString(tipoMotoLabel + tipoMoto);
+            spannableTipoMoto.setSpan(new ForegroundColorSpan(color), 0, tipoMotoLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tipoMotoTextView.setText(spannableTipoMoto);
+
+            String fechaLabel = getResources().getString(R.string.fecha) + ": ";
+            String fecha = ruta.getDate();
+            SpannableString spannableFecha = new SpannableString(fechaLabel + fecha);
+            spannableFecha.setSpan(new ForegroundColorSpan(color), 0, fechaLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            fechaTextView.setText(spannableFecha);
+
+            String comunidadLabel = getResources().getString(R.string.comAuto) + ": ";
+            String comunidad = ruta.getComunidad();
+            SpannableString spannableComunidad = new SpannableString(comunidadLabel + comunidad);
+            spannableComunidad.setSpan(new ForegroundColorSpan(color), 0, comunidadLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            comunidadTextView.setText(spannableComunidad);
+
+            String descripcionLabel = getResources().getString(R.string.descripcion) + ": ";
+            String descripcion = ruta.getDescription();
+            SpannableString spannableDescripcion = new SpannableString(descripcionLabel + descripcion);
+            spannableDescripcion.setSpan(new ForegroundColorSpan(color), 0, descripcionLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            descripcionTextView.setText(spannableDescripcion);
 
             String base64Image = ruta.getImage();
 

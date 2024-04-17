@@ -20,6 +20,7 @@
     <string name="contraseña">كلمة السر</string>
     <string name="nombre">الاسم</string>
     <string name="fecha">تاريخ</string>
+    <string name="correo">ريدك الإلكتروني</string>
     <string name="apellidos">اللقب</string>
     <string name="invitado">زائر</string>
     <string name="iniSesion">تسجيل الدخول</string>
@@ -82,5 +83,8 @@
         <item>سبتة</item>
         <item>مليلية</item>
     </string-array>
+
+    <string name="channel_name">Notificaciones de Creación de Rutas</string>
+    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 
 </resources>

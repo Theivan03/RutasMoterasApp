@@ -21,6 +21,7 @@
     <string name="nombre">Nombre</string>
     <string name="apellidos">Apellidos</string>
     <string name="fecha">Fecha</string>
+    <string name="correo">Tu email</string>
     <string name="invitado">Invitado</string>
     <string name="iniSesion">Iniciar Sesión</string>
     <string name="registrar">Registrar</string>
@@ -83,4 +84,10 @@
         <item>Melilla</item>
     </string-array>
 
+    <string name="titDialogo">Creación de Ruta</string>
+    <string name="cuerpoDialogo">Creación de Ruta</string>
+
+
+    <string name="channel_name">Notificaciones de Creación de Rutas</string>
+    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 </resources>

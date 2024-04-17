@@ -20,6 +20,7 @@
     <string name="contraseña">Passwort</string>
     <string name="nombre">Vorname</string>
     <string name="fecha">Datum</string>
+    <string name="correo">Deine E-Mail</string>
     <string name="apellidos">Nachname</string>
     <string name="invitado">Gast</string>
     <string name="iniSesion">Anmelden</string>
@@ -82,5 +83,8 @@
         <item>Ceuta</item>
         <item>Melilla</item>
     </string-array>
+
+    <string name="channel_name">Notificaciones de Creación de Rutas</string>
+    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 
 </resources>

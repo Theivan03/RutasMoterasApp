@@ -10,13 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Properties;
@@ -29,16 +25,17 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class ContactWithUs extends AppCompatActivity {
+public class ContactWithUsInvitado extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_with_us);
+        setContentView(R.layout.activity_contact_with_us_invitado);
 
         final EditText nameField = findViewById(R.id.nameUser);
         final EditText messageField = findViewById(R.id.messageUser);
+        final EditText emailField = findViewById(R.id.mailUser);
         Button sendButton = findViewById(R.id.sendUser);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -46,15 +43,14 @@ public class ContactWithUs extends AppCompatActivity {
             public void onClick(View view) {
                 String name = nameField.getText().toString();
                 String message = messageField.getText().toString();
+                String email = emailField.getText().toString();
 
-                sendEmail(name, message);
+                sendEmail(name, message, email);
             }
         });
     }
 
-    private void sendEmail(String nombre, String mensaje) {
-
-        showProgressDialog();
+    private void sendEmail(String nombre, String mensaje, String email) {
 
         new Thread(() -> {
             try {
@@ -79,14 +75,11 @@ public class ContactWithUs extends AppCompatActivity {
                     }
                 });
 
-                SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-                String emailUser = sharedPref.getString("Email", "");
-
                 MimeMessage mimeMessage = new MimeMessage(session);
                 mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmail));
 
                 mimeMessage.setSubject("Duda/Error de " + nombre);
-                mimeMessage.setText("Hola, \n\nSoy " + nombre + ", mi correo es el " + emailUser + "\n\n\n" + mensaje + ". \n\nSaludos!😘");
+                mimeMessage.setText("Hola, \n\nSoy " + nombre + ", mi correo es el " + email + "\n\n\n" + mensaje + ". \n\nSaludos!😘");
 
                 Transport.send(mimeMessage);
                 runOnUiThread(() -> {
@@ -94,12 +87,11 @@ public class ContactWithUs extends AppCompatActivity {
                     showSuccessDialog();
 
                 });
-
             } catch (Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() -> {
                     hideProgressDialog();
-                    Toast.makeText(ContactWithUs.this, "Error al enviar el correo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContactWithUsInvitado.this, "Error al enviar el correo", Toast.LENGTH_SHORT).show();
                 });
             }
         }).start();
@@ -118,7 +110,7 @@ public class ContactWithUs extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(ContactWithUs.this, RutasList.class);
+                Intent intent = new Intent(ContactWithUsInvitado.this, RutasList.class);
                 startActivity(intent);
             }
         }, 1500);

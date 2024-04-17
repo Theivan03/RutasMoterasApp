@@ -7,7 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 
 public class DetalleRuta extends AppCompatActivity {
 
@@ -102,11 +105,33 @@ public class DetalleRuta extends AppCompatActivity {
 
     private void actualizarVistasConDatosDeRuta() {
         if (ruta != null) {
-            tipoMotoTextView.setText(getResources().getString(R.string.tipoMoto) + ": " + ruta.getTipoMoto());
-            tituloTextView.setText(getResources().getString(R.string.titulo) + ": " + ruta.getTitle());
-            fechaTextView.setText(getResources().getString(R.string.fecha) + ": " + ruta.getDate());
-            comunidadTextView.setText(getResources().getString(R.string.comAuto) + ": " + ruta.getComunidad());
-            descripcionTextView.setText(getResources().getString(R.string.descripcion) + ": " + ruta.getDescription());
+            int color = Color.parseColor("#808080");
+
+            tituloTextView.setText(ruta.getTitle());
+
+            String tipoMotoLabel = getResources().getString(R.string.tipoMoto) + ": ";
+            String tipoMoto = ruta.getTipoMoto();
+            SpannableString spannableTipoMoto = new SpannableString(tipoMotoLabel + tipoMoto);
+            spannableTipoMoto.setSpan(new ForegroundColorSpan(color), 0, tipoMotoLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tipoMotoTextView.setText(spannableTipoMoto);
+
+            String fechaLabel = getResources().getString(R.string.fecha) + ": ";
+            String fecha = ruta.getDate();
+            SpannableString spannableFecha = new SpannableString(fechaLabel + fecha);
+            spannableFecha.setSpan(new ForegroundColorSpan(color), 0, fechaLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            fechaTextView.setText(spannableFecha);
+
+            String comunidadLabel = getResources().getString(R.string.comAuto) + ": ";
+            String comunidad = ruta.getComunidad();
+            SpannableString spannableComunidad = new SpannableString(comunidadLabel + comunidad);
+            spannableComunidad.setSpan(new ForegroundColorSpan(color), 0, comunidadLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            comunidadTextView.setText(spannableComunidad);
+
+            String descripcionLabel = getResources().getString(R.string.descripcion) + ": ";
+            String descripcion = ruta.getDescription();
+            SpannableString spannableDescripcion = new SpannableString(descripcionLabel + descripcion);
+            spannableDescripcion.setSpan(new ForegroundColorSpan(color), 0, descripcionLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            descripcionTextView.setText(spannableDescripcion);
 
             String base64Image = ruta.getImage();
 
