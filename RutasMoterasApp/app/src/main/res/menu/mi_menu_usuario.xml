@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:title="Navarra" />
                     <item
-                        android:id="@+id/PasiVasco"
+                        android:id="@+id/PaisVasco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:title="País Vasco" />

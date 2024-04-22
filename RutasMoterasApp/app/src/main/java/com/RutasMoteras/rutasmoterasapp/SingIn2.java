@@ -75,13 +75,11 @@ public class SingIn2 extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Aquí se utiliza la clase API para realizar la solicitud de registro
         API.postPost(usuario, apiUrl + "auth/signup", new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 Log.d("Response", responseData);
-                // Aquí puedes procesar la respuesta del servidor después del éxito del registro
             }
 
             @Override

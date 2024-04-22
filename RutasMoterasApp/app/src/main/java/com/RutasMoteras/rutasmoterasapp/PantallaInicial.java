@@ -34,7 +34,6 @@ public class PantallaInicial extends AppCompatActivity {
                 sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
                 editor = sharedPref.edit();
 
-                // Guarda el token y la hora actual
                 editor.putString("LoginResponse", "");
                 editor.putLong("TokenTimestamp", currentTime);
                 editor.apply();

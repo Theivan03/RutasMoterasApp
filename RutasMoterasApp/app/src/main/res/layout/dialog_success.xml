@@ -21,7 +21,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:text="Éxito🥳🥳🥳"
+            android:text="@string/titDialogo"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:textColor="@android:color/black"
-            android:text="¡Ruta creada exitosamente!"
+            android:text="@string/cuerpoDialogo"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_gravity="center_horizontal"/>
 

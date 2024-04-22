@@ -33,8 +33,6 @@ public class SuperUser extends AppCompatActivity {
     }
 
     private void showLoginDialog() {
-        // Aquí puedes mostrar un diálogo o iniciar una nueva actividad para el inicio de sesión
-        // Por ejemplo, iniciar la actividad de inicio de sesión
         Intent intent = new Intent(SuperUser.this, Login.class);
         startActivity(intent);
         finish();

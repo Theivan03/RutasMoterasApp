@@ -84,6 +84,13 @@
         <item>Melilla</item>
     </string-array>
 
+    <string name="titDialogo">Creazione di un Percorso</string>
+    <string name="cuerpoDialogo">Creazione di un Percorso</string>
+    <string name="codigoPostal">Codice Postale</string>
+    <string name="ciudad">Città - Paese</string>
+    <string name="seleccionarFoto">Selezionare Foto</string>
+    <string name="guardar">Salva</string>
+
     <string name="channel_name">Notificaciones de Creación de Rutas</string>
     <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 

@@ -84,6 +84,13 @@
         <item>مليلية</item>
     </string-array>
 
+    <string name="titDialogo">إنشاء مسار</string>
+    <string name="cuerpoDialogo">إنشاء مسار</string>
+    <string name="codigoPostal">الرمز البريدي</string>
+    <string name="ciudad">مدينة - قرية</string>
+    <string name="seleccionarFoto">اختر صورة</string>
+    <string name="guardar">حفظ</string>
+
     <string name="channel_name">Notificaciones de Creación de Rutas</string>
     <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
 

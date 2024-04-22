@@ -152,7 +152,7 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
             @Override
             public void onError(UtilREST.Response r) {
-                // Manejar el error en caso necesario
+
             }
         });
     }
@@ -164,20 +164,17 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
-        // Guardar la ruta en un archivo de texto
         guardarRutaEnArchivo(rutaSeleccionada);
 
-        // Ir a otra pantalla
         Intent intent = new Intent(MostrarUser.this, DetalleRuta.class);
         startActivity(intent);
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-        // Crear una cadena con la información de la ruta
+
         String rutaInfo = String.valueOf(ruta.getId());
         Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
-        // Guardar la cadena en un archivo de texto
         try {
             FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());

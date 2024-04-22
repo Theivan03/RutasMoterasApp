@@ -210,20 +210,16 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
 
-        // Guardar la ruta en un archivo de texto
         guardarRutaEnArchivo(rutaSeleccionada);
 
-        // Ir a otra pantalla
         Intent intent = new Intent(User.this, DetalleRuta2.class);
         startActivity(intent);
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-        // Crear una cadena con la información de la ruta
         String rutaInfo = String.valueOf(ruta.getId());
         Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
-        // Guardar la cadena en un archivo de texto
         try {
             FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());
@@ -252,7 +248,6 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
             case R.id.eliminar:
                 mostrarDialogo(r);
 
-                mAdaptadorRutas.notifyDataSetChanged();
                 break;
             case R.id.editar:
                 Intent intent = new Intent(User.this, EditRuta.class);
@@ -268,28 +263,23 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
     private void mostrarDialogo(RutasModel ruta) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Título del Diálogo");
-        builder.setMessage("¿Estás seguro de borrar la película?");
+        builder.setMessage("¿Estás seguro de borrar la ruta?");
 
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Busca la posición de la ruta en la lista
                 int index = rutasList.indexOf(ruta);
                 if (index != -1) {
-                    // Si se encuentra la ruta, elimínala de la lista y notifica al adaptador
                     rutasList.remove(index);
                     mAdaptadorRutas.notifyDataSetChanged();
 
-                    // Llama a la API para eliminar la ruta
                     UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://192.168.1.131:5000/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
                         @Override
                         public void onSuccess(UtilREST.Response r) {
-                            // Maneja el éxito de la eliminación de la ruta
                         }
 
                         @Override
                         public void onError(UtilREST.Response r) {
-                            // Maneja el error al eliminar la ruta
                             if (r.content != null) {
                                 Log.e("Delete Error", r.content);
                             } else {

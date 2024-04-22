@@ -36,7 +36,6 @@ public class SingIn extends AppCompatActivity {
                     return;
                 }
 
-                // Pasar los datos a SingIn2
                 Intent intent = new Intent(SingIn.this, SingIn2.class);
                 intent.putExtra("nombre", nombreText);
                 intent.putExtra("apellidos", apellidosText);

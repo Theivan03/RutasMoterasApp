@@ -131,7 +131,6 @@ public class Login extends AppCompatActivity {
                 editor.putBoolean("Log", true);
                 editor.apply();
 
-                // Iniciar la actividad RutasList después de un retraso de 500 ms
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override

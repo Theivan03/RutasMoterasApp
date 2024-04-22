@@ -92,7 +92,6 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 }
             });
         } else {
-            // No hay nada en UserPreferences, por lo que no permitimos clics en la imagen
             imgUsu.setClickable(false);
         }
 
@@ -104,10 +103,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Omitir el título predeterminado para usar el TextView personalizado
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Configura el botón de menú para abrir el menú cuando se haga clic
         ImageButton menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(v -> openOptionsMenu());
 
@@ -148,206 +145,141 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
 
-    // Menú AcercaDe, MasInfo y NuevaPeli
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
 
-        if(id == R.id.BorrarFiltro){
+        if (id == R.id.IniciarSesion || id == R.id.GuiaUsuario || id == R.id.AddRuta ||
+                id == R.id.Contacta || id == R.id.MasInfo || id == R.id.ContactaInvitado) {
+            Intent intent = null;
+            switch (id) {
+                case R.id.IniciarSesion:
+                    intent = new Intent(this, Login.class);
+                    break;
+                case R.id.GuiaUsuario:
+                    intent = new Intent(this, Informacion.class);
+                    break;
+                case R.id.MasInfo:
+                    intent = new Intent(this, Informacion.class);
+                    break;
+                case R.id.AddRuta:
+                    intent = new Intent(this, CrearRuta.class);
+                    break;
+                case R.id.Contacta:
+                    intent = new Intent(this, ContactWithUs.class);
+                    break;
+                case R.id.ContactaInvitado:
+                    intent = new Intent(this, ContactWithUsInvitado.class);
+                    break;
+            }
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.BorrarFiltro) {
             LLamarApi(apiUrl + "api/rutas");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    borrarFiltroItem.setVisible(false);
-                }
-            }, 1000);
+            SetVisibleTrueBorrarFiltro(false);
+        } else {
+            handleFilterMenuItem(id);
         }
-
-        if(id == R.id.IniciarSesion){
-            Intent intent = new Intent(RutasList.this, Login.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.GuiaUsuario){
-            Intent intent = new Intent(RutasList.this, Informacion.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.AddRuta){
-            Intent intent = new Intent(RutasList.this, CrearRuta.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.Contacta){
-            Intent intent = new Intent(RutasList.this, ContactWithUs.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.MasInfo){
-            Intent intent = new Intent(RutasList.this, Informacion.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.Nuevos){
-
-            LLamarApi(apiUrl + "api/rutasF");
-            SetVisibleTrueBorrarFiltro();
-
-        }
-
-        if(id == R.id.Andalucia){
-
-            LLamarApi(apiUrl + "api/rutasC/Andalucia");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Aragon){
-
-            LLamarApi(apiUrl + "api/rutasC/Aragon");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Asturias){
-
-            LLamarApi(apiUrl + "api/rutasC/Asturias");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Cantabria){
-
-            LLamarApi(apiUrl + "api/rutasC/Cantabria");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.CastillaLaMancha){
-
-            LLamarApi(apiUrl + "api/rutasC/CastillaLaMancha");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.CastillaLeon){
-
-            LLamarApi(apiUrl + "api/rutasC/CastillaLeon");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Cataluña){
-
-            LLamarApi(apiUrl + "api/rutasC/Cataluña");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Extremadura){
-
-            LLamarApi(apiUrl + "api/rutasC/Extremadura");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Galicia){
-
-            LLamarApi(apiUrl + "api/rutasC/Galicia");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.IslasBaleares){
-
-            LLamarApi(apiUrl + "api/rutasC/IslasBaleares");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.IslasCanarias){
-
-            LLamarApi(apiUrl + "api/rutasC/IslasCanarias");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.LaRioja){
-
-            LLamarApi(apiUrl + "api/rutasC/LaRioja");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Madrid){
-
-            LLamarApi(apiUrl + "api/rutasC/Madrid");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Murcia){
-
-            LLamarApi(apiUrl + "api/rutasC/Murcia");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Navarra){
-
-            LLamarApi(apiUrl + "api/rutasC/Navarra");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.PasiVasco){
-
-            LLamarApi(apiUrl + "api/rutasC/Pais Vasco");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.ComunidadValenciana){
-
-            LLamarApi(apiUrl + "api/rutasC/Comunidad Valenciana");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Ceuta){
-
-            LLamarApi(apiUrl + "api/rutasC/Ceuta");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Melilla){
-
-            LLamarApi(apiUrl + "api/rutasC/Melilla");
-            SetVisibleTrueBorrarFiltro();
-
-        }
-
-        if(id == R.id.Scooter){
-
-            LLamarApi(apiUrl + "api/rutasT/Scooter");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Custom){
-
-            LLamarApi(apiUrl + "api/rutasT/Custom");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Trail){
-
-            LLamarApi(apiUrl + "api/rutasT/Trail");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Deportiva){
-
-            LLamarApi(apiUrl + "api/rutasT/Deportiva");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Naked){
-
-            LLamarApi(apiUrl + "api/rutasT/Naked");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.Motocross){
-
-            LLamarApi(apiUrl + "api/rutasT/Motocross");
-            SetVisibleTrueBorrarFiltro();
-
-        }if(id == R.id.GranTurismo){
-
-            LLamarApi(apiUrl + "api/rutasT/GranTurismo");
-            SetVisibleTrueBorrarFiltro();
-
-        }
-
-        if(id == R.id.Contacta){
-            Intent intent = new Intent(RutasList.this, ContactWithUs.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if(id == R.id.ContactaInvitado){
-            Intent intent = new Intent(RutasList.this, ContactWithUsInvitado.class);
-            startActivity(intent);
-            return true;
-        }
-
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleFilterMenuItem(int itemId) {
+        String path = "";
+        switch (itemId) {
+            case R.id.Nuevos:
+                path = "api/rutasF";
+                break;
+            case R.id.Andalucia:
+                path = "api/rutasC/Andalucia";
+                break;
+            case R.id.Aragon:
+                path = "api/rutasC/Aragon";
+                break;
+            case R.id.Asturias:
+                path = "api/rutasC/Asturias";
+                break;
+            case R.id.Cantabria:
+                path = "api/rutasC/Cantabria";
+                break;
+            case R.id.CastillaLaMancha:
+                path = "api/rutasC/CastillaLaMancha";
+                break;
+            case R.id.CastillaLeon:
+                path = "api/rutasC/CastillaLeon";
+                break;
+            case R.id.Cataluña:
+                path = "api/rutasC/Cataluña";
+                break;
+            case R.id.Extremadura:
+                path = "api/rutasC/Extremadura";
+                break;
+            case R.id.Galicia:
+                path = "api/rutasC/Galicia";
+                break;
+            case R.id.IslasBaleares:
+                path = "api/rutasC/IslasBaleares";
+                break;
+            case R.id.IslasCanarias:
+                path = "api/rutasC/IslasCanarias";
+                break;
+            case R.id.LaRioja:
+                path = "api/rutasC/LaRioja";
+                break;
+            case R.id.Madrid:
+                path = "api/rutasC/Madrid";
+                break;
+            case R.id.Murcia:
+                path = "api/rutasC/Murcia";
+                break;
+            case R.id.Navarra:
+                path = "api/rutasC/Navarra";
+                break;
+            case R.id.PaisVasco:
+                path = "api/rutasC/Pais Vasco";
+                break;
+            case R.id.ComunidadValenciana:
+                path = "api/rutasC/Comunidad Valenciana";
+                break;
+            case R.id.Ceuta:
+                path = "api/rutasC/Ceuta";
+                break;
+            case R.id.Melilla:
+                path = "api/rutasC/Melilla";
+                break;
+            case R.id.Scooter:
+                path = "api/rutasT/Scooter";
+                break;
+            case R.id.Custom:
+                path = "api/rutasT/Custom";
+                break;
+            case R.id.Trail:
+                path = "api/rutasT/Trail";
+                break;
+            case R.id.Deportiva:
+                path = "api/rutasT/Deportiva";
+                break;
+            case R.id.Naked:
+                path = "api/rutasT/Naked";
+                break;
+            case R.id.Motocross:
+                path = "api/rutasT/Motocross";
+                break;
+            case R.id.GranTurismo:
+                path = "api/rutasT/GranTurismo";
+                break;
+            default:
+                Log.e("Menu Selection", "No path found for item ID: " + itemId);
+                return;
+        }
+        LLamarApi(apiUrl + path);
+        SetVisibleTrueBorrarFiltro(true);
+    }
+
+    private void SetVisibleTrueBorrarFiltro(boolean visible) {
+        handler.postDelayed(() -> borrarFiltroItem.setVisible(visible), 1000);
     }
 
     public void SetVisibleTrueBorrarFiltro(){
@@ -373,7 +305,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
-
+                mAdaptadorRutas.notifyDataSetChanged();
                 hideCustomToast();
             }
 
@@ -407,11 +339,10 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-        // Crear una cadena con la información de la ruta
+
         String rutaInfo = String.valueOf(ruta.getId());
         Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
-        // Guardar la cadena en un archivo de texto
         try {
             FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());

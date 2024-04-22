@@ -210,11 +210,11 @@ public class EditRuta extends AppCompatActivity {
             });
 
     private void cargarImagenBase64(String base64Image) {
-        // Decodifica la imagen desde Base64 a byte[]
+
         byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
-        // Convierte byte[] a Bitmap
+
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-        // Usa Glide para cargar el Bitmap
+
         Glide.with(this)
                 .load(decodedBitmap)
                 .into(imageView);
@@ -259,11 +259,10 @@ public class EditRuta extends AppCompatActivity {
                     .error(R.drawable.favicon)
                     .into(imageView);
         } else {
-            // Maneja el caso en que `ruta` sea null
+
         }
     }
 
-    // Método auxiliar para obtener el índice de una cadena en un array
     private int obtenerIndiceEnArray(String valor, String[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].equals(valor)) {
@@ -278,7 +277,6 @@ public class EditRuta extends AppCompatActivity {
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
             Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);
 
-            // Puedes ajustar estos valores para reducir aún más el tamaño de la imagen si es necesario
             int maxWidth = 480;
             int maxHeight = 480;
             float scaleWidth = maxWidth / (float) bitmapOriginal.getWidth();
@@ -291,8 +289,7 @@ public class EditRuta extends AppCompatActivity {
             Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            // Ajusta el segundo parámetro para cambiar la calidad de la imagen
-            // Un valor más bajo reduce el tamaño del archivo pero también la calidad de la imagen
+
             bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 

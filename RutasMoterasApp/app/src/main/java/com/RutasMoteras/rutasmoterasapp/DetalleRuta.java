@@ -143,16 +143,15 @@ public class DetalleRuta extends AppCompatActivity {
                 Log.e("DetalleRuta2", "La decodificación de la imagen falló.");
             }
 
-            // Decodifica y carga la imagen
             Glide.with(this)
                     .asBitmap()
                     .load(decodedString)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .error(R.drawable.favicon) // Asegúrate de tener este recurso drawable.
+                    .error(R.drawable.favicon)
                     .into(imgView);
         } else {
-            // Maneja el caso en que `ruta` sea null
+
         }
     }
 

@@ -145,8 +145,8 @@ public class CrearRuta extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    imageView.setImageURI(uri); // uri ya está establecida por abrirCamara()
-                    FotoString = convertirImagenABase64(uri); // Asegúrate de que este método maneje correctamente null
+                    imageView.setImageURI(uri);
+                    FotoString = convertirImagenABase64(uri);
                 } else {
                     Toast.makeText(CrearRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
                 }
@@ -158,8 +158,8 @@ public class CrearRuta extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedImage = result.getData().getData();
                     imageView.setImageURI(selectedImage);
-                    uri = selectedImage; // Actualizar la uri con la seleccionada de la galería
-                    FotoString = convertirImagenABase64(selectedImage); // Convertir directamente la nueva URI a Base64
+                    uri = selectedImage;
+                    FotoString = convertirImagenABase64(selectedImage);
                 } else {
                     Toast.makeText(CrearRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
                 }
@@ -201,7 +201,6 @@ public class CrearRuta extends AppCompatActivity {
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
             Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);
 
-            // Puedes ajustar estos valores para reducir aún más el tamaño de la imagen si es necesario
             int maxWidth = 480;
             int maxHeight = 480;
             float scaleWidth = maxWidth / (float) bitmapOriginal.getWidth();
@@ -214,8 +213,7 @@ public class CrearRuta extends AppCompatActivity {
             Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            // Ajusta el segundo parámetro para cambiar la calidad de la imagen
-            // Un valor más bajo reduce el tamaño del archivo pero también la calidad de la imagen
+
             bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 
@@ -287,15 +285,15 @@ public class CrearRuta extends AppCompatActivity {
     private void launchConfetti() {
         KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
         konfettiView.build()
-                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.BLUE)  // Más colores
-                .setDirection(0.0, 359.0)  // Dirección completa
-                .setSpeed(1f, 5f)  // Rango de velocidad
-                .setFadeOutEnabled(true)  // Efecto de desvanecimiento
-                .setTimeToLive(1500L)  // Tiempo antes de desaparecer
-                .addShapes(Shape.CIRCLE, Shape.RECT)  // Formas disponibles
-                .addSizes(new Size(12, 5), new Size(16, 6))  // Varios tamaños
-                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, konfettiView.getHeight() + 50f)  // Posición de inicio
-                .streamFor(300, 2000L);  // Duración de la animación
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.BLUE)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(1500L)
+                .addShapes(Shape.CIRCLE, Shape.RECT)
+                .addSizes(new Size(12, 5), new Size(16, 6))
+                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, konfettiView.getHeight() + 50f)
+                .streamFor(300, 2000L);
     }
 
     private void showSuccessDialog() {
