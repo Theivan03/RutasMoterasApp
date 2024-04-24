@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/sedgwickavedisplay_regular"
             android:gravity="center"
-            android:text="Rutas Moteras"
+            android:text="Editar Usuario"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.021"
+            app:layout_constraintVertical_bias="0.0"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -43,12 +43,13 @@
             android:id="@+id/codigoPostal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/codigoPostal"
             android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCodigoPostal"
-            tools:layout_editor_absoluteX="64dp"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -102,48 +103,52 @@
             android:id="@+id/ciudad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/ciudad"
             android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCiudad"
-            tools:layout_editor_absoluteX="64dp"
             tools:ignore="MissingConstraints" />
 
         <EditText
             android:id="@+id/apellido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/apellidos"
             android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewApellido"
-            tools:layout_editor_absoluteX="64dp"
             tools:ignore="MissingConstraints" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
-            tools:layout_editor_absoluteX="64dp"
             tools:ignore="MissingConstraints" />
 
         <EditText
             android:id="@+id/nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/nombre"
             android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
-            tools:layout_editor_absoluteX="64dp"
             tools:ignore="MissingConstraints" />
 
         <Button
@@ -162,12 +167,23 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/favicon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/boton" />
 
+        <Button
+            android:id="@+id/botonGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#1E88E5"
+            android:text="@string/guardar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imagen" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

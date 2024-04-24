@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -78,25 +81,20 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         correo = findViewById(R.id.Correo);
         correo.setText(sharedPref.getString("Email", ""));
 
+        String foto = sharedPref.getString("Foto", null);
+
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
-        Log.d("Imagen: ", sharedPref.getString("Foto", ""));
         if(sharedPref.contains("Foto")){
-            if(sharedPref.getString("Foto", "") == "" || sharedPref.getString("Foto", "") == null || sharedPref.getString("Foto", "").isEmpty()){
-                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
-            }
-            else{
-                imageUrl = sharedPref.getString("Foto", "");
-            }
+            cargarImagenBase64(foto);
         }
         else{
             imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(imgUsu);
         }
-
-        Glide.with(this)
-                .load(imageUrl)
-                .into(imgUsu);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -138,7 +136,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
 
         if(id == R.id.Editar){
-            Intent intent = new Intent(User.this, Informacion.class);
+            Intent intent = new Intent(User.this, EditInfoUser.class);
             startActivity(intent);
             return true;
         }
@@ -229,6 +227,17 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         }
     }
 
+    private void cargarImagenBase64(String base64Image) {
+
+        try {
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Glide.with(this).asBitmap().load(decodedString).into(imgUsu);
+        } catch (IllegalArgumentException e) {
+            Log.e("Base64 Error", "Failed to decode Base64 string", e);
+            Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
+        }
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
@@ -302,5 +311,13 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, RutasList.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

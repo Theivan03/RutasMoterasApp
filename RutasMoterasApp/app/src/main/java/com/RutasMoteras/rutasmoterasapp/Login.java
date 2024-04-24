@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
         registrar = findViewById(R.id.registrar);
         login = findViewById(R.id.iniciar);
         email = findViewById(R.id.nombre);
-        password = findViewById(R.id.apellidos);
+        password = findViewById(R.id.contraseña);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity {
 
                 editor.apply();
 
-                ObtenerUsuario(apiUrl + "api/usuario/"+email, responseData);
+                ObtenerUsuario(apiUrl + "api/usuario/"+email, responseData, password);
             }
 
             @Override
@@ -106,7 +106,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void ObtenerUsuario(String url, String token){
+    public void ObtenerUsuario(String url, String token, String contraseña){
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
@@ -114,17 +114,29 @@ public class Login extends AppCompatActivity {
                 String jsonContent = r.content;
                 UserModel user = UtilJSONParser.parseUserPosts(jsonContent);
 
+                String cp = "";
+                if (user.getPostalCode() != null && !user.getPostalCode().isEmpty()) {
+                    cp = user.getPostalCode();
+                }
+
+                String city = "";
+                if (user.getCity() != null && !user.getCity().isEmpty()) {
+                    city = user.getCity();
+                }
+
                 SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean("Log", true);
                 editor.putLong("Id", user.getId());
+                editor.putString("Password", user.getPassword());
                 editor.putString("Name", user.getName());
                 editor.putString("Surname", user.getSurname());
-                editor.putString("City", user.getCity());
-                editor.putString("postalCode", user.getPostalCode());
+                editor.putString("City", city);
+                editor.putString("postalCode", cp);
                 editor.putString("Email", user.getEmail());
                 editor.putString("Foto", user.getImage());
                 editor.apply();
+                Log.d("Info de usuario", String.valueOf(user));
 
                 sharedPref = getSharedPreferences("LogPreferences", Context.MODE_PRIVATE);
                 editor = sharedPref.edit();

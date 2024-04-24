@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     String apiUrl;
     private Toast customToast;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,24 +65,23 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
-
+        String foto = userPrefs.getString("Foto", null);
 
         if(userPrefs.contains("Foto")){
-            if(userPrefs.getString("Foto", "") == "" || userPrefs.getString("Foto", "") == null || userPrefs.getString("Foto", "").isEmpty()){
-                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
-            }
-            else{
-                imageUrl = userPrefs.getString("Foto", "");
+            try {
+                byte[] decodedString = Base64.decode(foto, Base64.DEFAULT);
+                Glide.with(this).asBitmap().load(decodedString).into(imgUsu);
+            } catch (IllegalArgumentException e) {
+                Log.e("Base64 Error", "Failed to decode Base64 string", e);
+                Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
             }
         }
         else{
             imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(imgUsu);
         }
-
-
-        Glide.with(this)
-                .load(imageUrl)
-                .into(imgUsu);
 
 
         if (userPrefs.contains("Id")) {
