@@ -3,13 +3,16 @@ package com.RutasMoteras.rutasmoterasapp;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,8 +28,6 @@ import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.API;
 import com.RutasMoteras.rutasmoterasapi.CheckLogin;
-import com.RutasMoteras.rutasmoterasapi.RutasModel;
-import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
 
@@ -41,6 +42,7 @@ public class EditInfoUser extends AppCompatActivity {
     EditText nombre;
     EditText apellidos;
     EditText codigoPostal;
+    private Button buttonDeletePhoto;
     EditText ciudad;
     EditText email;
     Button boton;
@@ -53,7 +55,7 @@ public class EditInfoUser extends AppCompatActivity {
     Long id;
     String Password;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info_user);
 
@@ -70,6 +72,16 @@ public class EditInfoUser extends AppCompatActivity {
         imagen = findViewById(R.id.imagen);
         boton = findViewById(R.id.boton);
         guardar = findViewById(R.id.botonGuardar);
+
+        buttonDeletePhoto = findViewById(R.id.borrarFoto);
+        buttonDeletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagen.setImageDrawable(null);
+                FotoString = "";
+                uri = null;
+            }
+        });
 
         id = sharedURL.getLong("Id", -1);
         nombre.setText(sharedURL.getString("Name", ""));
@@ -121,13 +133,14 @@ public class EditInfoUser extends AppCompatActivity {
     }
 
     private void mostrarDialogoSeleccion() {
-        final CharSequence[] opciones = {"Tomar Foto", "Elegir de Galería", "Cancelar"};
+        final CharSequence[] opciones = {getResources().getString(R.string.hacerFoto), getResources().getString(R.string.seleccionarDeGaleria), getResources().getString(R.string.cancelar)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Elige una opción");
+        builder.setTitle(getResources().getString(R.string.elegirOpcion));
         builder.setItems(opciones, (dialog, which) -> {
-            if (opciones[which].equals("Tomar Foto")) {
+            if (opciones[which].equals(getResources().getString(R.string.nuevaFoto))) {
+
                 abrirCamara();
-            } else if (opciones[which].equals("Elegir de Galería")) {
+            } else if (opciones[which].equals(getResources().getString(R.string.seleccionarDeGaleria))) {
                 abrirGaleria();
             } else {
                 dialog.dismiss();
@@ -166,7 +179,7 @@ public class EditInfoUser extends AppCompatActivity {
 
     private void abrirCamara() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Nuevo Picture");
+        values.put(MediaStore.Images.Media.TITLE, getResources().getString(R.string.nuevaFoto));
         uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -186,7 +199,7 @@ public class EditInfoUser extends AppCompatActivity {
                     imagen.setImageURI(uri);
                     FotoString = convertirImagenABase64(uri);
                 } else {
-                    Toast.makeText(this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.errorImagen), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -199,7 +212,7 @@ public class EditInfoUser extends AppCompatActivity {
                     uri = selectedImage;
                     FotoString = convertirImagenABase64(selectedImage);
                 } else {
-                    Toast.makeText(this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
                 }
             });
 

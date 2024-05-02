@@ -120,7 +120,7 @@
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/apellidos"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewApellido"
             tools:ignore="MissingConstraints" />
@@ -146,7 +146,7 @@
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="@string/nombre"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
             tools:ignore="MissingConstraints" />
@@ -159,7 +159,20 @@
             android:backgroundTint="#1E88E5"
             android:text="@string/seleccionarFoto"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.171"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/codigoPostal" />
+
+        <Button
+            android:id="@+id/borrarFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="#1E88E5"
+            android:text="Borrar Foto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.271"
+            app:layout_constraintStart_toEndOf="@+id/boton"
             app:layout_constraintTop_toBottomOf="@+id/codigoPostal" />
 
         <ImageView

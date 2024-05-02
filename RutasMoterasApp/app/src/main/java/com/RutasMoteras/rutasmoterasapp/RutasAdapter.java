@@ -36,21 +36,6 @@ public class RutasAdapter extends ArrayAdapter<RutasModel> {
         LayoutInflater inflater = LayoutInflater.from(this.getContext());
         View mifila = inflater.inflate(mResource, parent, false);
 
-        if(misRutas.get(position).getComunidad().equals("ComunidadValenciana")){
-            misRutas.get(position).setComunidad("Comunidad Valenciana");
-        }if(misRutas.get(position).getComunidad().equals("CastillaLaMancha")){
-            misRutas.get(position).setComunidad("Castilla La Mancha");
-        }if(misRutas.get(position).getComunidad().equals("CastillaLeon")){
-            misRutas.get(position).setComunidad("Castilla León");
-        }if(misRutas.get(position).getComunidad().equals("IslasBaleares")){
-            misRutas.get(position).setComunidad("Islas Baleares");
-        }if(misRutas.get(position).getComunidad().equals("IslasCanarias")){
-            misRutas.get(position).setComunidad("Islas Canarias");
-        }if(misRutas.get(position).getComunidad().equals("LaRioja")){
-            misRutas.get(position).setComunidad("La Rioja");
-        }if(misRutas.get(position).getComunidad().equals("PaisVasco")){
-            misRutas.get(position).setComunidad("País Vasco");
-        }
 
         ImageView imageView = mifila.findViewById(R.id.imgRuta);
         String base64Image = misRutas.get(position).getImage();

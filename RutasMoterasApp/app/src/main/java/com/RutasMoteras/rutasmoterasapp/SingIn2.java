@@ -50,7 +50,27 @@ public class SingIn2 extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrarUsuario(contraseña.getText().toString(), nombre.toString(), apellidos.toString(), email.getText().toString(), convertirImagenABase64(R.drawable.userwhothoutphoto), new int[]{1});
+                String emailText = email.getText().toString().trim();
+                String contraseñaText = contraseña.getText().toString().trim();
+
+                if (emailText.isEmpty() || contraseñaText.isEmpty()) {
+                    if (emailText.isEmpty()) email.setError(getResources().getString(R.string.emailVacio));
+                    if (contraseñaText.isEmpty()) contraseña.setError(getResources().getString(R.string.contraseñaVacia));
+                    return;
+                }
+
+                if (!validarEmail(emailText)) {
+                    email.setError(getResources().getString(R.string.emailValido));
+                    return;
+                }
+
+                String resultadoValidacion = validarContraseña(contraseñaText);
+                if (resultadoValidacion != null) {
+                    contraseña.setError(resultadoValidacion);
+                    return;
+                }
+
+                registrarUsuario(contraseñaText, nombre.toString(), apellidos.toString(), emailText, new int[]{1});
 
                 Intent intent = new Intent(SingIn2.this, Login.class);
                 startActivity(intent);
@@ -66,36 +86,44 @@ public class SingIn2 extends AppCompatActivity {
         });
     }
 
-    private String convertirImagenABase64(int drawableId) {
-        Bitmap bitmapOriginal = BitmapFactory.decodeResource(getResources(), drawableId);
-
-        int maxWidth = 480;
-        int maxHeight = 480;
-        float scaleWidth = maxWidth / (float) bitmapOriginal.getWidth();
-        float scaleHeight = maxHeight / (float) bitmapOriginal.getHeight();
-        float scale = Math.min(scaleWidth, scaleHeight);
-
-        int width = Math.round(scale * bitmapOriginal.getWidth());
-        int height = Math.round(scale * bitmapOriginal.getHeight());
-
-        Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    private boolean validarEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
     }
 
-    private void registrarUsuario(String password, String name, String surname, String email, String foto, int[] rolIds) {
+    private String validarContraseña(String contraseña) {
+        if (contraseña.length() < 8) {
+            return getResources().getString(R.string.contra8Caracteres);
+        }
+        if (!contraseña.matches(".*[0-9].*")) {
+            return getResources().getString(R.string.contraNumeros);
+        }
+        if (!contraseña.matches(".*[a-z].*")) {
+            return getResources().getString(R.string.contraMinuscula);
+        }
+        if (!contraseña.matches(".*[A-Z].*")) {
+            return getResources().getString(R.string.contraMayuscula);
+        }
+        if (!contraseña.matches(".*[@#$%^&+=].*")) {
+            return getResources().getString(R.string.contraEspecial);
+        }
+        if (contraseña.matches(".*\\s+.*")) {
+            return getResources().getString(R.string.contraEspacios);
+        }
+        return null;
+    }
+
+
+    private void registrarUsuario(String password, String name, String surname, String email, int[] rolIds) {
         JSONObject usuario = new JSONObject();
         try {
             usuario.put("password", password);
             usuario.put("name", name);
             usuario.put("surname", surname);
             usuario.put("email", email);
-            usuario.put("image", foto);
+            usuario.put("image", "");
+            usuario.put("city", "");
+            usuario.put("postalCode", "");
             JSONArray rolIdsArray = new JSONArray();
             for (int rolId : rolIds) {
                 rolIdsArray.put(rolId);

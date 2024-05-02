@@ -52,6 +52,36 @@
     <string name="descripcion">Descrizione</string>
     <string name="creacion">Creazione Percorso</string>
 
+    <string name="errorCorreo">Errore durante l'invio dell'email</string>
+    <string name="correoEnviado">Email inviata</string>
+    <string name="correoEnviadoCorrectamente">Il tuo messaggio è stato inviato con successo!</string>
+    <string name="enviandoCorreo">Invio dell'Email</string>
+    <string name="esperarEnviandoCorreo">Attendere prego mentre l'email viene inviata...</string>
+    <string name="errorImagen">Errore nel recupero dell'immagine</string>
+    <string name="imagenNoSeleccionada">Immagine non selezionata</string>
+    <string name="hacerFoto">Scattare Foto</string>
+    <string name="seleccionarDeGaleria">Seleziona dalla galleria</string>
+    <string name="elegirOpcion">Scegli un'opzione</string>
+    <string name="nuevaFoto">Nuova Foto</string>
+    <string name="debePonerNombre">Devi inserire un nome</string>
+
+    <string name="menosDe25Caracteres">Non sono ammessi più di 25 caratteri</string>
+    <string name="debePonerApellidos">Devi inserire il cognome</string>
+    <string name="menosDe50Caracteres">Non sono ammessi più di 50 caratteri</string>
+    <string name="emailVacio">Il campo email non può essere vuoto</string>
+    <string name="contraseñaVacia">Il campo password non può essere vuoto</string>
+    <string name="emailValido">Inserisci un'email valida</string>
+
+    <string name="contra8Caracteres">La password deve essere lunga almeno 8 caratteri.</string>
+    <string name="contraNumeros">La password deve contenere almeno un numero.</string>
+    <string name="contraMinuscula">La password deve contenere almeno una lettera minuscola.</string>
+    <string name="contraMayuscula">La password deve contenere almeno una lettera maiuscola.</string>
+    <string name="contraEspecial">La password deve contenere almeno un carattere speciale (@#$%^&amp;+=).</string>
+    <string name="contraEspacios">La password non deve contenere spazi.</string>
+    <string name="vasABorrarRuta">Stai per eliminare un percorso</string>
+    <string name="EstasSeguroDeBorrarRuta">Sei sicuro di volerlo fare?</string>
+
+
     <string-array name="tipo_moto_array">
         <item>Scooter</item>
         <item>Custom</item>

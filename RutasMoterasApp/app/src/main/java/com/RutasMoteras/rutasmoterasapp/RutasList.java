@@ -34,7 +34,6 @@ import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 
 public class RutasList extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -62,18 +61,19 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
+        String foto = userPrefs.getString("Foto", null);
+
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
-        String foto = userPrefs.getString("Foto", null);
-
         if(userPrefs.contains("Foto")){
-            try {
-                byte[] decodedString = Base64.decode(foto, Base64.DEFAULT);
-                Glide.with(this).asBitmap().load(decodedString).into(imgUsu);
-            } catch (IllegalArgumentException e) {
-                Log.e("Base64 Error", "Failed to decode Base64 string", e);
-                Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
+            if(foto != null && !foto.isEmpty())
+                cargarImagenBase64(foto);
+            else{
+                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+                Glide.with(this)
+                        .load(imageUrl)
+                        .into(imgUsu);
             }
         }
         else{
@@ -123,6 +123,27 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         });
 
         LLamarApi(apiUrl + "api/rutas");
+        //cargarDatosDeLaApi();
+    }
+
+    private void cargarDatosDeLaApi() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        String jsonRutas = sharedPref.getString("datosRutas", null);
+
+        if (jsonRutas != null && !jsonRutas.isEmpty()) {
+            try {
+                List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonRutas);
+                mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
+                miListaRutas.setAdapter(mAdaptadorRutas);
+                mAdaptadorRutas.notifyDataSetChanged();
+            } catch (Exception e) {
+                Toast.makeText(this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_SHORT).show();
+                Log.e("RutasList", "Error al parsear los datos de las rutas", e);
+            }
+        } else {
+            // Llama a la API si no hay datos en SharedPreferences o los datos son inválidos
+
+        }
     }
 
     @Override
@@ -304,10 +325,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 String jsonContent = r.content;
                 List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
 
+                hideCustomToast();
+
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
                 mAdaptadorRutas.notifyDataSetChanged();
-                hideCustomToast();
+
             }
 
             @Override
@@ -368,6 +391,17 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     public void hideCustomToast() {
         if (customToast != null) {
             customToast.cancel();
+        }
+    }
+
+    private void cargarImagenBase64(String base64Image) {
+
+        try {
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Glide.with(this).asBitmap().load(decodedString).into(imgUsu);
+        } catch (IllegalArgumentException e) {
+            Log.e("Base64 Error", "Failed to decode Base64 string", e);
+            Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
         }
     }
 }

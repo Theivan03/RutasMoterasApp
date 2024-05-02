@@ -124,7 +124,7 @@ public class DetalleRuta2 extends AppCompatActivity {
 
     private void actualizarVistasConDatosDeRuta() {
         if (ruta != null) {
-            int color = Color.parseColor("#1e88e5");
+            int color = Color.parseColor("#808080");
 
             tituloTextView.setText(ruta.getTitle());
 

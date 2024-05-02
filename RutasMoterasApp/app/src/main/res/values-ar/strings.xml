@@ -52,6 +52,33 @@
     <string name="descripcion">الوصف</string>
     <string name="creacion">إنشاء المسار</string>
 
+    <string name="errorCorreo">خطأ في إرسال البريد</string>
+    <string name="correoEnviado">تم إرسال البريد</string>
+    <string name="correoEnviadoCorrectamente">تم إرسال رسالتك بنجاح!</string>
+    <string name="enviandoCorreo">إرسال البريد</string>
+    <string name="esperarEnviandoCorreo">الرجاء الانتظار أثناء إرسال البريد...</string>
+    <string name="errorImagen">خطأ في الحصول على الصورة</string>
+    <string name="imagenNoSeleccionada">لم يتم اختيار صورة</string>
+    <string name="hacerFoto">التقاط صورة</string>
+    <string name="seleccionarDeGaleria">اختيار من المعرض</string>
+    <string name="elegirOpcion">اختر خيارًا</string>
+    <string name="nuevaFoto">صورة جديدة</string>
+    <string name="debePonerNombre">يجب إدخال اسم</string>
+    <string name="menosDe25Caracteres">لا يتم قبول أكثر من 25 حرفًا</string>
+    <string name="debePonerApellidos">يجب إدخال الأسماء الأخيرة</string>
+    <string name="menosDe50Caracteres">لا يتم قبول أكثر من 50 حرفًا</string>
+    <string name="emailVacio">لا يمكن أن يكون حقل البريد الإلكتروني فارغًا</string>
+    <string name="contraseñaVacia">لا يمكن أن يكون حقل كلمة المرور فارغًا</string>
+    <string name="emailValido">أدخل بريد إلكتروني صالح</string>
+    <string name="contra8Caracteres">يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.</string>
+    <string name="contraNumeros">يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.</string>
+    <string name="contraMinuscula">يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.</string>
+    <string name="contraMayuscula">يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.</string>
+    <string name="contraEspecial">يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل (@#$%^&amp;+=).</string>
+    <string name="contraEspacios">يجب ألا تحتوي كلمة المرور على مسافات.</string>
+    <string name="vasABorrarRuta">أنت على وشك حذف مسار</string>
+    <string name="EstasSeguroDeBorrarRuta">هل أنت متأكد أنك تريد القيام بذلك؟</string>
+
     <string-array name="tipo_moto_array">
         <item>سكوتر</item>
         <item>مخصص</item>

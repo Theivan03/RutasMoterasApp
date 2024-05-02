@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,13 +28,24 @@ public class SingIn extends AppCompatActivity {
             public void onClick(View v) {
                 String nombreText = nombre.getText().toString().trim();
                 String apellidosText = apellidos.getText().toString().trim();
+
                 if (nombreText.isEmpty()) {
-                    nombre.setError("Debe ingresar un nombre");
+                    nombre.setError(getResources().getString(R.string.debePonerNombre));
+                    return;
+                }
+
+                if (nombreText.length() > 25) {
+                    nombre.setError(getResources().getString(R.string.menosDe25Caracteres));
                     return;
                 }
 
                 if (apellidosText.isEmpty()) {
-                    apellidos.setError("Debe ingresar los apellidos");
+                    apellidos.setError(getResources().getString(R.string.debePonerApellidos));
+                    return;
+                }
+
+                if (apellidosText.length() > 50) {
+                    apellidos.setError(getResources().getString(R.string.menosDe50Caracteres));
                     return;
                 }
 
@@ -50,8 +63,5 @@ public class SingIn extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
-
-
 }

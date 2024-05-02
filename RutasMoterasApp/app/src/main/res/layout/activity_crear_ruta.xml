@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".CrearRuta">
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/viewKonfetti"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/textView4"
@@ -56,6 +60,7 @@
 
     <EditText
         android:id="@+id/tit"
+        android:inputType="textCapWords"
         android:layout_width="252dp"
         android:layout_height="44dp"
         android:layout_marginTop="28dp"
@@ -84,7 +89,21 @@
         android:backgroundTint="#1E88E5"
         android:text="@string/seleccionarFoto"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerComunidad"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/borrarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#1E88E5"
+        android:text="Borrar Foto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.308"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectPhoto"
         app:layout_constraintTop_toBottomOf="@+id/spinnerComunidad"
         tools:ignore="MissingConstraints" />
 
@@ -99,9 +118,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <nl.dionsegijn.konfetti.KonfettiView
-        android:id="@+id/viewKonfetti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

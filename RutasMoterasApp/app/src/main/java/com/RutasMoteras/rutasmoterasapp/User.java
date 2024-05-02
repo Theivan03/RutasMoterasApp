@@ -86,8 +86,17 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
+        Log.d("Foto de usuario:", foto);
+
         if(sharedPref.contains("Foto")){
-            cargarImagenBase64(foto);
+            if(foto != null && !foto.isEmpty())
+                cargarImagenBase64(foto);
+            else{
+                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
+                Glide.with(this)
+                        .load(imageUrl)
+                        .into(imgUsu);
+            }
         }
         else{
             imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
@@ -271,8 +280,8 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     private void mostrarDialogo(RutasModel ruta) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Título del Diálogo");
-        builder.setMessage("¿Estás seguro de borrar la ruta?");
+        builder.setTitle(getResources().getString(R.string.vasABorrarRuta));
+        builder.setMessage(getResources().getString(R.string.EstasSeguroDeBorrarRuta));
 
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override

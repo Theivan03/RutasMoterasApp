@@ -56,6 +56,7 @@ public class EditRuta extends AppCompatActivity {
 
     private ImageView imageView;
     private Button buttonSelectPhoto;
+    private Button buttonDeletePhoto;
     private Uri uri = null;
     private String FotoString;
     private String selectedComunidad;
@@ -67,9 +68,11 @@ public class EditRuta extends AppCompatActivity {
     String apiUrl;
     int idRuta;
     String token;
+    boolean fotoBorrada = false;
     RutasModel ruta;
     private String initialFotoString;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,16 @@ public class EditRuta extends AppCompatActivity {
 
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
+
+        buttonDeletePhoto = findViewById(R.id.borrarFoto);
+        buttonDeletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView.setImageDrawable(null);
+                FotoString = "";
+                uri = null;
+            }
+        });
 
         String rutaInfo = leerRutaDesdeArchivo();
 
@@ -98,20 +111,10 @@ public class EditRuta extends AppCompatActivity {
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(uri != null) {
-                    String fotoBase64 = convertirImagenABase64(uri);
-                    if(fotoBase64 != null) {
-                        GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoBase64);
-                    } else {
+                GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, FotoString);
 
-                    }
-                } else {
-                    GuardarRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, initialFotoString);
-                }
             }
         });
-
-
 
 
         Spinner spinnerTipoMoto = findViewById(R.id.spinnerTipoMoto);
@@ -155,13 +158,13 @@ public class EditRuta extends AppCompatActivity {
     }
 
     private void mostrarDialogoSeleccion() {
-        final CharSequence[] opciones = {"Tomar Foto", "Elegir de Galería", "Cancelar"};
+        final CharSequence[] opciones = {getResources().getString(R.string.hacerFoto), getResources().getString(R.string.seleccionarDeGaleria), getResources().getString(R.string.cancelar)};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditRuta.this);
-        builder.setTitle("Elige una opción");
+        builder.setTitle(getResources().getString(R.string.elegirOpcion));
         builder.setItems(opciones, (dialog, which) -> {
-            if (opciones[which].equals("Tomar Foto")) {
+            if (opciones[which].equals(getResources().getString(R.string.nuevaFoto))) {
                 abrirCamara();
-            } else if (opciones[which].equals("Elegir de Galería")) {
+            } else if (opciones[which].equals(getResources().getString(R.string.seleccionarDeGaleria))) {
                 abrirGaleria();
             } else {
                 dialog.dismiss();
@@ -172,7 +175,7 @@ public class EditRuta extends AppCompatActivity {
 
     private void abrirCamara() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Nuevo Picture");
+        values.put(MediaStore.Images.Media.TITLE, getResources().getString(R.string.nuevaFoto));
         uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -191,8 +194,9 @@ public class EditRuta extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     imageView.setImageURI(uri); // uri ya está establecida por abrirCamara()
                     FotoString = convertirImagenABase64(uri); // Asegúrate de que este método maneje correctamente null
+                    fotoBorrada = false;
                 } else {
-                    Toast.makeText(EditRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditRuta.this, getResources().getString(R.string.errorImagen), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -204,8 +208,9 @@ public class EditRuta extends AppCompatActivity {
                     imageView.setImageURI(selectedImage);
                     uri = selectedImage; // Actualizar la uri con la seleccionada de la galería
                     FotoString = convertirImagenABase64(selectedImage); // Convertir directamente la nueva URI a Base64
+                    fotoBorrada = false;
                 } else {
-                    Toast.makeText(EditRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditRuta.this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -241,6 +246,7 @@ public class EditRuta extends AppCompatActivity {
             cargarImagenBase64(base64Image);
 
             initialFotoString = base64Image;
+            FotoString = base64Image;
 
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -373,7 +379,7 @@ public class EditRuta extends AppCompatActivity {
             public void onSuccess(UtilREST.Response response) {
                 String responseData = response.content;
                 RutasModel ruta = UtilJSONParser.parsePostRuta(responseData);
-                Intent intent = new Intent(EditRuta.this, DetalleRuta2.class);
+                Intent intent = new Intent(EditRuta.this, User.class);
                 startActivity(intent);
             }
 

@@ -52,6 +52,36 @@
     <string name="descripcion">Description</string>
     <string name="creacion">Route Creation</string>
 
+    <string name="errorCorreo">Error sending email</string>
+    <string name="correoEnviado">Email Sent</string>
+    <string name="correoEnviadoCorrectamente">Your message has been sent successfully!</string>
+    <string name="enviandoCorreo">Sending Email</string>
+    <string name="esperarEnviandoCorreo">Please wait while the email is being sent...</string>
+    <string name="errorImagen">Error getting image</string>
+    <string name="imagenNoSeleccionada">Image not selected</string>
+    <string name="hacerFoto">Take Photo</string>
+    <string name="seleccionarDeGaleria">Select from Gallery</string>
+    <string name="elegirOpcion">Choose an option</string>
+    <string name="nuevaFoto">New Photo</string>
+    <string name="debePonerNombre">You must enter a name</string>
+
+    <string name="menosDe25Caracteres">No more than 25 characters allowed</string>
+    <string name="debePonerApellidos">You must enter the last name</string>
+    <string name="menosDe50Caracteres">No more than 50 characters allowed</string>
+    <string name="emailVacio">Email field cannot be empty</string>
+    <string name="contraseñaVacia">Password field cannot be empty</string>
+    <string name="emailValido">Please enter a valid email</string>
+
+    <string name="contra8Caracteres">Password must be at least 8 characters long.</string>
+    <string name="contraNumeros">Password must contain at least one number.</string>
+    <string name="contraMinuscula">Password must contain at least one lowercase letter.</string>
+    <string name="contraMayuscula">Password must contain at least one uppercase letter.</string>
+    <string name="contraEspecial">Password must contain at least one special character (@#$%^&amp;+=).</string>
+    <string name="contraEspacios">Password cannot contain spaces.</string>
+    <string name="vasABorrarRuta">You are going to delete a route</string>
+    <string name="EstasSeguroDeBorrarRuta">Are you sure you want to do this?</string>
+
+
     <string-array name="tipo_moto_array">
         <item>Scooter</item>
         <item>Custom</item>

@@ -91,7 +91,7 @@ public class ContactWithUsInvitado extends AppCompatActivity {
                 e.printStackTrace();
                 runOnUiThread(() -> {
                     hideProgressDialog();
-                    Toast.makeText(ContactWithUsInvitado.this, "Error al enviar el correo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContactWithUsInvitado.this, getResources().getString(R.string.errorCorreo), Toast.LENGTH_SHORT).show();
                 });
             }
         }).start();
@@ -99,8 +99,8 @@ public class ContactWithUsInvitado extends AppCompatActivity {
 
     private void showSuccessDialog() {
         AlertDialog successDialog = new AlertDialog.Builder(this)
-                .setTitle("Correo Enviado")
-                .setMessage("Tu mensaje ha sido enviado con éxito!")
+                .setTitle(getResources().getString(R.string.correoEnviado))
+                .setMessage(getResources().getString(R.string.correoEnviadoCorrectamente))
                 .setCancelable(false)
                 .create();
 
@@ -118,8 +118,8 @@ public class ContactWithUsInvitado extends AppCompatActivity {
 
     public void showProgressDialog() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Enviando Correo");
-        progressDialog.setMessage("Por favor, espere mientras se envía el correo...");
+        progressDialog.setTitle(getResources().getString(R.string.enviandoCorreo));
+        progressDialog.setMessage(getResources().getString(R.string.esperarEnviandoCorreo));
         progressDialog.setCancelable(false);
         progressDialog.show();
     }

@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 
@@ -61,6 +63,7 @@ public class CrearRuta extends AppCompatActivity {
 
     private ImageView imageView;
     private Button buttonSelectPhoto;
+    private Button buttonDeletePhoto;
     private Uri uri = null;
     private String FotoString;
     private String selectedComunidad;
@@ -88,17 +91,22 @@ public class CrearRuta extends AppCompatActivity {
         crear = findViewById(R.id.button);
         tit = findViewById(R.id.tit);
         des = findViewById(R.id.editTextTitle2);
-        crear.setOnClickListener(v -> {
-            if(uri != null) {
-                String fotoBase64 = convertirImagenABase64(uri);
-                if(fotoBase64 != null) {
-                    CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoBase64);
-                } else {
-                    Toast.makeText(CrearRuta.this, "Error al convertir la imagen", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(CrearRuta.this, "No se ha seleccionado ninguna imagen", Toast.LENGTH_SHORT).show();
+
+        setSentenceCapitalizationTextWatcher(des);
+
+        buttonDeletePhoto = findViewById(R.id.borrarFoto);
+        buttonDeletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView.setImageDrawable(null);
+                FotoString = "";
+                uri = null;
             }
+        });
+
+        crear.setOnClickListener(v -> {
+            CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, FotoString);
+
         });
 
 
@@ -148,7 +156,7 @@ public class CrearRuta extends AppCompatActivity {
                     imageView.setImageURI(uri);
                     FotoString = convertirImagenABase64(uri);
                 } else {
-                    Toast.makeText(CrearRuta.this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearRuta.this, getResources().getString(R.string.errorImagen), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -161,18 +169,18 @@ public class CrearRuta extends AppCompatActivity {
                     uri = selectedImage;
                     FotoString = convertirImagenABase64(selectedImage);
                 } else {
-                    Toast.makeText(CrearRuta.this, "Imagen no seleccionada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearRuta.this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
                 }
             });
 
     private void mostrarDialogoSeleccion() {
-        final CharSequence[] opciones = {"Tomar Foto", "Elegir de Galería", "Cancelar"};
+        final CharSequence[] opciones = {getResources().getString(R.string.hacerFoto), getResources().getString(R.string.seleccionarDeGaleria), getResources().getString(R.string.cancelar)};
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearRuta.this);
-        builder.setTitle("Elige una opción");
+        builder.setTitle(getResources().getString(R.string.elegirOpcion));
         builder.setItems(opciones, (dialog, which) -> {
-            if (opciones[which].equals("Tomar Foto")) {
+            if (opciones[which].equals(getResources().getString(R.string.nuevaFoto))) {
                 abrirCamara();
-            } else if (opciones[which].equals("Elegir de Galería")) {
+            } else if (opciones[which].equals(getResources().getString(R.string.seleccionarDeGaleria))) {
                 abrirGaleria();
             } else {
                 dialog.dismiss();
@@ -183,7 +191,7 @@ public class CrearRuta extends AppCompatActivity {
 
     private void abrirCamara() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Nuevo Picture");
+        values.put(MediaStore.Images.Media.TITLE, getResources().getString(R.string.nuevaFoto));
         uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -304,6 +312,53 @@ public class CrearRuta extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void setSentenceCapitalizationTextWatcher(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            private boolean capitalizeNext = false; // Flag to indicate the next character should be capitalized
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No implementation needed here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Check if the last character entered is a period or if a space is entered after a period
+                if (count > 0) {
+                    int endIndex = start + count;
+                    char lastChar = s.charAt(endIndex - 1);
+                    if (lastChar == '.' || (capitalizeNext && lastChar == ' ')) {
+                        capitalizeNext = true; // Set flag to capitalize the next character
+                    } else {
+                        capitalizeNext = false;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Capitalize the character if needed
+                if (capitalizeNext && s.length() > 0) {
+                    for (int i = 0; i < s.length(); i++) {
+                        if (capitalizeNext && Character.isLetter(s.charAt(i)) && Character.isLowerCase(s.charAt(i))) {
+                            s.replace(i, i + 1, String.valueOf(Character.toUpperCase(s.charAt(i))));
+                            capitalizeNext = false; // Reset the flag after capitalization
+                        } else if (s.charAt(i) == '.') {
+                            capitalizeNext = true; // Set the flag if there's a period
+                        } else if (!Character.isWhitespace(s.charAt(i))) {
+                            capitalizeNext = false; // Reset the flag if the next character is not whitespace
+                        }
+                    }
+                }
+
+                // Ensure the first character is always capitalized if it's a letter
+                if (s.length() > 0 && Character.isLetter(s.charAt(0)) && Character.isLowerCase(s.charAt(0))) {
+                    s.replace(0, 1, String.valueOf(Character.toUpperCase(s.charAt(0))));
+                }
+            }
+        });
     }
 
 }
