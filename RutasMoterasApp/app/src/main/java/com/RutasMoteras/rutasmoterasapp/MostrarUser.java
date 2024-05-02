@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -118,6 +119,17 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
         });
     }
 
+    private void cargarImagenBase64(String base64Image) {
+
+        try {
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Glide.with(this).asBitmap().load(decodedString).into(imagen);
+        } catch (IllegalArgumentException e) {
+            Log.e("Base64 Error", "Failed to decode Base64 string", e);
+            Glide.with(this).load(R.drawable.userwhothoutphoto).into(imagen);
+        }
+    }
+
     public void ObtenerUsuario(String url){
 
         CheckLogin.checkLastLoginDay(getApplicationContext());
@@ -140,9 +152,7 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
                         if (user != null) {
                             nombre.setText(user.getName());
-                            Glide.with(MostrarUser.this)
-                                    .load(user.getImage())
-                                    .into(imagen);
+                            cargarImagenBase64(user.getImage());
                         } else {
                             Log.e("MostrarUser", "El objeto user es nulo");
                         }

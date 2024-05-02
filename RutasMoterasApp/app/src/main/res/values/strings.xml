@@ -82,6 +82,15 @@
     <string name="vasABorrarRuta">Vas a borrar una ruta</string>
     <string name="EstasSeguroDeBorrarRuta">¿Estás seguro de que quiers hacerlo?</string>
 
+
+    <string name="borrarFoto">Borrar Foto</string>
+    <string name="editarUsuario">Editar Usuario</string>
+    <string name="editarRuta">Editar Ruta</string>
+    <string name="rutas">Rutas</string>
+    <string name="usuarios">Usuarios</string>
+
+
+
     <string-array name="tipo_moto_array">
         <item>Scooter</item>
         <item>Custom</item>

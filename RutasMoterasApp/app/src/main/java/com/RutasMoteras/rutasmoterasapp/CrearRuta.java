@@ -3,11 +3,16 @@ package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
@@ -60,7 +65,7 @@ import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class CrearRuta extends AppCompatActivity {
-
+    private static final int CODIGO_PERMISOS_CAMARA = 1;
     private ImageView imageView;
     private Button buttonSelectPhoto;
     private Button buttonDeletePhoto;
@@ -179,7 +184,7 @@ public class CrearRuta extends AppCompatActivity {
         builder.setTitle(getResources().getString(R.string.elegirOpcion));
         builder.setItems(opciones, (dialog, which) -> {
             if (opciones[which].equals(getResources().getString(R.string.nuevaFoto))) {
-                abrirCamara();
+                verificarPermisosCamara();
             } else if (opciones[which].equals(getResources().getString(R.string.seleccionarDeGaleria))) {
                 abrirGaleria();
             } else {
@@ -187,6 +192,38 @@ public class CrearRuta extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    private void verificarPermisosCamara() {
+        int estadoDePermiso = ContextCompat.checkSelfPermission(CrearRuta.this, android.Manifest.permission.CAMERA);
+        if (estadoDePermiso == PackageManager.PERMISSION_GRANTED) {  // Tenemos el permiso concedido...
+            Toast.makeText(CrearRuta.this, "El permiso para la cámara ya está concedido", Toast.LENGTH_SHORT).show();
+            abrirCamara();
+        } else { // No tenemos el permiso, lo pedimos...
+            ActivityCompat.requestPermissions(CrearRuta.this, new String[]{android.Manifest.permission.CAMERA}, CODIGO_PERMISOS_CAMARA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CODIGO_PERMISOS_CAMARA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Si se cancelo la petici
+                    // ón, los array's van vacíos.
+                    Toast.makeText(CrearRuta.this, "Has concedido el permiso para usar la cámara", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(CrearRuta.this, "Has denegado el permiso para usar la cámara", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+
+
+            // Aquí más casos dependiendo de los permisos
+            // case OTRO_CODIGO_DE_PERMISOS...
+
+        }
     }
 
     private void abrirCamara() {

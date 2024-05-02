@@ -82,6 +82,13 @@
     <string name="EstasSeguroDeBorrarRuta">Sind Sie sicher, dass Sie dies tun möchten?</string>
 
 
+    <string name="borrarFoto">حذف الصورة</string>
+    <string name="editarUsuario">تحرير المستخدم</string>
+    <string name="editarRuta">تحرير المسار</string>
+    <string name="rutas">مسارات</string>
+    <string name="usuarios">المستخدمين</string>
+
+
     <string-array name="tipo_moto_array">
         <item>Scooter</item>
         <item>Custom</item>

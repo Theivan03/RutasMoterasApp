@@ -404,4 +404,12 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, PantallaInicial.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }
