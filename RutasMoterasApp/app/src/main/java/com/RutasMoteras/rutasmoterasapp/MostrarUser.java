@@ -32,9 +32,9 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
     private String token;
     private RutasAdapter mAdaptadorRutas;
-    private ListView miListaRutas;
+    ListView miListaRutas;
     private ImageView imagen;
-    private TextView nombre;
+    TextView nombre;
     SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedURL;
     String apiUrl;
@@ -176,7 +176,7 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
 
         guardarRutaEnArchivo(rutaSeleccionada);
 
-        Intent intent = new Intent(MostrarUser.this, DetalleRuta.class);
+        Intent intent = new Intent(this, DetalleRutaViendoUsuario.class);
         startActivity(intent);
     }
 
@@ -186,11 +186,19 @@ public class MostrarUser extends AppCompatActivity implements AdapterView.OnItem
         Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
 
         try {
-            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput("ruta_seleccionada2.txt", Context.MODE_PRIVATE);
             fos.write(rutaInfo.getBytes());
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, DetalleRuta.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

@@ -26,7 +26,6 @@ import java.util.Calendar;
 public class Slash extends AppCompatActivity implements Animation.AnimationListener   {
 
     private static final long SPLASH_DELAY = 3000;
-    private Toast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class Slash extends AppCompatActivity implements Animation.AnimationListe
         SharedPreferences sharedPref = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
+        //editor.putString("URL", "http://44.207.234.210/");
         editor.putString("URL", "http://192.168.1.131:5000/");
         editor.apply();
 
@@ -54,12 +54,21 @@ public class Slash extends AppCompatActivity implements Animation.AnimationListe
                 SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
                 int tokenDay = sharedPref.getInt("TokenDay", -1);
 
+                sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+                Long role = sharedPref.getLong("Role", 1);
+
                 if (tokenDay != -1) {
                     int dayDifference = currentDay - tokenDay;
 
                     if (dayDifference <= 15) {
-                        Intent intent = new Intent(Slash.this, RutasList.class);
-                        startActivity(intent);
+                        if(role == 2){
+                            Intent intent = new Intent(Slash.this, SuperUser.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(Slash.this, RutasList.class);
+                            startActivity(intent);
+                        }
+
                     } else {
                         Intent intent = new Intent(Slash.this, PantallaInicial.class);
                         startActivity(intent);

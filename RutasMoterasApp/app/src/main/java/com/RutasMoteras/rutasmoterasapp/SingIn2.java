@@ -86,12 +86,12 @@ public class SingIn2 extends AppCompatActivity {
         });
     }
 
-    private boolean validarEmail(String email) {
+    boolean validarEmail(String email) {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return email.matches(emailPattern);
     }
 
-    private String validarContraseña(String contraseña) {
+    String validarContraseña(String contraseña) {
         if (contraseña.length() < 8) {
             return getResources().getString(R.string.contra8Caracteres);
         }
@@ -104,9 +104,6 @@ public class SingIn2 extends AppCompatActivity {
         if (!contraseña.matches(".*[A-Z].*")) {
             return getResources().getString(R.string.contraMayuscula);
         }
-        if (!contraseña.matches(".*[@#$%^&+=].*")) {
-            return getResources().getString(R.string.contraEspecial);
-        }
         if (contraseña.matches(".*\\s+.*")) {
             return getResources().getString(R.string.contraEspacios);
         }
@@ -114,7 +111,7 @@ public class SingIn2 extends AppCompatActivity {
     }
 
 
-    private void registrarUsuario(String password, String name, String surname, String email, int[] rolIds) {
+    void registrarUsuario(String password, String name, String surname, String email, int[] rolIds) {
         JSONObject usuario = new JSONObject();
         try {
             usuario.put("password", password);
@@ -151,5 +148,13 @@ public class SingIn2 extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, SingIn.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

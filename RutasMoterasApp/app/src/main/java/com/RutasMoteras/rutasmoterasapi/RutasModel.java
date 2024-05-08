@@ -21,6 +21,10 @@ public class RutasModel {
         this.Image = Image;
     }
 
+    public RutasModel() {
+
+    }
+
     public int getId() {
         return Id;
     }

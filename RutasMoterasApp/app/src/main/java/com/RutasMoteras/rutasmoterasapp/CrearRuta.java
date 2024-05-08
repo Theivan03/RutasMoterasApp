@@ -66,6 +66,12 @@ import nl.dionsegijn.konfetti.models.Size;
 
 public class CrearRuta extends AppCompatActivity {
     private static final int CODIGO_PERMISOS_CAMARA = 1;
+    private static final int CODIGO_PERMISOS_GALERIA = 2;
+    private ActivityResultLauncher<String> permissionLauncher;
+
+    private ActivityResultLauncher<String> galleryPermissionLauncher;
+    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<Intent> galleryLauncher;
     private ImageView imageView;
     private Button buttonSelectPhoto;
     private Button buttonDeletePhoto;
@@ -152,55 +158,91 @@ public class CrearRuta extends AppCompatActivity {
 
             }
         });
+
+        inicializarLaunchers();
     }
 
-    private ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    imageView.setImageURI(uri);
-                    FotoString = convertirImagenABase64(uri);
-                } else {
-                    Toast.makeText(CrearRuta.this, getResources().getString(R.string.errorImagen), Toast.LENGTH_SHORT).show();
-                }
-            });
+    private void inicializarLaunchers() {
+        permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                abrirCamara();
+            } else {
+                Toast.makeText(CrearRuta.this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-    private ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri selectedImage = result.getData().getData();
-                    imageView.setImageURI(selectedImage);
-                    uri = selectedImage;
-                    FotoString = convertirImagenABase64(selectedImage);
-                } else {
-                    Toast.makeText(CrearRuta.this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
-                }
-            });
+        galleryPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                abrirGaleria();
+            } else {
+                Toast.makeText(this, "Permiso para acceder a la galería denegado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                Uri imageUri = result.getData().getData();
+                imageView.setImageURI(imageUri);
+                FotoString = convertirImagenABase64(imageUri);
+            } else {
+                Toast.makeText(CrearRuta.this, "Error al capturar la imagen", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                Uri selectedImage = result.getData().getData();
+                imageView.setImageURI(selectedImage);
+                uri = selectedImage;
+                FotoString = convertirImagenABase64(selectedImage);
+            } else {
+                Toast.makeText(CrearRuta.this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void mostrarDialogoSeleccion() {
         final CharSequence[] opciones = {getResources().getString(R.string.hacerFoto), getResources().getString(R.string.seleccionarDeGaleria), getResources().getString(R.string.cancelar)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(CrearRuta.this);
-        builder.setTitle(getResources().getString(R.string.elegirOpcion));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Elegir opción");
         builder.setItems(opciones, (dialog, which) -> {
-            if (opciones[which].equals(getResources().getString(R.string.nuevaFoto))) {
-                verificarPermisosCamara();
-            } else if (opciones[which].equals(getResources().getString(R.string.seleccionarDeGaleria))) {
-                abrirGaleria();
-            } else {
-                dialog.dismiss();
+            switch (which) {
+                case 0: // Hacer foto
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        permissionLauncher.launch(Manifest.permission.CAMERA);
+                    } else {
+                        verificarPermisosCamara();
+                    }
+                    break;
+                case 1: // Seleccionar de galería
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        galleryPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    } else {
+                        verificarPermisosGaleria();
+                    }
+                    break;
+                case 2: // Cancelar
+                    dialog.dismiss();
+                    break;
             }
         });
         builder.show();
     }
 
+
     private void verificarPermisosCamara() {
-        int estadoDePermiso = ContextCompat.checkSelfPermission(CrearRuta.this, android.Manifest.permission.CAMERA);
-        if (estadoDePermiso == PackageManager.PERMISSION_GRANTED) {  // Tenemos el permiso concedido...
-            Toast.makeText(CrearRuta.this, "El permiso para la cámara ya está concedido", Toast.LENGTH_SHORT).show();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionLauncher.launch(Manifest.permission.CAMERA);
+        } else {
             abrirCamara();
-        } else { // No tenemos el permiso, lo pedimos...
-            ActivityCompat.requestPermissions(CrearRuta.this, new String[]{android.Manifest.permission.CAMERA}, CODIGO_PERMISOS_CAMARA);
+        }
+    }
+
+    private void verificarPermisosGaleria() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            galleryPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        } else {
+            abrirCamara();
         }
     }
 
@@ -219,16 +261,23 @@ public class CrearRuta extends AppCompatActivity {
                 }
                 break;
 
+            case CODIGO_PERMISOS_GALERIA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Si se cancelo la petici
+                    // ón, los array's van vacíos.
+                    Toast.makeText(CrearRuta.this, "Has concedido el permiso para usar la galeria", Toast.LENGTH_SHORT).show();
 
-            // Aquí más casos dependiendo de los permisos
-            // case OTRO_CODIGO_DE_PERMISOS...
+                } else {
+                    Toast.makeText(CrearRuta.this, "Has denegado el permiso para usar la galeria", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
 
         }
     }
 
     private void abrirCamara() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, getResources().getString(R.string.nuevaFoto));
+        values.put(MediaStore.Images.Media.TITLE, "Nueva Foto");
         uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -241,7 +290,7 @@ public class CrearRuta extends AppCompatActivity {
         galleryLauncher.launch(intent);
     }
 
-    private String convertirImagenABase64(Uri uriImagen) {
+    String convertirImagenABase64(Uri uriImagen) {
         try {
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
             Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);

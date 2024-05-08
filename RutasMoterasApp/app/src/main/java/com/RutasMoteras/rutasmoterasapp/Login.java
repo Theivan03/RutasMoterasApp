@@ -31,6 +31,7 @@ public class Login extends AppCompatActivity {
     EditText password;
     SharedPreferences sharedURL;
     String apiUrl;
+    int idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void loginUser(String password, String email) {
+    void loginUser(String password, String email) {
         JSONObject loginData = new JSONObject();
         try {
             loginData.put("password", password);
@@ -90,7 +91,7 @@ public class Login extends AppCompatActivity {
 
                 editor.apply();
 
-                ObtenerUsuario(apiUrl + "api/usuario/"+email, responseData, password);
+                ObtenerUsuario(apiUrl + "api/usuario/"+email, responseData);
             }
 
             @Override
@@ -106,7 +107,75 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void ObtenerUsuario(String url, String token, String contraseña){
+    public void ObtenerUsuario(String url, String token){
+
+        UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
+            @Override
+            public void onSuccess(UtilREST.Response r) {
+                String jsonContent = r.content;
+                UserModel user = UtilJSONParser.parseUserPosts(jsonContent);
+
+                String cp = "";
+                if (user.getPostalCode() != null && !user.getPostalCode().isEmpty()) {
+                    cp = user.getPostalCode();
+                }
+
+                String city = "";
+                if (user.getCity() != null && !user.getCity().isEmpty()) {
+                    city = user.getCity();
+                }
+
+                SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("Log", true);
+                editor.putLong("Id", user.getId());
+                editor.putString("Password", user.getPassword());
+                editor.putString("Name", user.getName());
+                editor.putString("Surname", user.getSurname());
+                editor.putString("City", city);
+                editor.putString("postalCode", cp);
+                editor.putString("Email", user.getEmail());
+                editor.putString("Foto", user.getImage());
+                editor.putLong("Role", user.getRoles());
+                editor.apply();
+
+
+                Log.d("Rol del usuario", String.valueOf(user.getRoles()));
+
+
+                sharedPref = getSharedPreferences("LogPreferences", Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
+                editor.putBoolean("Log", true);
+                editor.apply();
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if(user.getRoles() != 2){
+                            Intent intent = new Intent(Login.this, RutasList.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Intent intent = new Intent(Login.this, SuperUser.class);
+                            startActivity(intent);
+                        }
+                    }
+                }, 500);
+            }
+
+            @Override
+            public void onError(UtilREST.Response r) {
+                if (r.content != null) {
+                    Log.e("Login Error", r.content);
+                } else {
+                    Log.e("Login Error", "Error data is null");
+                }
+            }
+        });
+    }
+
+    public void ObtenerRolUsuario(String url, String token){
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
@@ -169,5 +238,13 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, PantallaInicial.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

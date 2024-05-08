@@ -1,6 +1,7 @@
 package com.RutasMoteras.rutasmoterasapi;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserModel {
     private long id;
@@ -13,13 +14,12 @@ public class UserModel {
     private String postalCode;
     private String image;
     private LocalDateTime creationDate;
-    private long roles;
+    private List<Role> roles; // Modificado para usar una lista de Role
 
     public UserModel() {
-
     }
 
-    public UserModel(long id, String username, String password, String name, String surname, String email, String city, String postalCode, String image, LocalDateTime creationDate, long roles) {
+    public UserModel(long id, String username, String password, String name, String surname, String email, String city, String postalCode, String image, LocalDateTime creationDate, List<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -114,11 +114,11 @@ public class UserModel {
         this.creationDate = creationDate;
     }
 
-    public long getRoles() {
-        return roles;
+    public Long getRoles() {
+        return roles != null && !roles.isEmpty() ? roles.get(0).getId() : null;
     }
 
-    public void setRoles(long roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

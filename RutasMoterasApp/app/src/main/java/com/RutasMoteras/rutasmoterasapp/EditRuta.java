@@ -62,8 +62,8 @@ public class EditRuta extends AppCompatActivity {
     private String selectedComunidad;
     private String selectedTipoMoto;
     private Button crear;
-    private EditText tit;
-    private EditText des;
+    EditText tit;
+    EditText des;
     SharedPreferences sharedURL;
     String apiUrl;
     int idRuta;

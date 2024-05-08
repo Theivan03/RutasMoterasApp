@@ -291,7 +291,7 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
                     rutasList.remove(index);
                     mAdaptadorRutas.notifyDataSetChanged();
 
-                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, ("http://192.168.1.131:5000/api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
+                    UtilREST.runQueryWithHeaders(UtilREST.QueryType.DELETE, (apiUrl + "api/ruta/" + ruta.getId()), token, new UtilREST.OnResponseListener() {
                         @Override
                         public void onSuccess(UtilREST.Response r) {
                         }

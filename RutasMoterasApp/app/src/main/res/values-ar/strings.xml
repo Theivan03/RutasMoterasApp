@@ -85,6 +85,8 @@
     <string name="rutas">مسارات</string>
     <string name="usuarios">المستخدمين</string>
 
+    <string name="crearUsuario">إنشاء مستخدم مسؤول</string>
+
 
     <string-array name="tipo_moto_array">
         <item>سكوتر</item>

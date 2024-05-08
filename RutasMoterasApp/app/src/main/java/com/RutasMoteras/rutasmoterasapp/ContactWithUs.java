@@ -52,7 +52,7 @@ public class ContactWithUs extends AppCompatActivity {
         });
     }
 
-    private void sendEmail(String nombre, String mensaje) {
+    void sendEmail(String nombre, String mensaje) {
 
         showProgressDialog();
 

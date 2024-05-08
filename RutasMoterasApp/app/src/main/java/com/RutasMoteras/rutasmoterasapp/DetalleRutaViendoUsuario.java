@@ -2,12 +2,17 @@ package com.RutasMoteras.rutasmoterasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -23,30 +28,23 @@ import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.graphics.Color;
-
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class DetalleRuta2 extends AppCompatActivity {
+public class DetalleRutaViendoUsuario extends AppCompatActivity {
 
     TextView tipoMotoTextView, tituloTextView, fechaTextView, comunidadTextView, descripcionTextView;
     ImageView imgView;
-    Button boton;
+    Button visitar;
     String token;
     RutasModel ruta;
     String apiUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_ruta2);
+        setContentView(R.layout.activity_detalle_ruta_viendo_usuario);
 
         tipoMotoTextView = findViewById(R.id.TipoMoto);
         tituloTextView = findViewById(R.id.Titulo);
@@ -54,8 +52,7 @@ public class DetalleRuta2 extends AppCompatActivity {
         comunidadTextView = findViewById(R.id.Comunidad);
         descripcionTextView = findViewById(R.id.Decripcion);
         imgView = findViewById(R.id.imgRuta);
-        boton = findViewById(R.id.button2);
-
+        visitar = findViewById(R.id.visitar);
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
@@ -68,31 +65,16 @@ public class DetalleRuta2 extends AppCompatActivity {
         LLamarApi(apiUrl + "api/ruta/" + rutaInfo);
         Log.d("Url de la ruta: ", apiUrl + "api/ruta/" + rutaInfo);
 
-        boton.setOnClickListener(new View.OnClickListener() {
+        visitar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetalleRuta2.this, EditRuta.class);
+                String userId = String.valueOf(ruta.getUserId());
+
+                Intent intent = new Intent(DetalleRutaViendoUsuario.this, MostrarUser.class);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
-    }
-
-    String leerRutaDesdeArchivo() {
-        StringBuilder rutaInfo = new StringBuilder();
-        try {
-            FileInputStream fis = openFileInput("ruta_seleccionada.txt");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                rutaInfo.append(linea);
-            }
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d("Leído del archivo:", rutaInfo.toString());
-        return rutaInfo.toString();
     }
 
     public void LLamarApi(String url){
@@ -115,8 +97,8 @@ public class DetalleRuta2 extends AppCompatActivity {
                 } else {
                     Log.d("ERROR!!!!!!!!!", "El contenido de la respuesta es nulo");
                 }
-                Toast.makeText(DetalleRuta2.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(DetalleRuta2.this, PantallaInicial.class);
+                Toast.makeText(DetalleRutaViendoUsuario.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(DetalleRutaViendoUsuario.this, PantallaInicial.class);
                 startActivity(intent);
             }
         });
@@ -167,11 +149,37 @@ public class DetalleRuta2 extends AppCompatActivity {
                     .load(decodedString)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .error(R.drawable.favicon) // Asegúrate de tener este recurso drawable.
+                    .error(R.drawable.favicon)
                     .into(imgView);
         } else {
 
         }
+    }
+
+    String leerRutaDesdeArchivo() {
+        StringBuilder rutaInfo = new StringBuilder();
+        try {
+            FileInputStream fis = openFileInput("ruta_seleccionada2.txt");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                rutaInfo.append(linea);
+            }
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("Leído del archivo:", rutaInfo.toString());
+        return rutaInfo.toString();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MostrarUser.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 
 }

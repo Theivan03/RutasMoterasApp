@@ -24,7 +24,7 @@
     <string name="correo">Tu email</string>
     <string name="invitado">Invitado</string>
     <string name="iniSesion">Iniciar Sesión</string>
-    <string name="registrar">Registrar</string>
+    <string name="registrar">Crear Usuario</string>
     <string name="cancelar">Cancelar</string>
     <string name="crear">Crear</string>
     <string name="masInfo">Más Información</string>
@@ -89,6 +89,7 @@
     <string name="rutas">Rutas</string>
     <string name="usuarios">Usuarios</string>
 
+    <string name="crearUsuario">Crear Usuario Admin</string>
 
 
     <string-array name="tipo_moto_array">

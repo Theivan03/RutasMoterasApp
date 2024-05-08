@@ -82,11 +82,13 @@
     <string name="EstasSeguroDeBorrarRuta">Are you sure you want to do this?</string>
 
 
-    <string name="borrarFoto">حذف الصورة</string>
-    <string name="editarUsuario">تحرير المستخدم</string>
-    <string name="editarRuta">تحرير المسار</string>
-    <string name="rutas">مسارات</string>
-    <string name="usuarios">المستخدمين</string>
+    <string name="borrarFoto">Delete Photo</string>
+    <string name="editarUsuario">Edit User</string>
+    <string name="editarRuta">Edit Route</string>
+    <string name="rutas">Routes</string>
+    <string name="usuarios">Users</string>
+
+    <string name="crearUsuario">Admin-Benutzer erstellen</string>
 
 
     <string-array name="tipo_moto_array">

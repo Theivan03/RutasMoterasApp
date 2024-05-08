@@ -67,7 +67,7 @@ public class UtilJSONParser {
         try {
             JSONObject jsonObject = new JSONObject(strJson);
             user = new UserModel();
-            user.setId(jsonObject.optInt("id", -1));
+            user.setId(jsonObject.optLong("id", -1));
             user.setUsername(jsonObject.optString("username", "").trim());
             user.setPassword(jsonObject.optString("password", "").trim());
             user.setName(jsonObject.optString("name", "").trim());
@@ -76,12 +76,25 @@ public class UtilJSONParser {
             user.setCity(jsonObject.optString("city", "").trim());
             user.setPostalCode(jsonObject.optString("postalCode", "").trim());
             user.setImage(jsonObject.optString("image", "").trim());
-            // Esta parte puede necesitar una conversión si LocalDateTime no se admite directamente
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                user.setCreationDate(LocalDateTime.parse(jsonObject.optString("creationDate", "")));
+
+            // Convertir la fecha de creación
+            if (!jsonObject.optString("creationDate").isEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    user.setCreationDate(LocalDateTime.parse(jsonObject.optString("creationDate")));
+                }
             }
-            // Suponiendo que "roles" es un array JSON de roles
-            user.setRoles(jsonObject.optInt("roles", -1));
+
+            // Parsear los roles
+            JSONArray rolesArray = jsonObject.optJSONArray("roles");
+            List<Role> roles = new ArrayList<>();
+            if (rolesArray != null) {
+                for (int i = 0; i < rolesArray.length(); i++) {
+                    JSONObject roleObject = rolesArray.getJSONObject(i);
+                    Role role = new Role(roleObject.optLong("id", -1), roleObject.optString("name", "").trim());
+                    roles.add(role);
+                }
+            }
+            user.setRoles(roles);
 
         } catch (JSONException e) {
             e.printStackTrace();

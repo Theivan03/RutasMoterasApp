@@ -155,7 +155,7 @@ public class DetalleRuta extends AppCompatActivity {
         }
     }
 
-    private String leerRutaDesdeArchivo() {
+    String leerRutaDesdeArchivo() {
         StringBuilder rutaInfo = new StringBuilder();
         try {
             FileInputStream fis = openFileInput("ruta_seleccionada.txt");
@@ -171,6 +171,14 @@ public class DetalleRuta extends AppCompatActivity {
         }
         Log.d("Leído del archivo:", rutaInfo.toString());
         return rutaInfo.toString();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, RutasList.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 
 }

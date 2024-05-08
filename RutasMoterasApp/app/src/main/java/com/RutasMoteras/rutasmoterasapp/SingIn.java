@@ -64,4 +64,12 @@ public class SingIn extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }

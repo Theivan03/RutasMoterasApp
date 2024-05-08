@@ -149,7 +149,7 @@ public class EditInfoUser extends AppCompatActivity {
         builder.show();
     }
 
-    private String convertirImagenABase64(Uri uriImagen) {
+    String convertirImagenABase64(Uri uriImagen) {
         try {
             InputStream imageStream = getContentResolver().openInputStream(uriImagen);
             Bitmap bitmapOriginal = BitmapFactory.decodeStream(imageStream);

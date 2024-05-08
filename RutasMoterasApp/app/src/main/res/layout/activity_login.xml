@@ -21,9 +21,9 @@
 
     <Button
         android:id="@+id/registrar"
-        android:backgroundTint="#1E88E5"
         android:layout_width="128dp"
-        android:layout_height="49dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#1E88E5"
         android:text="@string/registrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,9 +34,9 @@
 
     <Button
         android:id="@+id/iniciar"
-        android:backgroundTint="#1E88E5"
         android:layout_width="115dp"
-        android:layout_height="52dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#1E88E5"
         android:text="@string/iniSesion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

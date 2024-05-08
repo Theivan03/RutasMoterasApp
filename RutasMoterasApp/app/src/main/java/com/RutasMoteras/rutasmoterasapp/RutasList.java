@@ -93,7 +93,13 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 }
             });
         } else {
-            imgUsu.setClickable(false);
+            imgUsu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RutasList.this, Login.class);
+                    startActivity(intent);
+                }
+            });
         }
 
 
@@ -407,6 +413,21 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public void onBackPressed() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("TokenDay", -1);
+        editor.apply();
+
+        sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+
+        sharedPref = getSharedPreferences("LogPreferences", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putBoolean("Log", false);
+        editor.apply();
+
         Intent intent = new Intent(this, PantallaInicial.class);
         startActivity(intent);
         finish();
