@@ -90,6 +90,9 @@
 
     <string name="crearUsuario">Admin-Benutzer erstellen</string>
 
+    <string name="noti1">Route erstellt!!! 🎉</string>
+    <string name="noti2">Danke, dass Sie meine App nutzen. Viel Spaß damit!</string>
+
 
     <string-array name="tipo_moto_array">
         <item>Scooter</item>

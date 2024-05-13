@@ -87,6 +87,9 @@
 
     <string name="crearUsuario">إنشاء مستخدم مسؤول</string>
 
+    <string name="noti1">تم إنشاء الطريق!!! 🎉</string>
+    <string name="noti2">شكرًا لاستخدامك تطبيقي. استمتع به!</string>
+
 
     <string-array name="tipo_moto_array">
         <item>سكوتر</item>

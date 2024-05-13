@@ -10,8 +10,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -167,16 +169,17 @@ public class CrearRuta extends AppCompatActivity {
             if (isGranted) {
                 abrirCamara();
             } else {
-                Toast.makeText(CrearRuta.this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+                // Aquí puedes mostrar un Toast informativo o un diálogo explicativo si es apropiado
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    mostrarExplicacionPermiso();
+                } else {
+                    Toast.makeText(this, "Permiso de cámara denegado. Por favor, habilita el permiso en ajustes.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         galleryPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                abrirGaleria();
-            } else {
-                Toast.makeText(this, "Permiso para acceder a la galería denegado", Toast.LENGTH_SHORT).show();
-            }
+            abrirGaleria();
         });
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -185,7 +188,6 @@ public class CrearRuta extends AppCompatActivity {
                 imageView.setImageURI(imageUri);
                 FotoString = convertirImagenABase64(imageUri);
             } else {
-                Toast.makeText(CrearRuta.this, "Error al capturar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -196,9 +198,17 @@ public class CrearRuta extends AppCompatActivity {
                 uri = selectedImage;
                 FotoString = convertirImagenABase64(selectedImage);
             } else {
-                Toast.makeText(CrearRuta.this, getResources().getString(R.string.imagenNoSeleccionada), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void mostrarExplicacionPermiso() {
+        new AlertDialog.Builder(this)
+                .setTitle("Permiso necesario")
+                .setMessage("Necesitamos acceso a tu cámara para poder tomar fotos.")
+                .setPositiveButton("Ok", (dialog, which) -> permissionLauncher.launch(Manifest.permission.CAMERA))
+                .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
     }
 
     private void mostrarDialogoSeleccion() {
@@ -253,25 +263,11 @@ public class CrearRuta extends AppCompatActivity {
             case CODIGO_PERMISOS_CAMARA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Si se cancelo la petici
                     // ón, los array's van vacíos.
-                    Toast.makeText(CrearRuta.this, "Has concedido el permiso para usar la cámara", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(CrearRuta.this, "Has denegado el permiso para usar la cámara", Toast.LENGTH_SHORT).show();
-
+                    ActivityCompat.requestPermissions(CrearRuta.this, new String[]{Manifest.permission.CAMERA}, CODIGO_PERMISOS_CAMARA);
                 }
                 break;
-
-            case CODIGO_PERMISOS_GALERIA:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Si se cancelo la petici
-                    // ón, los array's van vacíos.
-                    Toast.makeText(CrearRuta.this, "Has concedido el permiso para usar la galeria", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(CrearRuta.this, "Has denegado el permiso para usar la galeria", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
-
         }
     }
 
@@ -352,6 +348,9 @@ public class CrearRuta extends AppCompatActivity {
                 runOnUiThread(() -> {
                     launchConfetti();
                     showSuccessDialog();
+                    if(checkNotificationPermission()){
+                        sendNotification();
+                    };
                 });
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -374,6 +373,40 @@ public class CrearRuta extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void sendNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String channelId = "my_channel_id";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, "My Channel", NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("Canal para notificaciones importantes");
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Intent intent = new Intent(this, RutasList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.mipmap.logo_round)
+                .setContentTitle("Ruta creada!!!🎉")
+                .setContentText("Gracias por usar mi aplicación. Disfrutala!.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText("Gracias por aceptar recibir notificaciones."));
+
+        notificationManager.notify(1, builder.build());
+    }
+
+    private boolean checkNotificationPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void launchConfetti() {

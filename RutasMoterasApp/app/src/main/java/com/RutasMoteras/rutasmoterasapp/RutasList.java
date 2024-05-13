@@ -1,13 +1,28 @@
 package com.RutasMoteras.rutasmoterasapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,6 +61,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem borrarFiltroItem;
     private Handler handler = new Handler(Looper.getMainLooper());
+    private static final int CODIGO_PERMISOS_NOTIFICACION = 1;
     SharedPreferences sharedURL;
     String apiUrl;
     private Toast customToast;
@@ -66,17 +82,16 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         imgUsu = findViewById(R.id.userImageView);
         String imageUrl;
 
-        if(userPrefs.contains("Foto")){
-            if(foto != null && !foto.isEmpty())
+        if (userPrefs.contains("Foto")) {
+            if (foto != null && !foto.isEmpty())
                 cargarImagenBase64(foto);
-            else{
+            else {
                 imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
                 Glide.with(this)
                         .load(imageUrl)
                         .into(imgUsu);
             }
-        }
-        else{
+        } else {
             imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
             Glide.with(this)
                     .load(imageUrl)
@@ -128,6 +143,8 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
             }
         });
 
+        showConsentDialog();
+
         LLamarApi(apiUrl + "api/rutas");
         //cargarDatosDeLaApi();
     }
@@ -151,6 +168,11 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         }
     }
+
+    private void showConsentDialog() {
+        ActivityCompat.requestPermissions(RutasList.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, CODIGO_PERMISOS_NOTIFICACION);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
