@@ -4,16 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Properties;
 
@@ -26,6 +25,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class ContactWithUsInvitado extends AppCompatActivity {
+    private static final String SENDER_EMAIL = "rutasmoterasoficial@gmail.com";
+    private static final String RECEIVER_EMAIL = "rutasmoterasoficial@gmail.com";
+    private static final String PASSWORD_SENDER_EMAIL = "tioilxblzdgivveh";
+    private static final String SMTP_HOST = "smtp.gmail.com";
+    private static final int SMTP_PORT = 587;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -41,60 +46,64 @@ public class ContactWithUsInvitado extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = nameField.getText().toString();
-                String message = messageField.getText().toString();
-                String email = emailField.getText().toString();
+                String name = nameField.getText().toString().trim();
+                String message = messageField.getText().toString().trim();
+                String email = emailField.getText().toString().trim();
 
-                sendEmail(name, message, email);
+                if (validateInput(name, message, email)) {
+                    sendEmail(name, message, email);
+                } else {
+                    Snackbar.make(view, getResources().getString(R.string.errorValidacion), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
 
+    private boolean validateInput(String name, String message, String email) {
+        return !name.isEmpty() && !message.isEmpty() && !email.isEmpty();
+    }
+
     private void sendEmail(String nombre, String mensaje, String email) {
+        showProgressDialog();
 
         new Thread(() -> {
             try {
-
-                final String passwordSenderEmail = "tioilxblzdgivveh";
-
-                final String senderEmail = "rutasmoterasoficial@gmail.com";
-                final String receiverEmail = "rutasmoterasoficial@gmail.com";
-
-                final String host = "smtp.gmail.com";
                 Properties properties = new Properties();
                 properties.put("mail.transport.protocol", "smtp");
-                properties.put("mail.smtp.host", host);
-                properties.put("mail.smtp.port", "587");
+                properties.put("mail.smtp.host", SMTP_HOST);
+                properties.put("mail.smtp.port", SMTP_PORT);
                 properties.put("mail.smtp.auth", "true");
                 properties.put("mail.smtp.starttls.enable", "true");
 
                 Session session = Session.getInstance(properties, new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(senderEmail, passwordSenderEmail);
+                        return new PasswordAuthentication(SENDER_EMAIL, PASSWORD_SENDER_EMAIL);
                     }
                 });
 
                 MimeMessage mimeMessage = new MimeMessage(session);
-                mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmail));
-
+                mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(RECEIVER_EMAIL));
                 mimeMessage.setSubject("Duda/Error de " + nombre);
                 mimeMessage.setText("Hola, \n\nSoy " + nombre + ", mi correo es el " + email + "\n\n\n" + mensaje + ". \n\nSaludos!😘");
 
                 Transport.send(mimeMessage);
-                runOnUiThread(() -> {
-                    hideProgressDialog();
-                    showSuccessDialog();
-
-                });
+                runOnUiThread(this::onEmailSentSuccess);
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> {
-                    hideProgressDialog();
-                    Toast.makeText(ContactWithUsInvitado.this, getResources().getString(R.string.errorCorreo), Toast.LENGTH_SHORT).show();
-                });
+                runOnUiThread(() -> onEmailSentFailure(e));
             }
         }).start();
+    }
+
+    private void onEmailSentSuccess() {
+        hideProgressDialog();
+        showSuccessDialog();
+    }
+
+    private void onEmailSentFailure(Exception e) {
+        hideProgressDialog();
+        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.errorCorreo) + ": " + e.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     private void showSuccessDialog() {
@@ -106,21 +115,19 @@ public class ContactWithUsInvitado extends AppCompatActivity {
 
         successDialog.show();
 
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(ContactWithUsInvitado.this, RutasList.class);
-                startActivity(intent);
-            }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent = new Intent(ContactWithUsInvitado.this, RutasList.class);
+            startActivity(intent);
         }, 1500);
     }
 
     public void showProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(getResources().getString(R.string.enviandoCorreo));
-        progressDialog.setMessage(getResources().getString(R.string.esperarEnviandoCorreo));
-        progressDialog.setCancelable(false);
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(getResources().getString(R.string.enviandoCorreo));
+            progressDialog.setMessage(getResources().getString(R.string.esperarEnviandoCorreo));
+            progressDialog.setCancelable(false);
+        }
         progressDialog.show();
     }
 

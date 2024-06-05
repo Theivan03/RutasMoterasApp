@@ -12,57 +12,71 @@ import android.widget.EditText;
 
 public class SingIn extends AppCompatActivity {
 
+    private EditText nombre;
+    private EditText apellidos;
+    private Button siguiente;
+    private Button cancelar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_in);
 
-        Button siguiente = findViewById(R.id.siguiente);
-        Button cancelar = findViewById(R.id.cancelar);
-        EditText nombre = findViewById(R.id.nombre);
-        EditText apellidos = findViewById(R.id.apellidos);
+        initializeViews();
+        setupListeners();
+    }
 
-        siguiente.setOnClickListener(new View.OnClickListener() {
+    private void initializeViews() {
+        nombre = findViewById(R.id.nombre);
+        apellidos = findViewById(R.id.apellidos);
+        siguiente = findViewById(R.id.siguiente);
+        cancelar = findViewById(R.id.cancelar);
+    }
 
-            @Override
-            public void onClick(View v) {
-                String nombreText = nombre.getText().toString().trim();
-                String apellidosText = apellidos.getText().toString().trim();
+    private void setupListeners() {
+        siguiente.setOnClickListener(v -> handleNextButtonClick());
+        cancelar.setOnClickListener(v -> handleCancelButtonClick());
+    }
 
-                if (nombreText.isEmpty()) {
-                    nombre.setError(getResources().getString(R.string.debePonerNombre));
-                    return;
-                }
+    private void handleNextButtonClick() {
+        String nombreText = nombre.getText().toString().trim();
+        String apellidosText = apellidos.getText().toString().trim();
 
-                if (nombreText.length() > 25) {
-                    nombre.setError(getResources().getString(R.string.menosDe25Caracteres));
-                    return;
-                }
+        if (validateFields(nombreText, apellidosText)) {
+            Intent intent = new Intent(SingIn.this, SingIn2.class);
+            intent.putExtra("nombre", nombreText);
+            intent.putExtra("apellidos", apellidosText);
+            startActivity(intent);
+        }
+    }
 
-                if (apellidosText.isEmpty()) {
-                    apellidos.setError(getResources().getString(R.string.debePonerApellidos));
-                    return;
-                }
+    private boolean validateFields(String nombreText, String apellidosText) {
+        if (nombreText.isEmpty()) {
+            nombre.setError(getResources().getString(R.string.debePonerNombre));
+            return false;
+        }
 
-                if (apellidosText.length() > 50) {
-                    apellidos.setError(getResources().getString(R.string.menosDe50Caracteres));
-                    return;
-                }
+        if (nombreText.length() > 25) {
+            nombre.setError(getResources().getString(R.string.menosDe25Caracteres));
+            return false;
+        }
 
-                Intent intent = new Intent(SingIn.this, SingIn2.class);
-                intent.putExtra("nombre", nombreText);
-                intent.putExtra("apellidos", apellidosText);
-                startActivity(intent);
-            }
-        });
+        if (apellidosText.isEmpty()) {
+            apellidos.setError(getResources().getString(R.string.debePonerApellidos));
+            return false;
+        }
 
-        cancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SingIn.this, Login.class);
-                startActivity(intent);
-            }
-        });
+        if (apellidosText.length() > 50) {
+            apellidos.setError(getResources().getString(R.string.menosDe50Caracteres));
+            return false;
+        }
+
+        return true;
+    }
+
+    private void handleCancelButtonClick() {
+        Intent intent = new Intent(SingIn.this, Login.class);
+        startActivity(intent);
     }
 
     @Override

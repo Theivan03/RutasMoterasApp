@@ -93,6 +93,10 @@
 
     <string name="noti1">Ruta creada!!!🎉</string>
     <string name="noti2">Gracias por usar mi aplicación. Disfrutala!.</string>
+    <string name="crearSuperUser">Crear Super Usuario</string>
+    <string name="errorValidacion">No puede haber elementos vacios!</string>
+    <string name="guia">Guia de uso</string>
+    <string name="descripcionrutasmoteras">Cuando veamos este texto en la parte superior de la pantalla significa que cuando pulsemos sobre el nos llevará al inicio \nPulsa en el video de abajo para reproducirlo y ver un ejemplo de uso</string>
 
 
     <string-array name="tipo_moto_array">

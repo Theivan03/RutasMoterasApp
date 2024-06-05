@@ -40,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import com.RutasMoteras.rutasmoterasapi.CheckLogin;
 import com.bumptech.glide.Glide;
 import com.RutasMoteras.rutasmoterasapi.RutasModel;
@@ -53,19 +52,20 @@ import java.util.List;
 
 public class RutasList extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    RutasAdapter mAdaptadorRutas;
-    ListView miListaRutas;
-    String token;
-    long tokenTime;
-    ImageView imgUsu;
-    SwipeRefreshLayout swipeRefreshLayout;
-    MenuItem borrarFiltroItem;
-    private Handler handler = new Handler(Looper.getMainLooper());
     private static final int CODIGO_PERMISOS_NOTIFICACION = 1;
-    SharedPreferences sharedURL;
-    String apiUrl;
-    private Toast customToast;
+    private static final String TAG = "RutasList";
 
+    private RutasAdapter mAdaptadorRutas;
+    private ListView miListaRutas;
+    private String token;
+    private long tokenTime;
+    private ImageView imgUsu;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MenuItem borrarFiltroItem;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private SharedPreferences sharedURL;
+    private String apiUrl;
+    private Toast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,107 +77,75 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
+        imgUsu = findViewById(R.id.userImageView);
         String foto = userPrefs.getString("Foto", null);
 
-        imgUsu = findViewById(R.id.userImageView);
-        String imageUrl;
+        loadUserImage(foto, userPrefs);
 
-        if (userPrefs.contains("Foto")) {
-            if (foto != null && !foto.isEmpty())
-                cargarImagenBase64(foto);
-            else {
-                imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
-                Glide.with(this)
-                        .load(imageUrl)
-                        .into(imgUsu);
-            }
-        } else {
-            imageUrl = "https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq";
-            Glide.with(this)
-                    .load(imageUrl)
-                    .into(imgUsu);
-        }
-
-
-        if (userPrefs.contains("Id")) {
-            imgUsu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RutasList.this, User.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            imgUsu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RutasList.this, Login.class);
-                    startActivity(intent);
-                }
-            });
-        }
-
+        setupUserImageClickListener(userPrefs);
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         token = sharedPref.getString("LoginResponse", null);
         tokenTime = sharedPref.getLong("TokenTimestamp", 0);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        ImageButton menuButton = findViewById(R.id.menuButton);
-        menuButton.setOnClickListener(v -> openOptionsMenu());
+        setupToolbar();
 
         miListaRutas = findViewById(R.id.miListaRutas);
         miListaRutas.setOnItemClickListener(this);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                LLamarApi(apiUrl + "api/rutas");
-                swipeRefreshLayout.setRefreshing(false);
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchApiData(apiUrl + "api/rutas");
+            swipeRefreshLayout.setRefreshing(false);
         });
 
-        showConsentDialog();
+        requestNotificationPermission();
 
-        LLamarApi(apiUrl + "api/rutas");
-        //cargarDatosDeLaApi();
+        fetchApiData(apiUrl + "api/rutas");
     }
 
-    private void cargarDatosDeLaApi() {
-        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        String jsonRutas = sharedPref.getString("datosRutas", null);
-
-        if (jsonRutas != null && !jsonRutas.isEmpty()) {
-            try {
-                List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonRutas);
-                mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
-                miListaRutas.setAdapter(mAdaptadorRutas);
-                mAdaptadorRutas.notifyDataSetChanged();
-            } catch (Exception e) {
-                Toast.makeText(this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_SHORT).show();
-                Log.e("RutasList", "Error al parsear los datos de las rutas", e);
+    private void loadUserImage(String foto, SharedPreferences userPrefs) {
+        if (userPrefs.contains("Foto")) {
+            if (foto != null && !foto.isEmpty()) {
+                cargarImagenBase64(foto);
+            } else {
+                loadImageFromUrl("https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq");
             }
         } else {
-            // Llama a la API si no hay datos en SharedPreferences o los datos son inválidos
-
+            loadImageFromUrl("https://drive.google.com/uc?id=1veQeZEa0_E17VSfY64cVGnMlUKgboNiq");
         }
     }
 
-    private void showConsentDialog() {
-        ActivityCompat.requestPermissions(RutasList.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, CODIGO_PERMISOS_NOTIFICACION);
+    private void loadImageFromUrl(String imageUrl) {
+        Glide.with(this)
+                .load(imageUrl)
+                .into(imgUsu);
     }
 
+    private void setupUserImageClickListener(SharedPreferences userPrefs) {
+        if (userPrefs.contains("Id")) {
+            imgUsu.setOnClickListener(v -> startActivity(new Intent(RutasList.this, User.class)));
+        } else {
+            imgUsu.setOnClickListener(v -> startActivity(new Intent(RutasList.this, Login.class)));
+        }
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> openOptionsMenu());
+    }
+
+    private void requestNotificationPermission() {
+        ActivityCompat.requestPermissions(RutasList.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, CODIGO_PERMISOS_NOTIFICACION);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-
         if (userPrefs.contains("Id")) {
             getMenuInflater().inflate(R.menu.mi_menu_usuario, menu);
         } else {
@@ -188,51 +156,43 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         if (borrarFiltroItem != null) {
             borrarFiltroItem.setVisible(false);
         } else {
-            Log.e("Error", "El elemento del menú con ID R.id.BorrarFiltro no se encontró");
+            Log.e(TAG, "El elemento del menú con ID R.id.BorrarFiltro no se encontró");
         }
 
         return true;
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.IniciarSesion || id == R.id.GuiaUsuario || id == R.id.AddRuta ||
-                id == R.id.Contacta || id == R.id.MasInfo || id == R.id.ContactaInvitado) {
-            Intent intent = null;
-            switch (id) {
-                case R.id.IniciarSesion:
-                    intent = new Intent(this, Login.class);
-                    break;
-                case R.id.GuiaUsuario:
-                    intent = new Intent(this, Informacion.class);
-                    break;
-                case R.id.MasInfo:
-                    intent = new Intent(this, Informacion.class);
-                    break;
-                case R.id.AddRuta:
-                    intent = new Intent(this, CrearRuta.class);
-                    break;
-                case R.id.Contacta:
-                    intent = new Intent(this, ContactWithUs.class);
-                    break;
-                case R.id.ContactaInvitado:
-                    intent = new Intent(this, ContactWithUsInvitado.class);
-                    break;
-            }
-            startActivity(intent);
-            return true;
+        switch (id) {
+            case R.id.IniciarSesion:
+                startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.GuiaUsuario:
+                startActivity(new Intent(this, GuiaUsuario.class));
+                break;
+            case R.id.MasInfo:
+                startActivity(new Intent(this, Informacion.class));
+                break;
+            case R.id.AddRuta:
+                startActivity(new Intent(this, CrearRuta.class));
+                break;
+            case R.id.Contacta:
+                startActivity(new Intent(this, ContactWithUs.class));
+                break;
+            case R.id.ContactaInvitado:
+                startActivity(new Intent(this, ContactWithUsInvitado.class));
+                break;
+            case R.id.BorrarFiltro:
+                fetchApiData(apiUrl + "api/rutas");
+                setBorrarFiltroVisible(false);
+                break;
+            default:
+                handleFilterMenuItem(id);
+                break;
         }
-
-        if (id == R.id.BorrarFiltro) {
-            LLamarApi(apiUrl + "api/rutas");
-            SetVisibleTrueBorrarFiltro(false);
-        } else {
-            handleFilterMenuItem(id);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -321,36 +281,26 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 path = "api/rutasT/GranTurismo";
                 break;
             default:
-                Log.e("Menu Selection", "No path found for item ID: " + itemId);
+                Log.e(TAG, "No path found for item ID: " + itemId);
                 return;
         }
-        LLamarApi(apiUrl + path);
-        SetVisibleTrueBorrarFiltro(true);
+        fetchApiData(apiUrl + path);
+        setBorrarFiltroVisible(true);
     }
 
-    private void SetVisibleTrueBorrarFiltro(boolean visible) {
+    private void setBorrarFiltroVisible(boolean visible) {
         handler.postDelayed(() -> borrarFiltroItem.setVisible(visible), 1000);
     }
 
-    public void SetVisibleTrueBorrarFiltro(){
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                borrarFiltroItem.setVisible(true);
-            }
-        }, 1000);
-    }
-
-    public void LLamarApi(String url){
-
+    private void fetchApiData(String url) {
         showCustomToast();
 
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
-            public void onSuccess(UtilREST.Response r) {
-                String jsonContent = r.content;
+            public void onSuccess(UtilREST.Response response) {
+                String jsonContent = response.content;
                 List<RutasModel> rutasList = UtilJSONParser.parseArrayRutasPosts(jsonContent);
 
                 hideCustomToast();
@@ -358,19 +308,17 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
                 mAdaptadorRutas = new RutasAdapter(getApplicationContext(), R.layout.rutas_primera_impresion, rutasList);
                 miListaRutas.setAdapter(mAdaptadorRutas);
                 mAdaptadorRutas.notifyDataSetChanged();
-
             }
 
             @Override
-            public void onError(UtilREST.Response r) {
-                if (r.content != null) {
-                    Log.d("ERROR!!!!!!!!!", r.content);
+            public void onError(UtilREST.Response response) {
+                if (response.content != null) {
+                    Log.d(TAG, response.content);
                 } else {
-                    Log.d("ERROR!!!!!!!!!", "El contenido de la respuesta es nulo");
+                    Log.d(TAG, "El contenido de la respuesta es nulo");
                 }
                 Toast.makeText(RutasList.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(RutasList.this, PantallaInicial.class);
-                startActivity(intent);
+                startActivity(new Intent(RutasList.this, PantallaInicial.class));
 
                 hideCustomToast();
             }
@@ -379,35 +327,28 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         RutasModel rutaSeleccionada = (RutasModel) parent.getItemAtPosition(position);
-
         guardarRutaEnArchivo(rutaSeleccionada);
 
-        Intent intent = new Intent(RutasList.this, DetalleRuta.class);
-        startActivity(intent);
+        startActivity(new Intent(RutasList.this, DetalleRuta.class));
     }
 
     private void guardarRutaEnArchivo(RutasModel ruta) {
-
         String rutaInfo = String.valueOf(ruta.getId());
-        Log.d("Id de ruta: ", String.valueOf(ruta.getId()));
+        Log.d(TAG, "Id de ruta: " + rutaInfo);
 
-        try {
-            FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE);
+        try (FileOutputStream fos = openFileOutput("ruta_seleccionada.txt", Context.MODE_PRIVATE)) {
             fos.write(rutaInfo.getBytes());
-            fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error al guardar la ruta en archivo", e);
         }
     }
 
     public void showCustomToast() {
         LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_layout,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
+        View layout = inflater.inflate(R.layout.toast_layout, findViewById(R.id.custom_toast_container));
 
         customToast = new Toast(getApplicationContext());
         customToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -423,12 +364,11 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
     }
 
     private void cargarImagenBase64(String base64Image) {
-
         try {
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Glide.with(this).asBitmap().load(decodedString).into(imgUsu);
         } catch (IllegalArgumentException e) {
-            Log.e("Base64 Error", "Failed to decode Base64 string", e);
+            Log.e(TAG, "Failed to decode Base64 string", e);
             Glide.with(this).load(R.drawable.userwhothoutphoto).into(imgUsu);
         }
     }
@@ -450,8 +390,7 @@ public class RutasList extends AppCompatActivity implements AdapterView.OnItemCl
         editor.putBoolean("Log", false);
         editor.apply();
 
-        Intent intent = new Intent(this, PantallaInicial.class);
-        startActivity(intent);
+        startActivity(new Intent(this, PantallaInicial.class));
         finish();
         super.onBackPressed();
     }

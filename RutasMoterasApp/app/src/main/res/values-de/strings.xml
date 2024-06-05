@@ -3,7 +3,7 @@
 
     <!-- Sobre mí y descripción -->
     <string name="sobre_mi_title">Über mich</string>
-    <string name="sobre_mi_desc">Hallo allerseits! Ich bin Ivan Cabrera, ein leidenschaftlicher Student im zweiten Jahr des Studiums der Multiplattform-Entwicklung von Anwendungen (DAM), bereits Absolvent im Bereich Webanwendungs­entwicklung (DAW). Schon immer war ich fasziniert von Motorrädern und dem unglaublichen Gefühl von Freiheit und Abenteuer, das sie uns bieten. Ich liebe es, neue Motorradrouten zu erkunden und einzigartige Erfahrungen zu machen.</string>
+    <string name="sobre_mi_desc">Hallo allerseits! Ich bin Ivan Cabrera, ein leidenschaftlicher Student im zweiten Jahr des Studiums der Multiplattform-Entwicklung von Anwendungen (DAM), bereits Absolvent im Bereich Webanwendungsentwicklung (DAW). Schon immer war ich fasziniert von Motorrädern und dem unglaublichen Gefühl von Freiheit und Abenteuer, das sie bieten. Ich liebe es, neue Motorradrouten zu erkunden und einzigartige Erfahrungen zu machen.</string>
     <string name="parrafo2">RutasMoteras ist mehr als nur eine einfache Plattform, es ist ein Raum, der ausschließlich für Motorradliebhaber geschaffen wurde, die aufregende Routen entdecken und ihre Erfahrungen mit einer leidenschaftlichen Community teilen möchten. Hier finden Sie ein breites Angebot an Routen, können Ihre eigenen Reisen planen und das Gleiche erleben, was Ihre Abenteuerkollegen erlebt haben.</string>
 
     <string name="parrafo3">Ob Sie ein Anfänger in der Motorradwelt oder ein erfahrener Veteran sind, bei RutasMoteras sind alle willkommen. Schließen Sie sich uns an und begeben Sie sich auf ein Abenteuer voller Emotionen, Kameradschaft und Entdeckungen. Bereiten Sie sich darauf vor, die Welt auf zwei Rädern zu erkunden!</string>
@@ -81,7 +81,6 @@
     <string name="vasABorrarRuta">Sie werden eine Route löschen</string>
     <string name="EstasSeguroDeBorrarRuta">Sind Sie sicher, dass Sie dies tun möchten?</string>
 
-
     <string name="borrarFoto">Foto löschen</string>
     <string name="editarUsuario">Benutzer bearbeiten</string>
     <string name="editarRuta">Route bearbeiten</string>
@@ -92,6 +91,10 @@
 
     <string name="noti1">Route erstellt!!! 🎉</string>
     <string name="noti2">Danke, dass Sie meine App nutzen. Viel Spaß damit!</string>
+    <string name="crearSuperUser">Superbenutzer erstellen</string>
+    <string name="errorValidacion">Es dürfen keine leeren Elemente vorhanden sein!</string>
+    <string name="guia">Benutzerhandbuch</string>
+    <string name="descripcionrutasmoteras">When we see this text at the top of the screen, it means that clicking on it will take us to the start. Tap on the video below to play it and see an example of usage</string>
 
 
     <string-array name="tipo_moto_array">
@@ -133,7 +136,7 @@
     <string name="seleccionarFoto">Foto auswählen</string>
     <string name="guardar">Speichern</string>
 
-    <string name="channel_name">Notificaciones de Creación de Rutas</string>
-    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
+    <string name="channel_name">Routenerstellungs-Benachrichtigungen</string>
+    <string name="channel_description">Benachrichtigungen zur Information über die Erstellung von Routen</string>
 
 </resources>

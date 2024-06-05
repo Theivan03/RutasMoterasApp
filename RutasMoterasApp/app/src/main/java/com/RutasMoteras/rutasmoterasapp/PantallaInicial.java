@@ -11,44 +11,52 @@ import android.widget.Button;
 
 public class PantallaInicial extends AppCompatActivity {
 
-    Button sinUsuario;
-    Button conUsuario;
+    private static final String USER_PREFERENCES = "UserPreferences";
+    private static final String APP_PREFERENCES = "AppPreferences";
+    private static final String LOGIN_RESPONSE_KEY = "LoginResponse";
+    private static final String TOKEN_TIMESTAMP_KEY = "TokenTimestamp";
+
+    private Button sinUsuario;
+    private Button conUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_inicial);
 
+        initViews();
+        setupListeners();
+    }
+
+    private void initViews() {
         sinUsuario = findViewById(R.id.SinUsuario);
         conUsuario = findViewById(R.id.ConUsuario);
+    }
 
-        sinUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long currentTime = System.currentTimeMillis();
+    private void setupListeners() {
+        sinUsuario.setOnClickListener(v -> handleSinUsuario());
+        conUsuario.setOnClickListener(v -> handleConUsuario());
+    }
 
-                SharedPreferences sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.apply();
+    private void handleSinUsuario() {
+        long currentTime = System.currentTimeMillis();
 
-                sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-                editor = sharedPref.edit();
+        SharedPreferences sharedPref = getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.apply();
 
-                editor.putString("LoginResponse", "");
-                editor.putLong("TokenTimestamp", currentTime);
-                editor.apply();
+        sharedPref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.putString(LOGIN_RESPONSE_KEY, "");
+        editor.putLong(TOKEN_TIMESTAMP_KEY, currentTime);
+        editor.apply();
 
-                Intent intent = new Intent(PantallaInicial.this, RutasList.class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(PantallaInicial.this, RutasList.class);
+        startActivity(intent);
+    }
 
-        conUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PantallaInicial.this, Login.class);
-                startActivity(intent);
-            }
-        });
+    private void handleConUsuario() {
+        Intent intent = new Intent(PantallaInicial.this, Login.class);
+        startActivity(intent);
     }
 }

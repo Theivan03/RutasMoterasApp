@@ -23,12 +23,10 @@ import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.graphics.Color;
-
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -37,17 +35,40 @@ import java.io.InputStreamReader;
 
 public class DetalleRuta2 extends AppCompatActivity {
 
-    TextView tipoMotoTextView, tituloTextView, fechaTextView, comunidadTextView, descripcionTextView;
-    ImageView imgView;
-    Button boton;
-    String token;
-    RutasModel ruta;
-    String apiUrl;
+    private static final String TAG = "DetalleRuta2";
+    private static final String FILE_NAME = "ruta_seleccionada.txt";
+    private static final String LOGIN_RESPONSE_KEY = "LoginResponse";
+    private static final String URL_KEY = "URL";
+    private static final String APP_PREFERENCES = "AppPreferences";
+    private static final String APP_URL = "AppURL";
+    private static final String USER_PREFERENCES = "UserPreferences";
+    private static final int DEFAULT_COLOR = Color.parseColor("#808080");
+
+    private TextView tipoMotoTextView, tituloTextView, fechaTextView, comunidadTextView, descripcionTextView;
+    private ImageView imgView;
+    private Button boton;
+    private String token;
+    private RutasModel ruta;
+    private String apiUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_ruta2);
 
+        initViews();
+        loadPreferences();
+        String rutaInfo = leerRutaDesdeArchivo();
+        llamarApi(apiUrl + "api/ruta/" + rutaInfo);
+        Log.d(TAG, "Url de la ruta: " + apiUrl + "api/ruta/" + rutaInfo);
+
+        boton.setOnClickListener(v -> {
+            Intent intent = new Intent(DetalleRuta2.this, EditRuta.class);
+            startActivity(intent);
+        });
+    }
+
+    private void initViews() {
         tipoMotoTextView = findViewById(R.id.TipoMoto);
         tituloTextView = findViewById(R.id.Titulo);
         fechaTextView = findViewById(R.id.Fecha);
@@ -55,111 +76,67 @@ public class DetalleRuta2 extends AppCompatActivity {
         descripcionTextView = findViewById(R.id.Decripcion);
         imgView = findViewById(R.id.imgRuta);
         boton = findViewById(R.id.button2);
+    }
 
+    private void loadPreferences() {
+        SharedPreferences sharedPref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        token = sharedPref.getString(LOGIN_RESPONSE_KEY, null);
 
-        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        token = sharedPref.getString("LoginResponse", null);
-
-        sharedPref = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
-        apiUrl = sharedPref.getString("URL", "");
-
-        String rutaInfo = leerRutaDesdeArchivo();
-
-        LLamarApi(apiUrl + "api/ruta/" + rutaInfo);
-        Log.d("Url de la ruta: ", apiUrl + "api/ruta/" + rutaInfo);
-
-        boton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetalleRuta2.this, EditRuta.class);
-                startActivity(intent);
-            }
-        });
+        sharedPref = getSharedPreferences(APP_URL, Context.MODE_PRIVATE);
+        apiUrl = sharedPref.getString(URL_KEY, "");
     }
 
     String leerRutaDesdeArchivo() {
         StringBuilder rutaInfo = new StringBuilder();
-        try {
-            FileInputStream fis = openFileInput("ruta_seleccionada.txt");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
+        try (FileInputStream fis = openFileInput(FILE_NAME);
+             InputStreamReader isr = new InputStreamReader(fis);
+             BufferedReader br = new BufferedReader(isr)) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 rutaInfo.append(linea);
             }
-            fis.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error leyendo el archivo", e);
         }
-        Log.d("Leído del archivo:", rutaInfo.toString());
+        Log.d(TAG, "Leído del archivo: " + rutaInfo.toString());
         return rutaInfo.toString();
     }
 
-    public void LLamarApi(String url){
-
+    private void llamarApi(String url) {
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response r) {
-                String jsonContent = r.content;
-                ruta = UtilJSONParser.parsePostRuta(jsonContent);
-
+                ruta = UtilJSONParser.parsePostRuta(r.content);
                 actualizarVistasConDatosDeRuta();
             }
 
             @Override
             public void onError(UtilREST.Response r) {
-                if (r.content != null) {
-                    Log.d("ERROR!!!!!!!!!", r.content);
-                } else {
-                    Log.d("ERROR!!!!!!!!!", "El contenido de la respuesta es nulo");
-                }
+                String errorMsg = (r.content != null) ? r.content : "El contenido de la respuesta es nulo";
+                Log.d(TAG, "ERROR: " + errorMsg);
                 Toast.makeText(DetalleRuta2.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(DetalleRuta2.this, PantallaInicial.class);
-                startActivity(intent);
+                startActivity(new Intent(DetalleRuta2.this, PantallaInicial.class));
             }
         });
     }
 
     private void actualizarVistasConDatosDeRuta() {
         if (ruta != null) {
-            int color = Color.parseColor("#808080");
-
-            tituloTextView.setText(ruta.getTitle());
-
-            String tipoMotoLabel = getResources().getString(R.string.tipoMoto) + ": ";
-            String tipoMoto = ruta.getTipoMoto();
-            SpannableString spannableTipoMoto = new SpannableString(tipoMotoLabel + tipoMoto);
-            spannableTipoMoto.setSpan(new ForegroundColorSpan(color), 0, tipoMotoLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tipoMotoTextView.setText(spannableTipoMoto);
-
-            String fechaLabel = getResources().getString(R.string.fecha) + ": ";
-            String fecha = ruta.getDate();
-            SpannableString spannableFecha = new SpannableString(fechaLabel + fecha);
-            spannableFecha.setSpan(new ForegroundColorSpan(color), 0, fechaLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            fechaTextView.setText(spannableFecha);
-
-            String comunidadLabel = getResources().getString(R.string.comAuto) + ": ";
-            String comunidad = ruta.getComunidad();
-            SpannableString spannableComunidad = new SpannableString(comunidadLabel + comunidad);
-            spannableComunidad.setSpan(new ForegroundColorSpan(color), 0, comunidadLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            comunidadTextView.setText(spannableComunidad);
-
-            String descripcionLabel = getResources().getString(R.string.descripcion) + ": ";
-            String descripcion = ruta.getDescription();
-            SpannableString spannableDescripcion = new SpannableString(descripcionLabel + descripcion);
-            spannableDescripcion.setSpan(new ForegroundColorSpan(color), 0, descripcionLabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            descripcionTextView.setText(spannableDescripcion);
+            setSpannableText(tituloTextView, ruta.getTitle(), "");
+            setSpannableText(tipoMotoTextView, ruta.getTipoMoto(), getResources().getString(R.string.tipoMoto) + ": ");
+            setSpannableText(fechaTextView, ruta.getDate(), getResources().getString(R.string.fecha) + ": ");
+            setSpannableText(comunidadTextView, ruta.getComunidad(), getResources().getString(R.string.comAuto) + ": ");
+            setSpannableText(descripcionTextView, ruta.getDescription(), getResources().getString(R.string.descripcion) + ": ");
 
             String base64Image = ruta.getImage();
-
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            if(decodedByte != null) {
+            if (decodedByte != null) {
                 imgView.setImageBitmap(decodedByte);
             } else {
-                Log.e("DetalleRuta2", "La decodificación de la imagen falló.");
+                Log.e(TAG, "La decodificación de la imagen falló.");
             }
 
             Glide.with(this)
@@ -167,11 +144,24 @@ public class DetalleRuta2 extends AppCompatActivity {
                     .load(decodedString)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .error(R.drawable.favicon) // Asegúrate de tener este recurso drawable.
+                    .error(R.drawable.favicon)
                     .into(imgView);
-        } else {
-
         }
     }
 
+    private void setSpannableText(TextView textView, String text, String label) {
+        SpannableString spannableString = new SpannableString(label + text);
+        spannableString.setSpan(new ForegroundColorSpan(DEFAULT_COLOR), 0, label.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(spannableString);
+    }
+
+    @Override
+    public void onBackPressed() {
+        SharedPreferences sharedPref = getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE);
+        Long role = sharedPref.getLong("Role", 1);
+        Intent intent = new Intent(this, role == 2 ? SuperUser.class : User.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }

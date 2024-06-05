@@ -17,12 +17,12 @@
 
     <string name="logout">تسجيل الخروج</string>
     <string name="etitarUsu">تحرير المستخدم</string>
-    <string name="contraseña">كلمة السر</string>
+    <string name="contraseña">كلمة المرور</string>
     <string name="nombre">الاسم</string>
-    <string name="fecha">تاريخ</string>
-    <string name="correo">ريدك الإلكتروني</string>
     <string name="apellidos">اللقب</string>
     <string name="invitado">زائر</string>
+    <string name="fecha">التاريخ</string>
+    <string name="correo">بريدك الإلكتروني</string>
     <string name="iniSesion">تسجيل الدخول</string>
     <string name="registrar">تسجيل</string>
     <string name="cancelar">إلغاء</string>
@@ -37,7 +37,7 @@
     <string name="deportiva">رياضية</string>
     <string name="gt">جران توريزمو</string>
     <string name="contacta">اتصل بنا</string>
-    <string name="SinRutas">لم تقم بإنشاء أي مسار بعد !!!</string>
+    <string name="SinRutas">لم تقم بإنشاء أي مسار بعد!!!</string>
     <string name="ErrorServidor">حدثت مشكلة في الخادم، نعتذر عن الإزعاج</string>
     <string name="visitar">عرض المستخدم</string>
     <string name="addRuta">إنشاء مسار</string>
@@ -52,11 +52,11 @@
     <string name="descripcion">الوصف</string>
     <string name="creacion">إنشاء المسار</string>
 
-    <string name="errorCorreo">خطأ في إرسال البريد</string>
-    <string name="correoEnviado">تم إرسال البريد</string>
+    <string name="errorCorreo">خطأ في إرسال البريد الإلكتروني</string>
+    <string name="correoEnviado">تم إرسال البريد الإلكتروني</string>
     <string name="correoEnviadoCorrectamente">تم إرسال رسالتك بنجاح!</string>
-    <string name="enviandoCorreo">إرسال البريد</string>
-    <string name="esperarEnviandoCorreo">الرجاء الانتظار أثناء إرسال البريد...</string>
+    <string name="enviandoCorreo">إرسال البريد الإلكتروني</string>
+    <string name="esperarEnviandoCorreo">الرجاء الانتظار أثناء إرسال البريد الإلكتروني...</string>
     <string name="errorImagen">خطأ في الحصول على الصورة</string>
     <string name="imagenNoSeleccionada">لم يتم اختيار صورة</string>
     <string name="hacerFoto">التقاط صورة</string>
@@ -64,12 +64,12 @@
     <string name="elegirOpcion">اختر خيارًا</string>
     <string name="nuevaFoto">صورة جديدة</string>
     <string name="debePonerNombre">يجب إدخال اسم</string>
-    <string name="menosDe25Caracteres">لا يتم قبول أكثر من 25 حرفًا</string>
-    <string name="debePonerApellidos">يجب إدخال الأسماء الأخيرة</string>
-    <string name="menosDe50Caracteres">لا يتم قبول أكثر من 50 حرفًا</string>
+    <string name="menosDe25Caracteres">لا يمكن أن يحتوي الاسم على أكثر من 25 حرفًا</string>
+    <string name="debePonerApellidos">يجب إدخال اللقب</string>
+    <string name="menosDe50Caracteres">لا يمكن أن يحتوي اللقب على أكثر من 50 حرفًا</string>
     <string name="emailVacio">لا يمكن أن يكون حقل البريد الإلكتروني فارغًا</string>
     <string name="contraseñaVacia">لا يمكن أن يكون حقل كلمة المرور فارغًا</string>
-    <string name="emailValido">أدخل بريد إلكتروني صالح</string>
+    <string name="emailValido">الرجاء إدخال بريد إلكتروني صالح</string>
     <string name="contra8Caracteres">يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.</string>
     <string name="contraNumeros">يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.</string>
     <string name="contraMinuscula">يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.</string>
@@ -83,12 +83,17 @@
     <string name="editarUsuario">تحرير المستخدم</string>
     <string name="editarRuta">تحرير المسار</string>
     <string name="rutas">مسارات</string>
-    <string name="usuarios">المستخدمين</string>
+    <string name="usuarios">المستخدمون</string>
 
     <string name="crearUsuario">إنشاء مستخدم مسؤول</string>
 
-    <string name="noti1">تم إنشاء الطريق!!! 🎉</string>
+    <string name="noti1">تم إنشاء المسار!!! 🎉</string>
     <string name="noti2">شكرًا لاستخدامك تطبيقي. استمتع به!</string>
+    <string name="crearSuperUser">إنشاء مستخدم خارق</string>
+    <string name="errorValidacion">لا يمكن أن تكون هناك عناصر فارغة!</string>
+    <string name="guia">دليل الاستخدام</string>
+    <string name="descripcionrutasmoteras">عندما نرى هذا النص في أعلى الشاشة، يعني ذلك أن الضغط عليه سيأخذنا إلى البداية. اضغط على الفيديو أدناه لتشغيله ومشاهدة مثال على الاستخدام</string>
+
 
 
     <string-array name="tipo_moto_array">
@@ -130,7 +135,7 @@
     <string name="seleccionarFoto">اختر صورة</string>
     <string name="guardar">حفظ</string>
 
-    <string name="channel_name">Notificaciones de Creación de Rutas</string>
-    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
+    <string name="channel_name">إشعارات إنشاء المسارات</string>
+    <string name="channel_description">إشعارات لإبلاغ عن إنشاء المسارات</string>
 
 </resources>

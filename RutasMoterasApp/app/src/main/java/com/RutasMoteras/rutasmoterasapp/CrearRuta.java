@@ -1,15 +1,15 @@
 package com.RutasMoteras.rutasmoterasapp;
 
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,10 +22,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import java.io.ByteArrayOutputStream;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -48,16 +45,13 @@ import android.widget.Toast;
 
 import com.RutasMoteras.rutasmoterasapi.API;
 import com.RutasMoteras.rutasmoterasapi.CheckLogin;
-import com.RutasMoteras.rutasmoterasapi.RutasModel;
-import com.RutasMoteras.rutasmoterasapi.UtilJSONParser;
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,36 +63,41 @@ import nl.dionsegijn.konfetti.models.Size;
 public class CrearRuta extends AppCompatActivity {
     private static final int CODIGO_PERMISOS_CAMARA = 1;
     private static final int CODIGO_PERMISOS_GALERIA = 2;
-    private ActivityResultLauncher<String> permissionLauncher;
 
+    private static final String SENDER_EMAIL = "rutasmoterasoficial@gmail.com";
+    private static final String RECEIVER_EMAIL = "rutasmoterasoficial@gmail.com";
+    private static final String PASSWORD_SENDER_EMAIL = "tioilxblzdgivveh";
+    private static final String SMTP_HOST = "smtp.gmail.com";
+    private static final int SMTP_PORT = 587;
+
+    private ActivityResultLauncher<String> permissionLauncher;
     private ActivityResultLauncher<String> galleryPermissionLauncher;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
+
     private ImageView imageView;
     private Button buttonSelectPhoto;
     private Button buttonDeletePhoto;
     private Uri uri = null;
-    private String FotoString;
+    private String fotoString = "";
     private String selectedComunidad;
     private String selectedTipoMoto;
     private Button crear;
     private EditText tit;
     private EditText des;
-    SharedPreferences sharedURL;
-    String apiUrl;
+    private SharedPreferences sharedURL;
+    private String apiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_ruta);
 
-
         sharedURL = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
         apiUrl = sharedURL.getString("URL", "");
 
         imageView = findViewById(R.id.imageView);
         buttonSelectPhoto = findViewById(R.id.buttonSelectPhoto);
-
         buttonSelectPhoto.setOnClickListener(v -> mostrarDialogoSeleccion());
 
         crear = findViewById(R.id.button);
@@ -108,34 +107,36 @@ public class CrearRuta extends AppCompatActivity {
         setSentenceCapitalizationTextWatcher(des);
 
         buttonDeletePhoto = findViewById(R.id.borrarFoto);
-        buttonDeletePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView.setImageDrawable(null);
-                FotoString = "";
-                uri = null;
-            }
+        buttonDeletePhoto.setOnClickListener(v -> {
+            imageView.setImageDrawable(null);
+            fotoString = "";
+            uri = null;
         });
 
         crear.setOnClickListener(v -> {
-            CrearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, FotoString);
-
+            if (validarEntradas(tit.getText().toString(), des.getText().toString())) {
+                crearRuta(tit.getText().toString(), des.getText().toString(), selectedComunidad, selectedTipoMoto, fotoString);
+            } else {
+                Toast.makeText(CrearRuta.this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
+            }
         });
 
+        inicializarSpinners();
+        inicializarLaunchers();
+    }
 
+    private void inicializarSpinners() {
         Spinner spinnerTipoMoto = findViewById(R.id.spinnerTipoMoto);
         ArrayAdapter<CharSequence> adapterTipoMoto = ArrayAdapter.createFromResource(this,
                 R.array.tipo_moto_array, android.R.layout.simple_spinner_item);
         adapterTipoMoto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoMoto.setAdapter(adapterTipoMoto);
 
-
         Spinner spinnerComunidad = findViewById(R.id.spinnerComunidad);
         ArrayAdapter<CharSequence> adapterComunidad = ArrayAdapter.createFromResource(this,
                 R.array.comunidad_array, android.R.layout.simple_spinner_item);
         adapterComunidad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerComunidad.setAdapter(adapterComunidad);
-
 
         spinnerTipoMoto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,7 +146,6 @@ public class CrearRuta extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -157,11 +157,8 @@ public class CrearRuta extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-        inicializarLaunchers();
     }
 
     private void inicializarLaunchers() {
@@ -169,12 +166,7 @@ public class CrearRuta extends AppCompatActivity {
             if (isGranted) {
                 abrirCamara();
             } else {
-                // Aquí puedes mostrar un Toast informativo o un diálogo explicativo si es apropiado
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                    mostrarExplicacionPermiso();
-                } else {
-                    Toast.makeText(this, "Permiso de cámara denegado. Por favor, habilita el permiso en ajustes.", Toast.LENGTH_LONG).show();
-                }
+                mostrarExplicacionPermiso();
             }
         });
 
@@ -183,11 +175,11 @@ public class CrearRuta extends AppCompatActivity {
         });
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                Uri imageUri = result.getData().getData();
-                imageView.setImageURI(imageUri);
-                FotoString = convertirImagenABase64(imageUri);
-            } else {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                if (uri != null) {
+                    imageView.setImageURI(uri);
+                    fotoString = convertirImagenABase64(uri);
+                }
             }
         });
 
@@ -196,11 +188,11 @@ public class CrearRuta extends AppCompatActivity {
                 Uri selectedImage = result.getData().getData();
                 imageView.setImageURI(selectedImage);
                 uri = selectedImage;
-                FotoString = convertirImagenABase64(selectedImage);
-            } else {
+                fotoString = convertirImagenABase64(selectedImage);
             }
         });
     }
+
     private void mostrarExplicacionPermiso() {
         new AlertDialog.Builder(this)
                 .setTitle("Permiso necesario")
@@ -221,14 +213,14 @@ public class CrearRuta extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         permissionLauncher.launch(Manifest.permission.CAMERA);
                     } else {
-                        verificarPermisosCamara();
+                        abrirCamara();
                     }
                     break;
                 case 1: // Seleccionar de galería
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         galleryPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
                     } else {
-                        verificarPermisosGaleria();
+                        abrirGaleria();
                     }
                     break;
                 case 2: // Cancelar
@@ -237,38 +229,6 @@ public class CrearRuta extends AppCompatActivity {
             }
         });
         builder.show();
-    }
-
-
-    private void verificarPermisosCamara() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            permissionLauncher.launch(Manifest.permission.CAMERA);
-        } else {
-            abrirCamara();
-        }
-    }
-
-    private void verificarPermisosGaleria() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            galleryPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-        } else {
-            abrirCamara();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case CODIGO_PERMISOS_CAMARA:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Si se cancelo la petici
-                    // ón, los array's van vacíos.
-
-                } else {
-                    ActivityCompat.requestPermissions(CrearRuta.this, new String[]{Manifest.permission.CAMERA}, CODIGO_PERMISOS_CAMARA);
-                }
-                break;
-        }
     }
 
     private void abrirCamara() {
@@ -303,7 +263,6 @@ public class CrearRuta extends AppCompatActivity {
             Bitmap bitmapRedimensionado = Bitmap.createScaledBitmap(bitmapOriginal, width, height, true);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
             bitmapRedimensionado.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 
@@ -314,10 +273,12 @@ public class CrearRuta extends AppCompatActivity {
         }
     }
 
+    private boolean validarEntradas(String titulo, String descripcion) {
+        return !titulo.isEmpty() && !descripcion.isEmpty();
+    }
 
     @SuppressLint("NotConstructor")
-    private void CrearRuta(String titulo, String descripcion, String comunidad, String tipo, String fotoBase64) {
-
+    private void crearRuta(String titulo, String descripcion, String comunidad, String tipo, String fotoBase64) {
         CheckLogin.checkLastLoginDay(getApplicationContext());
 
         SharedPreferences userPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
@@ -340,25 +301,22 @@ public class CrearRuta extends AppCompatActivity {
         }
 
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        sharedPref.getString("LoginResponse", "");
+        String loginResponse = sharedPref.getString("LoginResponse", "");
 
-        API.postPostRutas(ruta, apiUrl + "api/ruta", sharedPref.getString("LoginResponse", ""), new UtilREST.OnResponseListener() {
+        API.postPostRutas(ruta, apiUrl + "api/ruta", loginResponse, new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response response) {
                 runOnUiThread(() -> {
                     launchConfetti();
                     showSuccessDialog();
-                    if(checkNotificationPermission()){
+                    if (checkNotificationPermission()) {
                         sendNotification();
-                    };
+                    }
                 });
 
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(CrearRuta.this, User.class);
-                        startActivity(intent);
-                    }
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(CrearRuta.this, User.class);
+                    startActivity(intent);
                 }, 3000);
             }
 
@@ -371,7 +329,6 @@ public class CrearRuta extends AppCompatActivity {
                     Log.e("Error", "Error data is null");
                 }
             }
-
         });
     }
 
@@ -427,15 +384,13 @@ public class CrearRuta extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View customLayout = getLayoutInflater().inflate(R.layout.dialog_success, null);
         builder.setView(customLayout);
-
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
     private void setSentenceCapitalizationTextWatcher(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
-            private boolean capitalizeNext = false; // Flag to indicate the next character should be capitalized
+            private boolean capitalizeNext = true; // Flag to indicate the next character should be capitalized
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -479,5 +434,4 @@ public class CrearRuta extends AppCompatActivity {
             }
         });
     }
-
 }

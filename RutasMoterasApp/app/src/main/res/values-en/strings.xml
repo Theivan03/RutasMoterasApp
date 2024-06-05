@@ -81,18 +81,19 @@
     <string name="vasABorrarRuta">You are going to delete a route</string>
     <string name="EstasSeguroDeBorrarRuta">Are you sure you want to do this?</string>
 
-
     <string name="borrarFoto">Delete Photo</string>
     <string name="editarUsuario">Edit User</string>
     <string name="editarRuta">Edit Route</string>
     <string name="rutas">Routes</string>
     <string name="usuarios">Users</string>
 
-    <string name="crearUsuario">Admin-Benutzer erstellen</string>
-
+    <string name="crearUsuario">Create User</string>
     <string name="noti1">Route created!!! 🎉</string>
     <string name="noti2">Thank you for using my app. Enjoy it!</string>
-
+    <string name="crearSuperUser">Create Super User</string>
+    <string name="errorValidacion">There cannot be any empty elements!</string>
+    <string name="guia">Usage Guide</string>
+    <string name="descripcionrutasmoteras">When we see this text at the top of the screen, it means that clicking on it will take us to the start</string>
 
 
     <string-array name="tipo_moto_array">
@@ -134,7 +135,6 @@
     <string name="seleccionarFoto">Select Photo</string>
     <string name="guardar">Save</string>
 
-    <string name="channel_name">Notificaciones de Creación de Rutas</string>
-    <string name="channel_description">Notificaciones para informar sobre la creación de rutas</string>
-
+    <string name="channel_name">Route Creation Notifications</string>
+    <string name="channel_description">Notifications to inform about route creation</string>
 </resources>

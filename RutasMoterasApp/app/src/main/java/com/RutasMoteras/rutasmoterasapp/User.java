@@ -268,8 +268,8 @@ public class User extends AppCompatActivity implements AdapterView.OnItemClickLi
 
                 break;
             case R.id.editar:
+                guardarRutaEnArchivo(r);
                 Intent intent = new Intent(User.this, EditRuta.class);
-                intent.putExtra("FILM_POSITION", info.position);
                 if (intent.resolveActivity(getPackageManager()) != null){
                     startActivityForResult(intent, r.getId());
                 }

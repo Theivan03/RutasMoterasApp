@@ -1,12 +1,10 @@
 package com.RutasMoteras.rutasmoterasapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import android.Manifest;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -24,85 +22,89 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-
 import com.RutasMoteras.rutasmoterasapi.UtilREST;
 import com.mikhaellopez.circularfillableloaders.CircularFillableLoaders;
 
 import java.util.Calendar;
 
-public class Slash extends AppCompatActivity implements Animation.AnimationListener   {
+public class Slash extends AppCompatActivity {
 
     private static final long SPLASH_DELAY = 3000;
+    //private static final String BASE_URL = "http://192.168.1.131:5000/";
+    private static final String BASE_URL = "http://44.207.234.210/";
+    private static final String APP_URL_KEY = "AppURL";
+    private static final String APP_PREFERENCES_KEY = "AppPreferences";
+    private static final String USER_PREFERENCES_KEY = "UserPreferences";
+    private static final String LOGIN_RESPONSE_KEY = "LoginResponse";
+    private static final String TOKEN_DAY_KEY = "TokenDay";
+    private static final String ROLE_KEY = "Role";
+    private static final String DATOS_RUTAS_KEY = "datosRutas";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slash);
 
-        SharedPreferences sharedPref = getSharedPreferences("AppURL", Context.MODE_PRIVATE);
+        initializeSharedPreferences();
+        startSplashAnimation();
+        scheduleNextActivity();
+    }
+
+    private void initializeSharedPreferences() {
+        SharedPreferences sharedPref = getSharedPreferences(APP_URL_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-
-        //editor.putString("URL", "http://44.207.234.210/");
-        editor.putString("URL", "http://192.168.1.131:5000/");
+        editor.putString("URL", BASE_URL);
         editor.apply();
+    }
 
+    private void startSplashAnimation() {
         CircularFillableLoaders cargando = findViewById(R.id.logo_circular);
         Animation animacion = AnimationUtils.loadAnimation(this, R.anim.splashanimation);
         cargando.startAnimation(animacion);
+    }
 
-        animacion.setAnimationListener(this);
+    private void scheduleNextActivity() {
+        new Handler().postDelayed(() -> {
+            Calendar calendar = Calendar.getInstance();
+            int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Calendar calendar = Calendar.getInstance();
-                int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
+            SharedPreferences sharedPref = getSharedPreferences(APP_PREFERENCES_KEY, Context.MODE_PRIVATE);
+            int tokenDay = sharedPref.getInt(TOKEN_DAY_KEY, -1);
 
-                SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-                int tokenDay = sharedPref.getInt("TokenDay", -1);
+            sharedPref = getSharedPreferences(USER_PREFERENCES_KEY, Context.MODE_PRIVATE);
+            Long role = sharedPref.getLong(ROLE_KEY, 1);
 
-                sharedPref = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-                Long role = sharedPref.getLong("Role", 1);
-
-                if (tokenDay != -1) {
-                    int dayDifference = currentDay - tokenDay;
-
-                    if (dayDifference <= 15) {
-                        if(role == 2){
-                            Intent intent = new Intent(Slash.this, SuperUser.class);
-                            startActivity(intent);
-                        }else{
-                            Intent intent = new Intent(Slash.this, RutasList.class);
-                            startActivity(intent);
-                        }
-
+            Intent intent;
+            if (tokenDay != -1) {
+                int dayDifference = currentDay - tokenDay;
+                if (dayDifference <= 15) {
+                    if (role == 2) {
+                        intent = new Intent(Slash.this, SuperUser.class);
                     } else {
-                        Intent intent = new Intent(Slash.this, PantallaInicial.class);
-                        startActivity(intent);
+                        intent = new Intent(Slash.this, RutasList.class);
                     }
                 } else {
-                    Intent intent = new Intent(Slash.this, PantallaInicial.class);
-                    startActivity(intent);
+                    intent = new Intent(Slash.this, PantallaInicial.class);
                 }
-                finish();
+            } else {
+                intent = new Intent(Slash.this, PantallaInicial.class);
             }
+            startActivity(intent);
+            finish();
         }, SPLASH_DELAY);
-        //LLamarApi("http://192.168.1.131:5000/api/rutas");
     }
 
     public void LLamarApi(String url) {
-        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        String token = sharedPref.getString("LoginResponse", "");
-
+        SharedPreferences sharedPref = getSharedPreferences(APP_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        String token = sharedPref.getString(LOGIN_RESPONSE_KEY, "");
 
         UtilREST.runQueryWithHeaders(UtilREST.QueryType.GET, url, token, new UtilREST.OnResponseListener() {
             @Override
             public void onSuccess(UtilREST.Response r) {
                 String jsonContent = r.content;
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("datosRutas", jsonContent);
+                editor.putString(DATOS_RUTAS_KEY, jsonContent);
                 editor.apply();
-
 
                 Intent intent = new Intent(Slash.this, RutasList.class);
                 startActivity(intent);
@@ -113,24 +115,12 @@ public class Slash extends AppCompatActivity implements Animation.AnimationListe
             public void onError(UtilREST.Response r) {
                 if (r.content != null) {
                     Log.d("ERROR", r.content);
-                } else {
                 }
                 Toast.makeText(Slash.this, getResources().getString(R.string.ErrorServidor), Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(Slash.this, PantallaInicial.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
-
-
-    @Override
-    public void onAnimationStart(Animation animation) {}
-
-    @Override
-    public void onAnimationEnd(Animation animation) {}
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {}
 }

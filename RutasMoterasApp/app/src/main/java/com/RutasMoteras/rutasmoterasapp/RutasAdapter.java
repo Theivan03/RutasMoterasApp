@@ -19,9 +19,10 @@ import java.util.List;
 
 public class RutasAdapter extends ArrayAdapter<RutasModel> {
 
-    private int mResource;
-    private List<RutasModel> misRutas;
-    Context context;
+    private final int mResource;
+    private final List<RutasModel> misRutas;
+    private final Context context;
+
     public RutasAdapter(@NonNull Context context, int resource, @NonNull List<RutasModel> misRutas) {
         super(context, resource, misRutas);
         this.context = context;
@@ -32,34 +33,51 @@ public class RutasAdapter extends ArrayAdapter<RutasModel> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
 
-        LayoutInflater inflater = LayoutInflater.from(this.getContext());
-        View mifila = inflater.inflate(mResource, parent, false);
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            convertView = inflater.inflate(mResource, parent, false);
+            holder = new ViewHolder();
+            holder.imageView = convertView.findViewById(R.id.imgRuta);
+            holder.titulo = convertView.findViewById(R.id.Titulo);
+            holder.comunidad = convertView.findViewById(R.id.Comunidad);
+            holder.tipoMoto = convertView.findViewById(R.id.TipoMoto);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
+        RutasModel ruta = misRutas.get(position);
 
-        ImageView imageView = mifila.findViewById(R.id.imgRuta);
-        String base64Image = misRutas.get(position).getImage();
-
+        String base64Image = ruta.getImage();
         if (base64Image != null && base64Image.startsWith("data:image")) {
             base64Image = base64Image.split(",")[1];
         }
 
-        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+        try {
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Glide.with(context)
+                    .asBitmap()
+                    .load(decodedString)
+                    .into(holder.imageView);
+        } catch (IllegalArgumentException e) {
+            Glide.with(context)
+                    .load(R.drawable.favicon)  // Usa una imagen de respaldo en caso de error
+                    .into(holder.imageView);
+        }
 
-        Glide.with(context)
-                .asBitmap()
-                .load(decodedString)
-                .into(imageView);
+        holder.titulo.setText(ruta.getTitle());
+        holder.comunidad.setText(ruta.getComunidad());
+        holder.tipoMoto.setText(ruta.getTipoMoto());
 
-        TextView Titulo = mifila.findViewById(R.id.Titulo);
-        Titulo.setText(misRutas.get(position).getTitle());
+        return convertView;
+    }
 
-        TextView Comunidad = mifila.findViewById(R.id.Comunidad);
-        Comunidad.setText(misRutas.get(position).getComunidad());
-
-        TextView TipoMoto = mifila.findViewById(R.id.TipoMoto);
-        TipoMoto.setText(misRutas.get(position).getTipoMoto());
-
-        return mifila;
+    private static class ViewHolder {
+        ImageView imageView;
+        TextView titulo;
+        TextView comunidad;
+        TextView tipoMoto;
     }
 }

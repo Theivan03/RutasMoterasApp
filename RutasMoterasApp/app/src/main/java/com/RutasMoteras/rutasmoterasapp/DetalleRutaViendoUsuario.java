@@ -176,8 +176,6 @@ public class DetalleRutaViendoUsuario extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MostrarUser.class);
-        startActivity(intent);
         finish();
         super.onBackPressed();
     }

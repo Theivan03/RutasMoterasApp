@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Informacion">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".EditInfoUser"
+            tools:ignore="MissingConstraints">
+
+    <TextView
+        android:id="@+id/sobreMiTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sobre_mi_title"
+        android:fontFamily="@font/sedgwickavedisplay_regular"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <com.codesgood.views.JustifiedTextView
+        android:id="@+id/sobreMiDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:textSize="13dp"
+        android:justificationMode="inter_word"
+        android:text="@string/sobre_mi_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintTop_toBottomOf="@id/sobreMiTitulo" />
+
+    <com.codesgood.views.JustifiedTextView
+        android:id="@+id/parrafo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:textSize="13dp"
+        android:justificationMode="inter_word"
+        android:text="@string/parrafo2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintTop_toBottomOf="@+id/sobreMiDescripcion" />
+
+    <com.codesgood.views.JustifiedTextView
+        android:id="@+id/parrafo3"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:textSize="13dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/parrafo3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintTop_toBottomOf="@+id/parrafo2" />
+
+    <com.codesgood.views.JustifiedTextView
+        android:id="@+id/licenciaDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center"
+        android:padding="16dp"
+        android:textSize="13dp"
+        android:text="@string/licencia_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintTop_toBottomOf="@id/licenciaImagen" />
+
+
+
+    <ImageView
+        android:id="@+id/licenciaImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/licencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parrafo3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
