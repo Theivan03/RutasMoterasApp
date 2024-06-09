@@ -155,9 +155,9 @@ public class SuperUser extends AppCompatActivity implements AdapterView.OnItemCl
             mostrarDialogo(ruta);
             return true;
         } else if (item.getItemId() == R.id.editar) {
+            guardarRutaEnArchivo(ruta);
             Intent intent = new Intent(SuperUser.this, EditRuta.class);
-            intent.putExtra("FILM_POSITION", info.position);
-            startActivityForResult(intent, ruta.getId());
+            startActivity(intent);
             return true;
         }
 
