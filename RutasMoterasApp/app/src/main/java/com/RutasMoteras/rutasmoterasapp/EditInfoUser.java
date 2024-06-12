@@ -79,7 +79,7 @@ public class EditInfoUser extends AppCompatActivity {
 
         guardar.setOnClickListener(v -> {
             GuardarUser();
-            startActivity(new Intent(EditInfoUser.this, User.class));
+            startActivity(new Intent(EditInfoUser.this, Login.class));
         });
     }
 
@@ -276,8 +276,6 @@ public class EditInfoUser extends AppCompatActivity {
                 editor.putString("postalCode", codigoPostal.getText().toString());
                 editor.putString("Foto", FotoString);
                 editor.apply();
-
-                startActivity(new Intent(EditInfoUser.this, User.class));
             }
 
             @Override
@@ -289,6 +287,7 @@ public class EditInfoUser extends AppCompatActivity {
                     Log.e(TAG, "Error data is null");
                 }
             }
+
         });
     }
 }
